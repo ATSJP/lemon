@@ -18,7 +18,7 @@ public class VideoService {
     public String getVideo(String videoId) {
         String video = redissonTools.get(videoId);
         if (StringUtils.isEmpty(video)) {
-            video = "video";
+            video = videoId;
             redissonTools.set(videoId, video);
         }
         return video;

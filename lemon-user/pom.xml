@@ -71,6 +71,11 @@
             <groupId>org.redisson</groupId>
             <artifactId>redisson</artifactId>
         </dependency>
+        <!-- urlRewrite -->
+        <dependency>
+            <groupId>org.tuckey</groupId>
+            <artifactId>urlrewritefilter</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
