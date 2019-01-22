@@ -37,6 +37,7 @@
         <module>lemon-static</module>
         <module>lemon-user</module>
         <module>lemon-frame</module>
+        <module>lemon-soa</module>
     </modules>
 
     <dependencyManagement>
