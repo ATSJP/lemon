@@ -7,7 +7,6 @@
     <packaging>jar</packaging>
 
     <name>lemon-user</name>
-    <description>user</description>
 
     <parent>
         <groupId>com.lemon</groupId>

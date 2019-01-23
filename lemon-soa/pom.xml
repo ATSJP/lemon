@@ -4,47 +4,21 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>lemon-soa</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <name>lemon-soa</name>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.9.RELEASE</version>
-        <relativePath/>
+        <groupId>com.lemon</groupId>
+        <artifactId>lemon</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <properties>
-        <spring-cloud.version>Dalston.SR4</spring-cloud.version>
-    </properties>
+    <modules>
+        <!--<module>lemon-soa</module>-->
+        <module>eureka-api</module>
+        <module>eureka-provider</module>
+    </modules>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-eureka-server</artifactId>
-        </dependency>
-    </dependencies>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

@@ -1,4 +1,4 @@
-package com.lemon;
+package com.lemon.eureka.server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,12 +6,13 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 
 /**
  * @author sjp
- * @date 2019/1/21
- **/
-@SpringBootApplication
+ */
 @EnableEurekaServer
-public class LemonSoaApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(LemonSoaApplication.class, args);
-    }
+@SpringBootApplication
+public class EurekaServerApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(EurekaServerApplication.class, args);
+	}
+
 }
