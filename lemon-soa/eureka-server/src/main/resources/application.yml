@@ -3,9 +3,15 @@ server:
 
 eureka:
     instance:
-        hostname: localhost
+        hostname: eureka-service
+    server:
+        # 清理无效节点时间间隔，默认60000ms=60s
+        eviction-interval-timer-in-ms: 60000
     client:
-        registerWithEureka: false
-        fetchRegistry: false
-        serviceUrl:
-            defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+        # 不注册自己
+        register-with-eureka: false
+        # 获取服务
+        fetch-registry: false
+        # 注册中心地址
+        service-url:
+            defaultZone: http://localhost:${server.port}/eureka/

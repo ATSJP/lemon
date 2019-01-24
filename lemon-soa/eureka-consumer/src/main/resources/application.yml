@@ -1,15 +1,14 @@
 server:
-    port: 9002
+    port: 9003
 
 spring:
     application:
-        name: eureka-provider
-
+        name: eureka-consumer
 eureka:
     instance:
-        #使用ip进行注册
+        # 使用IP注册
         prefer-ip-address: true
+    #注册地址
     client:
-        serviceUrl:
+        service-url:
             defaultZone: http://localhost:9001/eureka/
-

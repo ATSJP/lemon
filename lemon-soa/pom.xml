@@ -18,6 +18,7 @@
         <!--<module>lemon-soa</module>-->
         <module>eureka-api</module>
         <module>eureka-provider</module>
+        <module>eureka-consumer</module>
     </modules>
 
 
