@@ -13,3 +13,24 @@ eureka:
         serviceUrl:
             defaultZone: http://localhost:9001/eureka/
 
+# actuator 监控
+management:
+    endpoints:
+        web:
+            basePath: /appInfo
+            exposure:
+                # 开启全部监控请求
+                include: "*"
+    server:
+        # 监控端口
+        port: 10002
+    endpoint:
+        health:
+            # heath展示全部信息
+            show-details: always
+
+info:
+    app.name: eureka-provider
+    company.name: www.lemon.com
+    build.artifactId: eureka-provider
+    build.version: 0.0.1

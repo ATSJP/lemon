@@ -1,9 +1,13 @@
 server:
     port: 9001
 
+spring:
+    application:
+        name: eureka-server
+
 eureka:
     instance:
-        hostname: eureka-service
+        hostname: eureka-server
     server:
         # 清理无效节点时间间隔，默认60000ms=60s
         eviction-interval-timer-in-ms: 60000
@@ -15,3 +19,25 @@ eureka:
         # 注册中心地址
         service-url:
             defaultZone: http://localhost:${server.port}/eureka/
+
+# actuator 监控
+management:
+    endpoints:
+        web:
+            basePath: /appInfo
+            exposure:
+                # 开启全部监控请求
+                include: "*"
+    server:
+        # 监控端口
+        port: 10001
+    endpoint:
+        health:
+            # heath展示全部信息 其他配置 when_authorized、never，
+            show-details: always
+
+info:
+    app.name: eureka-provider
+    company.name: www.lemon.com
+    build.artifactId: eureka-server
+    build.version: 0.0.1
