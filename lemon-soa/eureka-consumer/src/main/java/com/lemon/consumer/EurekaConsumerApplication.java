@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
  * @author sjp
  * @date 2019/1/24
  **/
-@EnableFeignClients
+@EnableFeignClients(basePackages = { "com.lemon.soa.api" })
 @EnableDiscoveryClient
 @SpringBootApplication
 public class EurekaConsumerApplication {

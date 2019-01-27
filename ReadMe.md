@@ -17,7 +17,6 @@ lemon，高品质生活的人，闲着没事的时候，即使喝白开，也喜
     - eureka-server 服务注册中心
 - lemon-user    前台应用
 
-
 #### main dependency version
 
 | dependency  | version          |

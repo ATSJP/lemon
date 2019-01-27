@@ -1,6 +1,6 @@
 package com.lemon.consumer.controller;
 
-import com.lemon.consumer.soa.TestProvider;
+import com.lemon.soa.api.VideoService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,10 +27,10 @@ public class ConsumerController {
 	 * feign 方式
 	 */
 	@Resource
-	private TestProvider testProvider;
+	private VideoService videoService;
 
 	@GetMapping(value = "/hello")
-	public String hello() {
-		return testProvider.consumer(1);
+	public double hello() {
+		return videoService.getVideo(1);
 	}
 }

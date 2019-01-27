@@ -13,6 +13,13 @@
     </parent>
 
     <dependencies>
+        <!-- 内部依赖 -->
+        <dependency>
+            <groupId>com.lemon</groupId>
+            <artifactId>eureka-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <!-- 外部依赖 -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
