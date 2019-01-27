@@ -1,9 +1,8 @@
 #### lemon
 
-lemon，高品质生活的人，闲着没事的时候，即使喝白开，也喜欢切一片柠檬，增添一份惬意。本项目取名lemon，也希望编写这个项目，
-也不是为了任务，而是希望带着一份惬意去编写。
+lemon，高品质生活的人，闲着没事的时候，即使喝白开，也喜欢切一片柠檬，增添一份惬意。本项目取名lemon，也希望编写这个项目带着一份惬意去编写。
 
-**Project Structure**
+#### Project Structure
 
 - lemon-admin   后台管理
 - lemon-apply   应用
@@ -19,10 +18,13 @@ lemon，高品质生活的人，闲着没事的时候，即使喝白开，也喜
 - lemon-user    前台应用
 
 
-**main dependency version:**
+#### main dependency version
 
 | dependency  | version          |
 | ----------- | ---------------- |
 | SpringBoot  | 2.0.0.RELEASE    |                         
 | SpringCloud | Finchley.RELEASE |
-                                  
+         
+#### Nginx配置
+
+[nginx.conf]( https://github.com/ATSJP/lemon/blob/master/nginx.conf)                         
