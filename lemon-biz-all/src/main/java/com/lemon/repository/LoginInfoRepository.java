@@ -9,7 +9,7 @@ import com.lemon.entity.LoginInfoEntity;
  * @author shijianpeng 2019/1/10
  */
 @Repository
-public interface LoginInfoRepository extends CrudRepository<LoginInfoEntity, Integer> {
+public interface LoginInfoRepository extends CrudRepository<LoginInfoEntity, Long> {
 
 	/**
 	 * 根据用户名获取登录信息

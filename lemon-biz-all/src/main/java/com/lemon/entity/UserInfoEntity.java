@@ -1,240 +1,194 @@
 package com.lemon.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
- * @author shijianpeng 2019/1/11
- */
+ * @author sjp
+ * @date 2019/2/11
+ **/
 @Entity
 @Table(name = "user_info", schema = "lemon", catalog = "")
 public class UserInfoEntity {
-	private long		loginId;
-	private String		userName;
-	private String		engName;
-	private boolean		gender;
-	private Timestamp	birthday;
-	private Integer		grade;
-	private String		idCard;
-	private String		userType;
-	private String		qqAccount;
-	private String		weChatAccount;
-	private long		adderNo;
-	private Timestamp	addTime;
-	private long		updaterNo;
-	private Timestamp	updateTime;
-	private String		armCard;
-	private String		drivingLicense;
-	private String		passPort;
-	private String		simplifiedChinese;
+    private long loginId;
+    private String userName;
+    private String engName;
+    private short gender;
+    private Timestamp birthday;
+    private Integer grade;
+    private String userType;
+    private String idCard;
+    private String qqAccount;
+    private String weChatAccount;
+    private long createId;
+    private Timestamp createTime;
+    private long updateId;
+    private Timestamp updateTime;
 
-	@Id
-	@Column(name = "login_id")
-	public long getLoginId() {
-		return loginId;
-	}
+    @Id
+    @Column(name = "login_id")
+    public long getLoginId() {
+        return loginId;
+    }
 
-	public void setLoginId(long loginId) {
-		this.loginId = loginId;
-	}
+    public void setLoginId(long loginId) {
+        this.loginId = loginId;
+    }
 
-	@Basic
-	@Column(name = "user_name")
-	public String getUserName() {
-		return userName;
-	}
+    @Basic
+    @Column(name = "user_name")
+    public String getUserName() {
+        return userName;
+    }
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
-	@Basic
-	@Column(name = "eng_name")
-	public String getEngName() {
-		return engName;
-	}
+    @Basic
+    @Column(name = "eng_name")
+    public String getEngName() {
+        return engName;
+    }
 
-	public void setEngName(String engName) {
-		this.engName = engName;
-	}
+    public void setEngName(String engName) {
+        this.engName = engName;
+    }
 
-	@Basic
-	@Column(name = "gender")
-	public boolean isGender() {
-		return gender;
-	}
+    @Basic
+    @Column(name = "gender")
+    public short getGender() {
+        return gender;
+    }
 
-	public void setGender(boolean gender) {
-		this.gender = gender;
-	}
+    public void setGender(short gender) {
+        this.gender = gender;
+    }
 
-	@Basic
-	@Column(name = "birthday")
-	public Timestamp getBirthday() {
-		return birthday;
-	}
+    @Basic
+    @Column(name = "birthday")
+    public Timestamp getBirthday() {
+        return birthday;
+    }
 
-	public void setBirthday(Timestamp birthday) {
-		this.birthday = birthday;
-	}
+    public void setBirthday(Timestamp birthday) {
+        this.birthday = birthday;
+    }
 
-	@Basic
-	@Column(name = "grade")
-	public Integer getGrade() {
-		return grade;
-	}
+    @Basic
+    @Column(name = "grade")
+    public Integer getGrade() {
+        return grade;
+    }
 
-	public void setGrade(Integer grade) {
-		this.grade = grade;
-	}
+    public void setGrade(Integer grade) {
+        this.grade = grade;
+    }
 
-	@Basic
-	@Column(name = "id_card")
-	public String getIdCard() {
-		return idCard;
-	}
+    @Basic
+    @Column(name = "user_type")
+    public String getUserType() {
+        return userType;
+    }
 
-	public void setIdCard(String idCard) {
-		this.idCard = idCard;
-	}
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
 
-	@Basic
-	@Column(name = "user_type")
-	public String getUserType() {
-		return userType;
-	}
+    @Basic
+    @Column(name = "id_card")
+    public String getIdCard() {
+        return idCard;
+    }
 
-	public void setUserType(String userType) {
-		this.userType = userType;
-	}
+    public void setIdCard(String idCard) {
+        this.idCard = idCard;
+    }
 
-	@Basic
-	@Column(name = "qq_account")
-	public String getQqAccount() {
-		return qqAccount;
-	}
+    @Basic
+    @Column(name = "qq_account")
+    public String getQqAccount() {
+        return qqAccount;
+    }
 
-	public void setQqAccount(String qqAccount) {
-		this.qqAccount = qqAccount;
-	}
+    public void setQqAccount(String qqAccount) {
+        this.qqAccount = qqAccount;
+    }
 
-	@Basic
-	@Column(name = "we_chat_account")
-	public String getWeChatAccount() {
-		return weChatAccount;
-	}
+    @Basic
+    @Column(name = "we_chat_account")
+    public String getWeChatAccount() {
+        return weChatAccount;
+    }
 
-	public void setWeChatAccount(String weChatAccount) {
-		this.weChatAccount = weChatAccount;
-	}
+    public void setWeChatAccount(String weChatAccount) {
+        this.weChatAccount = weChatAccount;
+    }
 
-	@Basic
-	@Column(name = "adder_no")
-	public long getAdderNo() {
-		return adderNo;
-	}
+    @Basic
+    @Column(name = "create_id")
+    public long getCreateId() {
+        return createId;
+    }
 
-	public void setAdderNo(long adderNo) {
-		this.adderNo = adderNo;
-	}
+    public void setCreateId(long createId) {
+        this.createId = createId;
+    }
 
-	@Basic
-	@Column(name = "add_time")
-	public Timestamp getAddTime() {
-		return addTime;
-	}
+    @Basic
+    @Column(name = "create_time")
+    public Timestamp getCreateTime() {
+        return createTime;
+    }
 
-	public void setAddTime(Timestamp addTime) {
-		this.addTime = addTime;
-	}
+    public void setCreateTime(Timestamp createTime) {
+        this.createTime = createTime;
+    }
 
-	@Basic
-	@Column(name = "updater_no")
-	public long getUpdaterNo() {
-		return updaterNo;
-	}
+    @Basic
+    @Column(name = "update_id")
+    public long getUpdateId() {
+        return updateId;
+    }
 
-	public void setUpdaterNo(long updaterNo) {
-		this.updaterNo = updaterNo;
-	}
+    public void setUpdateId(long updateId) {
+        this.updateId = updateId;
+    }
 
-	@Basic
-	@Column(name = "update_time")
-	public Timestamp getUpdateTime() {
-		return updateTime;
-	}
+    @Basic
+    @Column(name = "update_time")
+    public Timestamp getUpdateTime() {
+        return updateTime;
+    }
 
-	public void setUpdateTime(Timestamp updateTime) {
-		this.updateTime = updateTime;
-	}
+    public void setUpdateTime(Timestamp updateTime) {
+        this.updateTime = updateTime;
+    }
 
-	@Basic
-	@Column(name = "arm_card")
-	public String getArmCard() {
-		return armCard;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserInfoEntity that = (UserInfoEntity) o;
+        return loginId == that.loginId &&
+            gender == that.gender &&
+            createId == that.createId &&
+            updateId == that.updateId &&
+            Objects.equals(userName, that.userName) &&
+            Objects.equals(engName, that.engName) &&
+            Objects.equals(birthday, that.birthday) &&
+            Objects.equals(grade, that.grade) &&
+            Objects.equals(userType, that.userType) &&
+            Objects.equals(idCard, that.idCard) &&
+            Objects.equals(qqAccount, that.qqAccount) &&
+            Objects.equals(weChatAccount, that.weChatAccount) &&
+            Objects.equals(createTime, that.createTime) &&
+            Objects.equals(updateTime, that.updateTime);
+    }
 
-	public void setArmCard(String armCard) {
-		this.armCard = armCard;
-	}
-
-	@Basic
-	@Column(name = "driving_license")
-	public String getDrivingLicense() {
-		return drivingLicense;
-	}
-
-	public void setDrivingLicense(String drivingLicense) {
-		this.drivingLicense = drivingLicense;
-	}
-
-	@Basic
-	@Column(name = "pass_port")
-	public String getPassPort() {
-		return passPort;
-	}
-
-	public void setPassPort(String passPort) {
-		this.passPort = passPort;
-	}
-
-	@Basic
-	@Column(name = "simplified_chinese")
-	public String getSimplifiedChinese() {
-		return simplifiedChinese;
-	}
-
-	public void setSimplifiedChinese(String simplifiedChinese) {
-		this.simplifiedChinese = simplifiedChinese;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
-		UserInfoEntity that = (UserInfoEntity) o;
-		return loginId == that.loginId && gender == that.gender && adderNo == that.adderNo
-				&& updaterNo == that.updaterNo && Objects.equals(userName, that.userName)
-				&& Objects.equals(engName, that.engName) && Objects.equals(birthday, that.birthday)
-				&& Objects.equals(grade, that.grade) && Objects.equals(idCard, that.idCard)
-				&& Objects.equals(userType, that.userType) && Objects.equals(qqAccount, that.qqAccount)
-				&& Objects.equals(weChatAccount, that.weChatAccount) && Objects.equals(addTime, that.addTime)
-				&& Objects.equals(updateTime, that.updateTime) && Objects.equals(armCard, that.armCard)
-				&& Objects.equals(drivingLicense, that.drivingLicense) && Objects.equals(passPort, that.passPort)
-				&& Objects.equals(simplifiedChinese, that.simplifiedChinese);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(loginId, userName, engName, gender, birthday, grade, idCard, userType, qqAccount,
-				weChatAccount, adderNo, addTime, updaterNo, updateTime, armCard, drivingLicense, passPort,
-				simplifiedChinese);
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(loginId, userName, engName, gender, birthday, grade, userType, idCard, qqAccount, weChatAccount, createId, createTime, updateId, updateTime);
+    }
 }
