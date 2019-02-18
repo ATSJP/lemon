@@ -8,9 +8,11 @@ import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSource
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.web.filter.DelegatingFilterProxy;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -22,11 +24,27 @@ import java.util.Map;
 public class ShiroConfig {
 
 	/**
+	 * 使用FilterRegistrationBean管理DelegatingFilterProxy的生命周期，代替spring项目中shiro在web.xml的配置
+	 *
+	 * @return FilterRegistrationBean<DelegatingFilterProxy>
+	 */
+	@Bean
+	public FilterRegistrationBean<DelegatingFilterProxy> delegatingFilterProxy() {
+		FilterRegistrationBean<DelegatingFilterProxy> filterRegistrationBean = new FilterRegistrationBean<DelegatingFilterProxy>();
+		DelegatingFilterProxy proxy = new DelegatingFilterProxy();
+		filterRegistrationBean.setFilter(proxy);
+		// 保留Filter原有的init，destroy方法的调用
+		proxy.setTargetFilterLifecycle(true);
+		proxy.setTargetBeanName("shiroFilter");
+		return filterRegistrationBean;
+	}
+
+	/**
 	 * 配置shiro filter
 	 *
 	 * @return ShiroFilterFactoryBean
 	 */
-	@Bean
+	@Bean("shiroFilter")
 	public ShiroFilterFactoryBean shirFilter() {
 		ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
 		shiroFilterFactoryBean.setSecurityManager(securityManager());
@@ -70,6 +88,8 @@ public class ShiroConfig {
 
 	/**
 	 * 凭证匹配器
+	 * 
+	 * @return HashedCredentialsMatcher
 	 */
 	@Bean
 	public HashedCredentialsMatcher hashedCredentialsMatcher() {
@@ -109,6 +129,8 @@ public class ShiroConfig {
 
 	/**
 	 * 开启shiro aop注解支持. 使用代理方式;所以需要开启代码支持;
+	 * 
+	 * @return AuthorizationAttributeSourceAdvisor
 	 */
 	@Bean
 	public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor() {
@@ -116,4 +138,32 @@ public class ShiroConfig {
 		advisor.setSecurityManager(securityManager());
 		return advisor;
 	}
+
+	// @Bean
+	// public SessionManager configWebSessionManager(){
+	// DefaultWebSessionManager manager = new DefaultWebSessionManager();
+	// // 加入缓存管理器
+	// //manager.setCacheManager(cacheManager);
+	// //manager.setSessionDAO(sessionDao);
+	// // 删除过期的session
+	// manager.setDeleteInvalidSessions(true);
+	// // 设置全局session超时时间
+	// manager.setGlobalSessionTimeout(1800000);
+	// // 是否定时检查session
+	// manager.setSessionValidationSchedulerEnabled(true);
+	// manager.setSessionIdCookie(simpleCookie());
+	// return manager;
+	// }
+
+	// /**
+	// * 注入cookie模板
+	// * @return
+	// */
+	// @Bean
+	// public SimpleCookie simpleCookie(){
+	// SimpleCookie simpleCookie = new SimpleCookie("sid-shrio");
+	// simpleCookie.setMaxAge(-1);
+	// simpleCookie.setHttpOnly(true);
+	// return simpleCookie;
+	// }
 }

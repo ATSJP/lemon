@@ -1,15 +1,14 @@
 package com.lemon.config;
 
-import java.io.IOException;
-
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.tuckey.web.filters.urlrewrite.Conf;
 import org.tuckey.web.filters.urlrewrite.UrlRewriteFilter;
+
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import java.io.IOException;
 
 /**
  * @author sjp
@@ -31,4 +30,5 @@ public class UrlRewriteFilterConfig extends UrlRewriteFilter {
             throw new ServletException("Unable to load URL rewrite configuration file from classpath:/urlRewrite/urlRewrite.xml", ex);
         }
     }
+
 }
