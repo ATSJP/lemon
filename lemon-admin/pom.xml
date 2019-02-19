@@ -19,12 +19,6 @@
 			<artifactId>lemon-biz-all</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>com.lemon</groupId>
-			<artifactId>lemon-static</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<type>war</type>
-		</dependency>
 		<!-- 外部依赖 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

@@ -35,7 +35,6 @@
         <module>lemon-biz-all</module>
         <module>lemon-common</module>
         <module>lemon-pay</module>
-        <module>lemon-static</module>
         <module>lemon-user</module>
         <module>lemon-frame</module>
         <module>lemon-soa</module>

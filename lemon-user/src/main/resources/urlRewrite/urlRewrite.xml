@@ -6,7 +6,7 @@
 
     <!-- 应用拆分，重写url -->
     <rule>
-        <from>^/u(.*)$</from>
+        <from>^/api/u(.*)$</from>
         <to>$1</to>
     </rule>
 

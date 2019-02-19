@@ -23,6 +23,8 @@ import java.util.Map;
 @Configuration
 public class ShiroConfig {
 
+	private final String urlHead = "/api/u";
+
 	/**
 	 * 使用FilterRegistrationBean管理DelegatingFilterProxy的生命周期，代替spring项目中shiro在web.xml的配置
 	 *
@@ -48,14 +50,13 @@ public class ShiroConfig {
 	public ShiroFilterFactoryBean shirFilter() {
 		ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
 		shiroFilterFactoryBean.setSecurityManager(securityManager());
-		shiroFilterFactoryBean.setLoginUrl("/u/index");
-		shiroFilterFactoryBean.setSuccessUrl("/u/main");
+		shiroFilterFactoryBean.setLoginUrl(urlHead + "/index");
+		shiroFilterFactoryBean.setSuccessUrl(urlHead + "/main");
 		shiroFilterFactoryBean.setUnauthorizedUrl("/403");
 		Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-		filterChainDefinitionMap.put("/u/video/get", "anon");
-		filterChainDefinitionMap.put("/static/**", "anon");
-		filterChainDefinitionMap.put("/u/user/login", "anon");
-		filterChainDefinitionMap.put("/u/user/logout", "logout");
+		filterChainDefinitionMap.put(urlHead + "/video/get", "anon");
+		filterChainDefinitionMap.put(urlHead + "/user/login", "anon");
+		filterChainDefinitionMap.put(urlHead + "/user/logout", "logout");
 
 		filterChainDefinitionMap.put("/**", "authc");
 		shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
