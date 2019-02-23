@@ -1,9 +1,12 @@
 package com.lemon.service;
 
-import com.lemon.tools.RedissonTools;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+
+import com.lemon.tools.RedissonTools;
 
 /**
  * @author sjp
@@ -12,15 +15,18 @@ import org.springframework.util.StringUtils;
 @Service
 public class VideoService {
 
-    @Autowired
-    private RedissonTools redissonTools;
+	private Logger			logger	= LoggerFactory.getLogger(this.getClass());
 
-    public String getVideo(String videoId) {
-        String video = redissonTools.get(videoId);
-        if (StringUtils.isEmpty(video)) {
-            video = videoId;
-            redissonTools.set(videoId, video);
-        }
-        return video;
-    }
+	@Autowired
+	private RedissonTools	redissonTools;
+
+	public String getVideo(String videoId) {
+		logger.info("get video", videoId);
+		String video = redissonTools.get(videoId);
+		if (StringUtils.isEmpty(video)) {
+			video = videoId;
+			redissonTools.set(videoId, video);
+		}
+		return video;
+	}
 }

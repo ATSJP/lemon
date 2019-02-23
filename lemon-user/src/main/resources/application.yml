@@ -5,6 +5,9 @@ server:
         min-spare-threads: 10
 
 spring:
+    profiles:
+        include: logback
+
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
         driver-class-name: com.mysql.cj.jdbc.Driver
