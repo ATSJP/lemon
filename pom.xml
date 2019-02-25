@@ -25,6 +25,7 @@
         <redisson-springboot.version>3.9.1</redisson-springboot.version>
         <urlrewrite.version>4.0.3</urlrewrite.version>
         <servlet-api.version>3.1.0</servlet-api.version>
+        <common-codec>1.10</common-codec>
 
         <maven.compiler.plugin.version>3.1</maven.compiler.plugin.version>
     </properties>
@@ -99,6 +100,12 @@
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>
                 <version>${servlet-api.version}</version>
+            </dependency>
+            <!-- commons-codec -->
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${common-codec}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

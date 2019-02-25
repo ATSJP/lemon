@@ -5,7 +5,7 @@
 
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>debug</level>
+            <level>info</level>
         </filter>
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{36} - %msg%n
@@ -18,14 +18,13 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${log.path}.%d{yyyy-MM-dd}.zip</fileNamePattern>
         </rollingPolicy>
-
         <encoder>
             <pattern>%date %level [%thread] %logger{36} [%file : %line] %msg%n
             </pattern>
         </encoder>
     </appender>
 
-    <root level="warn">
+    <root level="info">
         <appender-ref ref="console" />
         <!--<appender-ref ref="file" />-->
     </root>
