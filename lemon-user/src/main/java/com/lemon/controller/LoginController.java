@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * @author shijianpeng 2019/1/10
+ * @author sjp 2019/1/10
  */
 @Controller
 @RequestMapping("/user")

@@ -5,7 +5,7 @@ import org.apache.shiro.util.ByteSource;
 import org.junit.Test;
 
 /**
- * @author shijianpeng 2019/1/11
+ * @author sjp 2019/1/11
  */
 public class ShiroTest {
 

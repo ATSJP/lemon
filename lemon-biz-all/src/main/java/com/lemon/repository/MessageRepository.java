@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.lemon.entity.MessageEntity;
 
 /**
- * @author shijianpeng 2019/1/10
+ * @author sjp 2019/1/10
  */
 @Repository
 public interface MessageRepository extends CrudRepository<MessageEntity, Long> {

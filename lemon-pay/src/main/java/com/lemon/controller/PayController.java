@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * @author shijianpeng 2019/1/10
+ * @author sjp 2019/1/10
  */
 @Controller
 @RequestMapping("/payCenter")

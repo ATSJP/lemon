@@ -18,7 +18,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * @author shijianpeng
+ * @author sjp
  */
 @Configuration
 public class ShiroConfig {
