@@ -1,9 +1,9 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 39.106.149.192_3306
+Source Server         : 127.0.0.1_3306
 Source Server Version : 50725
-Source Host           : 39.106.149.192:3306
+Source Host           : 127.0.0.1:3306
 Source Database       : lemon
 
 Target Server Type    : MYSQL
