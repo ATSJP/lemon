@@ -16,7 +16,7 @@ spring:
         password: 1234
 
     jpa:
-        generateDdl: true
+        generateDdl: false
         properties:
             hibernate:
                 show_sql: true
@@ -26,13 +26,3 @@ spring:
         time-zone: GMT+8
         date-format: yyyy-MM-dd HH:mm:ss
 
-    redis:
-        host: 127.0.0.1
-        port: 6379
-        password:
-        jedis:
-            pool:
-                max-active: 100
-                max-idle: 100
-                min-idle: 10
-                max-wait: 6000
