@@ -1,4 +1,4 @@
-package com.lemon.service;
+package com.lemon.web.video.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

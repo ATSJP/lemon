@@ -27,7 +27,9 @@ import java.util.Set;
 public class LoginRelam extends AuthorizingRealm {
 
 	@Resource
-	private LoginInfoRepository loginInfoRepository;
+	private LoginInfoRepository	loginInfoRepository;
+
+	private static final String	MONSTER	= "monster";
 
 	/**
 	 * 登陆
@@ -41,18 +43,14 @@ public class LoginRelam extends AuthorizingRealm {
 			throws AuthenticationException {
 		UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) authenticationToken;
 		LoginInfoEntity loginInfoEntity = loginInfoRepository.getByLoginName(usernamePasswordToken.getUsername());
-
 		if (loginInfoEntity == null) {
 			throw new UnknownAccountException("用户不存在！");
 		}
-
-		if ("monster".equals(loginInfoEntity.getLoginName())) {
+		if (MONSTER.equals(loginInfoEntity.getLoginName())) {
 			throw new LockedAccountException("用户被锁定");
 		}
-
 		// 盐值加密，确保凭证一样加密后字符串不一样
 		ByteSource credentialsSalt = ByteSource.Util.bytes(loginInfoEntity.getLoginName());
-
 		return new SimpleAuthenticationInfo(loginInfoEntity.getLoginName(), loginInfoEntity.getLoginPwd(),
 				credentialsSalt, getName());
 	}
@@ -66,7 +64,6 @@ public class LoginRelam extends AuthorizingRealm {
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
 		Object principal = principalCollection.getPrimaryPrincipal();
-
 		Set<String> roles = new HashSet<>();
 		roles.add("user");
 		if ("admin".equals(principal)) {

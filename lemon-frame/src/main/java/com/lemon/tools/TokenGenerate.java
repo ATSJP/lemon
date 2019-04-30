@@ -4,21 +4,26 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  * Token生成器
+ * 
  * @author sjp
  * @date 2019/2/25
  **/
 public class TokenGenerate {
 
-	private static String KEY = "LEMON_API";
+	/**
+	 * 统一加密Key
+	 */
+	private static final String KEY = "LEMON_API";
 
-	public static String getToken(String uid, String sid, long ts, long loginId) {
-		StringBuffer sb = new StringBuffer();
-		sb.append(uid);
-		sb.append(sid);
-		sb.append(ts);
-		sb.append(loginId);
-		sb.append(KEY);
-		return DigestUtils.md5Hex(sb.toString()).toUpperCase();
+	/**
+	 * 生成token
+	 * @param uid 用户的id
+	 * @param sid 用户所在平台
+	 * @return String token
+	 */
+	public static String getToken(Long uid, String sid) {
+		String sb = uid + sid + System.currentTimeMillis() + KEY;
+		return DigestUtils.md5Hex(sb).toUpperCase();
 	}
 
 }

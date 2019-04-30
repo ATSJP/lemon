@@ -1,9 +1,10 @@
-package com.lemon.service;
+package com.lemon.web.user.service;
 
 import com.lemon.entity.LoginInfoEntity;
 import com.lemon.repository.LoginInfoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * @author sjp
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-	@Autowired
+	@Resource
 	private LoginInfoRepository loginInfoRepository;
 
 	public LoginInfoEntity getByLoginName(String loginName) {

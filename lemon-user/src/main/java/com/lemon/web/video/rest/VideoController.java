@@ -1,6 +1,6 @@
-package com.lemon.controller;
+package com.lemon.web.video.rest;
 
-import com.lemon.service.VideoService;
+import com.lemon.web.video.service.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

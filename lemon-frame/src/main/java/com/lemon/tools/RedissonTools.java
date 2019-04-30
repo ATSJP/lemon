@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * redisson工具
+ * 
  * @author sjp
  * @date 2019/1/16
  **/
