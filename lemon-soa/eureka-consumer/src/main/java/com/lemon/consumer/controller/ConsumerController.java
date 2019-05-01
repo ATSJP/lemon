@@ -1,8 +1,10 @@
 package com.lemon.consumer.controller;
 
-import com.lemon.soa.api.VideoService;
+import com.lemon.soa.api.dto.VideoDTO;
+import com.lemon.soa.api.provider.VideoProvider;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -19,18 +21,19 @@ public class ConsumerController {
 	private RestTemplate restTemplate;
 
 	@RequestMapping("/")
-	public Double index() {
-		return restTemplate.getForObject("http://eureka-provider/1", Double.class);
+	public VideoDTO index() {
+		return restTemplate.getForObject("http://eureka-provider/video/1", VideoDTO.class);
 	}
 
 	/**
 	 * feign 方式
 	 */
 	@Resource
-	private VideoService videoService;
+	private VideoProvider videoProvider;
 
-	@GetMapping(value = "/hello")
-	public double hello() {
-		return videoService.getVideo(1);
+	@ResponseBody
+	@GetMapping(value = "/video")
+	public VideoDTO video() {
+		return videoProvider.getVideo(1);
 	}
 }

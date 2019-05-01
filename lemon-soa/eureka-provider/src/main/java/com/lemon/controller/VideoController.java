@@ -1,6 +1,7 @@
 package com.lemon.controller;
 
-import com.lemon.soa.api.VideoService;
+import com.lemon.soa.api.dto.VideoDTO;
+import com.lemon.soa.api.provider.VideoProvider;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,10 +17,10 @@ import javax.annotation.Resource;
 public class VideoController {
 
 	@Resource
-	private VideoService videoService;
+	private VideoProvider videoService;
 
 	@RequestMapping(value = "/{videoId}", method = RequestMethod.GET)
-	public Double getVideo(@PathVariable long videoId) {
+	public VideoDTO getVideo(@PathVariable long videoId) {
 		return videoService.getVideo(videoId);
 	}
 }

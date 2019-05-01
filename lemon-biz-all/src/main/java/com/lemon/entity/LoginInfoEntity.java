@@ -6,7 +6,7 @@ import java.util.Objects;
 
 /**
  * @author sjp
- * @date 2019/2/11
+ * @date 2019/5/1
  **/
 @Entity
 @Table(name = "login_info", schema = "lemon", catalog = "")
@@ -28,6 +28,9 @@ public class LoginInfoEntity {
     private Timestamp createTime;
     private long updateId;
     private Timestamp updateTime;
+    private Timestamp addTime;
+    private Long adderNo;
+    private Long updaterNo;
 
     @Id
     @Column(name = "login_id")
@@ -199,6 +202,36 @@ public class LoginInfoEntity {
         this.updateTime = updateTime;
     }
 
+    @Basic
+    @Column(name = "add_time")
+    public Timestamp getAddTime() {
+        return addTime;
+    }
+
+    public void setAddTime(Timestamp addTime) {
+        this.addTime = addTime;
+    }
+
+    @Basic
+    @Column(name = "adder_no")
+    public Long getAdderNo() {
+        return adderNo;
+    }
+
+    public void setAdderNo(Long adderNo) {
+        this.adderNo = adderNo;
+    }
+
+    @Basic
+    @Column(name = "updater_no")
+    public Long getUpdaterNo() {
+        return updaterNo;
+    }
+
+    public void setUpdaterNo(Long updaterNo) {
+        this.updaterNo = updaterNo;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -220,11 +253,14 @@ public class LoginInfoEntity {
             Objects.equals(auditStatus, that.auditStatus) &&
             Objects.equals(auditRemark, that.auditRemark) &&
             Objects.equals(createTime, that.createTime) &&
-            Objects.equals(updateTime, that.updateTime);
+            Objects.equals(updateTime, that.updateTime) &&
+            Objects.equals(addTime, that.addTime) &&
+            Objects.equals(adderNo, that.adderNo) &&
+            Objects.equals(updaterNo, that.updaterNo);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(loginId, loginName, loginPwd, loginNameUpdateTimes, email, emailStatus, mobile, mobileStatus, loginStatus, registerTime, inviteCode, auditStatus, auditRemark, createId, createTime, updateId, updateTime);
+        return Objects.hash(loginId, loginName, loginPwd, loginNameUpdateTimes, email, emailStatus, mobile, mobileStatus, loginStatus, registerTime, inviteCode, auditStatus, auditRemark, createId, createTime, updateId, updateTime, addTime, adderNo, updaterNo);
     }
 }

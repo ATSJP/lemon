@@ -1,12 +1,11 @@
 package com.lemon.web.video.service;
 
+import com.lemon.tools.RedissonTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-
-import com.lemon.tools.RedissonTools;
 
 /**
  * @author sjp
@@ -16,7 +15,6 @@ import com.lemon.tools.RedissonTools;
 public class VideoService {
 
 	private Logger			logger	= LoggerFactory.getLogger(this.getClass());
-
 	@Autowired
 	private RedissonTools	redissonTools;
 

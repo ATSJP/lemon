@@ -25,6 +25,13 @@ public class UserInfoEntity {
     private Timestamp createTime;
     private long updateId;
     private Timestamp updateTime;
+    private Timestamp addTime;
+    private Long adderNo;
+    private String armCard;
+    private String drivingLicense;
+    private String passPort;
+    private String simplifiedChinese;
+    private Long updaterNo;
 
     @Id
     @Column(name = "login_id")
@@ -166,6 +173,76 @@ public class UserInfoEntity {
         this.updateTime = updateTime;
     }
 
+    @Basic
+    @Column(name = "add_time")
+    public Timestamp getAddTime() {
+        return addTime;
+    }
+
+    public void setAddTime(Timestamp addTime) {
+        this.addTime = addTime;
+    }
+
+    @Basic
+    @Column(name = "adder_no")
+    public Long getAdderNo() {
+        return adderNo;
+    }
+
+    public void setAdderNo(Long adderNo) {
+        this.adderNo = adderNo;
+    }
+
+    @Basic
+    @Column(name = "arm_card")
+    public String getArmCard() {
+        return armCard;
+    }
+
+    public void setArmCard(String armCard) {
+        this.armCard = armCard;
+    }
+
+    @Basic
+    @Column(name = "driving_license")
+    public String getDrivingLicense() {
+        return drivingLicense;
+    }
+
+    public void setDrivingLicense(String drivingLicense) {
+        this.drivingLicense = drivingLicense;
+    }
+
+    @Basic
+    @Column(name = "pass_port")
+    public String getPassPort() {
+        return passPort;
+    }
+
+    public void setPassPort(String passPort) {
+        this.passPort = passPort;
+    }
+
+    @Basic
+    @Column(name = "simplified_chinese")
+    public String getSimplifiedChinese() {
+        return simplifiedChinese;
+    }
+
+    public void setSimplifiedChinese(String simplifiedChinese) {
+        this.simplifiedChinese = simplifiedChinese;
+    }
+
+    @Basic
+    @Column(name = "updater_no")
+    public Long getUpdaterNo() {
+        return updaterNo;
+    }
+
+    public void setUpdaterNo(Long updaterNo) {
+        this.updaterNo = updaterNo;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -184,11 +261,18 @@ public class UserInfoEntity {
             Objects.equals(qqAccount, that.qqAccount) &&
             Objects.equals(weChatAccount, that.weChatAccount) &&
             Objects.equals(createTime, that.createTime) &&
-            Objects.equals(updateTime, that.updateTime);
+            Objects.equals(updateTime, that.updateTime) &&
+            Objects.equals(addTime, that.addTime) &&
+            Objects.equals(adderNo, that.adderNo) &&
+            Objects.equals(armCard, that.armCard) &&
+            Objects.equals(drivingLicense, that.drivingLicense) &&
+            Objects.equals(passPort, that.passPort) &&
+            Objects.equals(simplifiedChinese, that.simplifiedChinese) &&
+            Objects.equals(updaterNo, that.updaterNo);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(loginId, userName, engName, gender, birthday, grade, userType, idCard, qqAccount, weChatAccount, createId, createTime, updateId, updateTime);
+        return Objects.hash(loginId, userName, engName, gender, birthday, grade, userType, idCard, qqAccount, weChatAccount, createId, createTime, updateId, updateTime, addTime, adderNo, armCard, drivingLicense, passPort, simplifiedChinese, updaterNo);
     }
 }

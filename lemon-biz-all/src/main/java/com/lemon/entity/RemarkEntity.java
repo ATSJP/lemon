@@ -6,7 +6,7 @@ import java.util.Objects;
 
 /**
  * @author sjp
- * @date 2019/2/11
+ * @date 2019/5/1
  **/
 @Entity
 @Table(name = "remark", schema = "lemon", catalog = "")
@@ -19,7 +19,7 @@ public class RemarkEntity {
     private String loginName;
     private long videoId;
     private Long parentId;
-    private String delFlag;
+    private Short delFlag;
     private long createId;
     private Timestamp createTime;
     private long updateId;
@@ -107,11 +107,11 @@ public class RemarkEntity {
 
     @Basic
     @Column(name = "del_flag")
-    public String getDelFlag() {
+    public Short getDelFlag() {
         return delFlag;
     }
 
-    public void setDelFlag(String delFlag) {
+    public void setDelFlag(Short delFlag) {
         this.delFlag = delFlag;
     }
 
