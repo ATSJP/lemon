@@ -1,14 +1,15 @@
 package com.lemon.web.user.rest;
 
 import com.lemon.entity.LoginInfoEntity;
+import com.lemon.tools.RedissonTools;
 import com.lemon.tools.TokenGenerate;
 import com.lemon.web.constant.ConstantApiMsg;
+import com.lemon.web.constant.ConstantCache;
 import com.lemon.web.user.request.LoginRequest;
 import com.lemon.web.user.response.LoginResponse;
 import com.lemon.web.user.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
-import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,13 +28,15 @@ import javax.validation.Valid;
 @RequestMapping("/user")
 public class LoginController {
 
-	private Logger		logger	= LoggerFactory.getLogger(LoginController.class);
+	private Logger			logger	= LoggerFactory.getLogger(LoginController.class);
 
 	@Resource
-	private UserService	userService;
+	private UserService		userService;
+	@Resource
+	private RedissonTools	redissonTools;
 
 	@ResponseBody
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public LoginResponse login(@Valid LoginRequest request) {
 		LoginResponse response = new LoginResponse();
 		String loginName = request.getLoginName();
@@ -75,9 +78,9 @@ public class LoginController {
 			}
 		}
 		LoginInfoEntity loginInfoEntity = userService.getByLoginName(loginName);
-		Session session = currentUser.getSession();
-		session.setAttribute("loginName", loginName);
-		String token = TokenGenerate.getToken(request.getUid(), request.getSid());
+		String token = TokenGenerate.getToken(loginInfoEntity.getLoginId(), request.getSid());
+		redissonTools.set(ConstantCache.KEY.LOGIN_TOKEN.key + loginInfoEntity.getLoginId(), token,
+				ConstantCache.KEY.LOGIN_TOKEN.timeOut);
 		response.setCode(ConstantApiMsg.CODE.SUCCESS.getCode());
 		response.setToken(token);
 		response.setUid(loginInfoEntity.getLoginId());
@@ -89,4 +92,16 @@ public class LoginController {
 		return response;
 	}
 
+	@ResponseBody
+	@RequestMapping(value = "/logout", method = RequestMethod.DELETE)
+	public LoginResponse logout(LoginRequest request) {
+		LoginResponse response = new LoginResponse();
+		redissonTools.delete(ConstantCache.KEY.LOGIN_TOKEN.key + request.getUid());
+		response.setCode(ConstantApiMsg.CODE.SUCCESS.getCode());
+		response.setUid(request.getUid());
+		if (logger.isDebugEnabled()) {
+			logger.info("用户 " + request.getUid() + " 退出成功！");
+		}
+		return response;
+	}
 }

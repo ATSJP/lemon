@@ -1,8 +1,15 @@
 package com.lemon.config;
 
 import com.lemon.relam.LoginRelam;
+import com.lemon.shiro.factory.StatelessDefaultSubjectFactory;
+import com.lemon.shiro.filter.StatelessAuthcFilter;
+import com.lemon.shiro.realm.StatelessRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
+import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.realm.Realm;
+import org.apache.shiro.session.mgt.DefaultSessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -14,10 +21,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
+import javax.servlet.Filter;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 /**
+ * Shiro配置
+ * 
  * @author sjp
  */
 @Configuration
@@ -50,16 +61,14 @@ public class ShiroConfig {
 	public ShiroFilterFactoryBean shirFilter() {
 		ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
 		shiroFilterFactoryBean.setSecurityManager(securityManager());
-		shiroFilterFactoryBean.setLoginUrl(URL_HEAD + "/index");
-		shiroFilterFactoryBean.setSuccessUrl(URL_HEAD + "/main");
-		shiroFilterFactoryBean.setUnauthorizedUrl("/403");
 		Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-		filterChainDefinitionMap.put(URL_HEAD + "/video/get", "anon");
 		filterChainDefinitionMap.put(URL_HEAD + "/user/login", "anon");
-		filterChainDefinitionMap.put(URL_HEAD + "/user/logout", "logout");
-
-		filterChainDefinitionMap.put("/**", "authc");
+		filterChainDefinitionMap.put("/**", "statelessAuthcFilter");
 		shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+		// 自定义拦截器
+		Map<String, Filter> filtersMap = new LinkedHashMap<>();
+		filtersMap.put("statelessAuthcFilter", new StatelessAuthcFilter());
+		shiroFilterFactoryBean.setFilters(filtersMap);
 		return shiroFilterFactoryBean;
 	}
 
@@ -71,20 +80,65 @@ public class ShiroConfig {
 	@Bean
 	public SecurityManager securityManager() {
 		DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-		securityManager.setRealm(loginRealm());
+		// 设置不储存session
+		((DefaultSessionStorageEvaluator) ((DefaultSubjectDAO) securityManager.getSubjectDAO())
+				.getSessionStorageEvaluator()).setSessionStorageEnabled(false);
+		// 设置会话管理器
+		securityManager.setSessionManager(defaultSessionManager());
+		// 设置无状态SubjectFactory
+		securityManager.setSubjectFactory(statelessDefaultSubjectFactory());
+		// 设置realm
+		LinkedList<Realm> realms = new LinkedList<>();
+		realms.add(loginRealm());
+		realms.add(statelessRealm());
+		securityManager.setRealms(realms);
 		return securityManager;
+	}
+
+	/**
+	 * 会话管理器
+	 * 
+	 * @return DefaultSessionManager
+	 */
+	@Bean
+	public DefaultSessionManager defaultSessionManager() {
+		DefaultSessionManager defaultSessionManager = new DefaultSessionManager();
+		defaultSessionManager.setSessionValidationSchedulerEnabled(false);
+		return defaultSessionManager;
+	}
+
+	/**
+	 * 无状态SubjectFactory
+	 *
+	 * @return StatelessDefaultSubjectFactory
+	 */
+	@Bean
+	public StatelessDefaultSubjectFactory statelessDefaultSubjectFactory() {
+		return new StatelessDefaultSubjectFactory();
 	}
 
 	/**
 	 * 配置shiroRelam并指定凭证匹配器
 	 *
-	 * @return LoginRelam
+	 * @return LoginRealm
 	 */
 	@Bean
 	public LoginRelam loginRealm() {
 		LoginRelam loginRelam = new LoginRelam();
 		loginRelam.setCredentialsMatcher(hashedCredentialsMatcher());
 		return loginRelam;
+	}
+
+	/**
+	 * 配置无状态登陆realm
+	 *
+	 * @return StatelessRealm
+	 */
+	@Bean
+	public StatelessRealm statelessRealm() {
+		StatelessRealm statelessRealm = new StatelessRealm();
+		statelessRealm.setCachingEnabled(false);
+		return statelessRealm;
 	}
 
 	/**
