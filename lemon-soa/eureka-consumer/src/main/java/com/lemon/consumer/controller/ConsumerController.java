@@ -1,14 +1,15 @@
 package com.lemon.consumer.controller;
 
+import com.lemon.soa.api.dto.CategoryDTO;
 import com.lemon.soa.api.dto.VideoDTO;
+import com.lemon.soa.api.provider.CategoryProvider;
 import com.lemon.soa.api.provider.VideoProvider;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author sjp
@@ -20,7 +21,7 @@ public class ConsumerController {
 	@Resource
 	private RestTemplate restTemplate;
 
-	@RequestMapping("/")
+	@GetMapping("/")
 	public VideoDTO index() {
 		return restTemplate.getForObject("http://eureka-provider/video/1", VideoDTO.class);
 	}
@@ -29,12 +30,18 @@ public class ConsumerController {
 	 * feign 方式
 	 */
 	@Resource
-	private VideoProvider videoProvider;
+	private VideoProvider		videoProvider;
+	@Resource
+	private CategoryProvider	categoryProvider;
 
-	@ResponseBody
 	@GetMapping(value = "/video")
 	public VideoDTO video() {
 		return videoProvider.getVideo(1);
 	}
-	
+
+	@GetMapping(value = "/category")
+	public List<CategoryDTO> getCategoryTree() {
+		return categoryProvider.getCategoryTree();
+	}
+
 }

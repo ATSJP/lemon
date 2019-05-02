@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.lemon.shiro.token.StatelessToken;
 import com.lemon.web.base.response.BaseResponse;
 import com.lemon.web.constant.ConstantApiMsg;
+import com.lemon.web.constant.ConstantBizFile;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -33,11 +35,19 @@ public class StatelessAuthcFilter extends AccessControlFilter {
 	@Override
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
 		// 用户token
-		String token = request.getParameter("token");
+		String token = request.getParameter(ConstantBizFile.TOKEN);
+		if (StringUtils.isEmpty(token) || StringUtils.isEmpty(request.getParameter(ConstantBizFile.UID))) {
+			onLoginFail(response);
+			return false;
+		}
 		// 用户唯一id
-		Long uid = Long.parseLong(request.getParameter("uid"));
+		Long uid = Long.parseLong(request.getParameter(ConstantBizFile.UID));
 		// 用户所在平台
-		String sid = request.getParameter("sid");
+		String sid = request.getParameter(ConstantBizFile.SID);
+		if (StringUtils.isEmpty(request.getParameter(ConstantBizFile.SID))) {
+			onLoginFail(response);
+			return false;
+		}
 		// 客户端请求的参数列表
 		Map<String, String[]> params = new HashMap<>(request.getParameterMap());
 		StatelessToken statelessToken = new StatelessToken(uid, token, params);

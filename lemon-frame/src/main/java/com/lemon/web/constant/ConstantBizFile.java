@@ -1,24 +1,30 @@
 package com.lemon.web.constant;
 
 /**
- * 基础文件
+ * 基础常量
+ *
+ * @author sjp
  */
 public interface ConstantBizFile {
 
-    enum LINK_TYPE {
-        /**
-         * 关联类型 ：0 视频 1 图片
-         */
-        FALSE((short) 0, "视频"),
-        TRUE((short) 1, "图片");
+	String	TOKEN	= "token";
+	String	UID		= "uid";
+	String	SID		= "sid";
 
-        public Short	code;
-        public String	desc;
+	enum LINK_TYPE {
+		/**
+		 * 关联类型 ：0 视频 1 图片
+		 */
+		FALSE((short) 0, "视频"),
+		TRUE((short) 1, "图片");
 
-        LINK_TYPE(Short code, String desc) {
-            this.code = code;
-            this.desc = desc;
-        }
-    }
+		public Short	code;
+		public String	desc;
+
+		LINK_TYPE(Short code, String desc) {
+			this.code = code;
+			this.desc = desc;
+		}
+	}
 
 }

@@ -5,6 +5,9 @@ server:
         min-spare-threads: 10
 
 spring:
+    application:
+        name: lemon-user
+
     profiles:
         include: logback
 
@@ -26,3 +29,11 @@ spring:
         time-zone: GMT+8
         date-format: yyyy-MM-dd HH:mm:ss
 
+eureka:
+    instance:
+        # 使用IP注册
+        prefer-ip-address: true
+    #注册地址
+    client:
+        service-url:
+            defaultZone: http://eureka.lemon.com/eureka/

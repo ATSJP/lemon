@@ -29,5 +29,5 @@ public class CategoryDTO {
 	/**
 	 * 子类分类
 	 */
-	private List<CategoryDTO>	categoryDTOList;
+	private List<CategoryDTO>	subCategoryDTOList;
 }

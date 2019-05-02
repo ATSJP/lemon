@@ -89,8 +89,8 @@ public class VideoServiceImpl implements VideoProvider {
 	}
 
 	private void getCategoryById(long categoryId, CategoryDTO categoryDTO) {
-		List<CategoryDTO> categoryDTOList = new LinkedList<>();
-		categoryDTO.setCategoryDTOList(categoryDTOList);
+		List<CategoryDTO> subCategoryDTOList = new LinkedList<>();
+		categoryDTO.setSubCategoryDTOList(subCategoryDTOList);
 		// 查询一级
 		Optional<CategoryEntity> categoryEntityOptional = categoryRepository.findById(categoryId);
 		if (categoryEntityOptional.isPresent()) {
@@ -98,7 +98,7 @@ public class VideoServiceImpl implements VideoProvider {
 			CategoryEntity categoryEntity = categoryEntityOptional.get();
 			CategoryDTO subCategoryDTO = new CategoryDTO();
 			BeanUtils.copyProperties(categoryEntity, subCategoryDTO);
-			categoryDTOList.add(subCategoryDTO);
+			subCategoryDTOList.add(subCategoryDTO);
 			// 查询上级分类
 			Optional<CategoryEntity> categoryEntityOptionalTop = categoryRepository
 					.findById(categoryEntity.getParentId());

@@ -6,6 +6,6 @@ package com.lemon.web.constant;
  * @author sjp
  * @date 2019/4/30
  **/
-public class ConstantLock {
+public interface ConstantLock {
 
 }
