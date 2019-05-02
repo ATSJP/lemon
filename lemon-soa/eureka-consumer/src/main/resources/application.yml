@@ -11,4 +11,4 @@ eureka:
     #注册地址
     client:
         service-url:
-            defaultZone: http://localhost:9001/eureka/
+            defaultZone: http://eureka.lemon.com/eureka/

@@ -1,18 +1,16 @@
 package com.lemon.api.impl;
 
-import com.lemon.entity.BizFileEntity;
-import com.lemon.entity.CategoryEntity;
-import com.lemon.entity.RemarkEntity;
-import com.lemon.entity.VideoEntity;
-import com.lemon.repository.BizFileRepository;
-import com.lemon.repository.CategoryRepository;
-import com.lemon.repository.RemarkRepository;
-import com.lemon.repository.VideoRepository;
+import com.lemon.entity.*;
+import com.lemon.repository.*;
 import com.lemon.soa.api.dto.*;
 import com.lemon.soa.api.provider.VideoProvider;
 import com.lemon.web.constant.ConstantBaseData;
+import com.lemon.web.constant.ConstantBizFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.LinkedList;
@@ -26,6 +24,8 @@ import java.util.Optional;
 @Service
 public class VideoServiceImpl implements VideoProvider {
 
+	private Logger				logger	= LoggerFactory.getLogger(this.getClass());
+
 	@Resource
 	private VideoRepository		videoRepository;
 	@Resource
@@ -34,6 +34,8 @@ public class VideoServiceImpl implements VideoProvider {
 	private CategoryRepository	categoryRepository;
 	@Resource
 	private RemarkRepository	remarkRepository;
+	@Resource
+	private LoginInfoRepository	loginInfoRepository;
 
 	@Override
 	public VideoDTO getVideo(long videoId) {
@@ -56,11 +58,19 @@ public class VideoServiceImpl implements VideoProvider {
 			// 详情
 			VideoEntity videoEntity = optionalVideoEntity.get();
 			BeanUtils.copyProperties(videoEntity, videoDetailDTO);
+			Optional<LoginInfoEntity> loginInfoEntityOptional = loginInfoRepository.findById(videoEntity.getUserId());
+			if (loginInfoEntityOptional.isPresent()) {
+				LoginInfoEntity loginInfoEntity = loginInfoEntityOptional.get();
+				videoDetailDTO.setUserName(loginInfoEntity.getLoginName());
+			}
 			// 文件
-			BizFileEntity bizFileEntity = bizFileRepository.findAllByLinkTypeAndLinkIdAndIsDel(0, videoId,
-					ConstantBaseData.IS_DELETE.FALSE.code);
-			if (bizFileEntity != null) {
-				BeanUtils.copyProperties(bizFileEntity, bizFileDTO);
+			List<BizFileEntity> bizFileEntityList = bizFileRepository.findAllByLinkTypeAndLinkIdAndIsDel(
+					ConstantBizFile.LINK_TYPE.FALSE.code, videoId, ConstantBaseData.IS_DELETE.FALSE.code);
+			if (!CollectionUtils.isEmpty(bizFileEntityList)) {
+				if (bizFileEntityList.size() > 1) {
+					logger.info("more than one file effect->linkId:{}", videoId);
+				}
+				BeanUtils.copyProperties(bizFileEntityList.get(0), bizFileDTO);
 			}
 			// 分类
 			this.getCategoryById(videoEntity.getCategoryId(), categoryDTO);

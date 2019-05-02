@@ -36,4 +36,5 @@ public class ConsumerController {
 	public VideoDTO video() {
 		return videoProvider.getVideo(1);
 	}
+	
 }

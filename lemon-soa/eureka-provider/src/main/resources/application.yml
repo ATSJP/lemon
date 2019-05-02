@@ -5,13 +5,27 @@ spring:
     application:
         name: eureka-provider
 
+    datasource:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/lemon?useUnicode=true&useSSL=false
+        username: root
+        password: 1234
+
+    jpa:
+        generateDdl: false
+        properties:
+            hibernate:
+                show_sql: true
+                format_sql: true
+
 eureka:
     instance:
         #使用ip进行注册
         prefer-ip-address: true
     client:
         serviceUrl:
-            defaultZone: http://localhost:9001/eureka/
+            defaultZone: http://eureka.lemon.com/eureka/
 
 # actuator 监控
 management:

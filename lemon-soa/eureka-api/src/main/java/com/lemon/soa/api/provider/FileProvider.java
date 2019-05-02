@@ -2,7 +2,8 @@ package com.lemon.soa.api.provider;
 
 import com.lemon.soa.api.dto.BizFileDTO;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  * 文件服务
@@ -14,13 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public interface FileProvider {
 
 	/**
-	 * 获取文件所有信息
-	 * 
-	 * @param linkId 关联id
+	 * 获取有效文件所有信息
+	 *
 	 * @param linkType 关联类型 ：0 视频 1 图片
+	 * @param linkId 关联id
 	 * @return BizFileDTO
 	 */
-	@RequestMapping(value = "/file")
-	BizFileDTO getFile(long linkId, long linkType);
+	@GetMapping(value = "/file/{linkType}/{linkId}")
+	BizFileDTO getEffectFile(@PathVariable(value = "linkType") short linkType,
+			@PathVariable(value = "linkId") long linkId);
 
 }

@@ -4,6 +4,8 @@ import com.lemon.entity.BizFileEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @author sjp 2019/1/10
  */
@@ -14,7 +16,9 @@ public interface BizFileRepository extends CrudRepository<BizFileEntity, Long> {
 	 * 根据linkType和linkId获取文件记录
 	 * @param linkType 关联类型
 	 * @param linkId 关联id
+	 * @param isDel 0 未删除 1 已删除
 	 * @return BizFileEntity
 	 */
-	BizFileEntity findAllByLinkTypeAndLinkIdAndIsDel(long linkType, long linkId, short isDel);
+	List<BizFileEntity> findAllByLinkTypeAndLinkIdAndIsDel(short linkType, long linkId, short isDel);
+
 }

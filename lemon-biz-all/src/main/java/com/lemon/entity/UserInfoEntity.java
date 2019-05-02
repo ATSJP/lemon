@@ -21,17 +21,14 @@ public class UserInfoEntity {
     private String idCard;
     private String qqAccount;
     private String weChatAccount;
-    private long createId;
-    private Timestamp createTime;
-    private long updateId;
-    private Timestamp updateTime;
-    private Timestamp addTime;
-    private Long adderNo;
     private String armCard;
     private String drivingLicense;
     private String passPort;
     private String simplifiedChinese;
-    private Long updaterNo;
+    private long createId;
+    private Timestamp createTime;
+    private long updateId;
+    private Timestamp updateTime;
 
     @Id
     @Column(name = "login_id")
@@ -134,66 +131,6 @@ public class UserInfoEntity {
     }
 
     @Basic
-    @Column(name = "create_id")
-    public long getCreateId() {
-        return createId;
-    }
-
-    public void setCreateId(long createId) {
-        this.createId = createId;
-    }
-
-    @Basic
-    @Column(name = "create_time")
-    public Timestamp getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Timestamp createTime) {
-        this.createTime = createTime;
-    }
-
-    @Basic
-    @Column(name = "update_id")
-    public long getUpdateId() {
-        return updateId;
-    }
-
-    public void setUpdateId(long updateId) {
-        this.updateId = updateId;
-    }
-
-    @Basic
-    @Column(name = "update_time")
-    public Timestamp getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Timestamp updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    @Basic
-    @Column(name = "add_time")
-    public Timestamp getAddTime() {
-        return addTime;
-    }
-
-    public void setAddTime(Timestamp addTime) {
-        this.addTime = addTime;
-    }
-
-    @Basic
-    @Column(name = "adder_no")
-    public Long getAdderNo() {
-        return adderNo;
-    }
-
-    public void setAdderNo(Long adderNo) {
-        this.adderNo = adderNo;
-    }
-
-    @Basic
     @Column(name = "arm_card")
     public String getArmCard() {
         return armCard;
@@ -234,13 +171,43 @@ public class UserInfoEntity {
     }
 
     @Basic
-    @Column(name = "updater_no")
-    public Long getUpdaterNo() {
-        return updaterNo;
+    @Column(name = "create_id")
+    public long getCreateId() {
+        return createId;
     }
 
-    public void setUpdaterNo(Long updaterNo) {
-        this.updaterNo = updaterNo;
+    public void setCreateId(long createId) {
+        this.createId = createId;
+    }
+
+    @Basic
+    @Column(name = "create_time")
+    public Timestamp getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Timestamp createTime) {
+        this.createTime = createTime;
+    }
+
+    @Basic
+    @Column(name = "update_id")
+    public long getUpdateId() {
+        return updateId;
+    }
+
+    public void setUpdateId(long updateId) {
+        this.updateId = updateId;
+    }
+
+    @Basic
+    @Column(name = "update_time")
+    public Timestamp getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Timestamp updateTime) {
+        this.updateTime = updateTime;
     }
 
     @Override
@@ -262,17 +229,14 @@ public class UserInfoEntity {
             Objects.equals(weChatAccount, that.weChatAccount) &&
             Objects.equals(createTime, that.createTime) &&
             Objects.equals(updateTime, that.updateTime) &&
-            Objects.equals(addTime, that.addTime) &&
-            Objects.equals(adderNo, that.adderNo) &&
             Objects.equals(armCard, that.armCard) &&
             Objects.equals(drivingLicense, that.drivingLicense) &&
             Objects.equals(passPort, that.passPort) &&
-            Objects.equals(simplifiedChinese, that.simplifiedChinese) &&
-            Objects.equals(updaterNo, that.updaterNo);
+            Objects.equals(simplifiedChinese, that.simplifiedChinese);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(loginId, userName, engName, gender, birthday, grade, userType, idCard, qqAccount, weChatAccount, createId, createTime, updateId, updateTime, addTime, adderNo, armCard, drivingLicense, passPort, simplifiedChinese, updaterNo);
+        return Objects.hash(loginId, userName, engName, gender, birthday, grade, userType, idCard, qqAccount, weChatAccount, createId, createTime, updateId, updateTime, armCard, drivingLicense, passPort, simplifiedChinese);
     }
 }
