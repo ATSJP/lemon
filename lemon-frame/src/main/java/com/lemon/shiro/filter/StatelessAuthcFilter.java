@@ -2,9 +2,9 @@ package com.lemon.shiro.filter;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lemon.shiro.token.StatelessToken;
+import com.lemon.utils.CookieUtils;
 import com.lemon.web.base.response.BaseResponse;
-import com.lemon.web.constant.ConstantApiMsg;
-import com.lemon.web.constant.ConstantBizFile;
+import com.lemon.web.constant.ConstantApi;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +12,8 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
@@ -34,17 +36,23 @@ public class StatelessAuthcFilter extends AccessControlFilter {
 
 	@Override
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
-		// 用户token
-		String token = request.getParameter(ConstantBizFile.TOKEN);
-		if (StringUtils.isEmpty(token) || StringUtils.isEmpty(request.getParameter(ConstantBizFile.UID))) {
+		Cookie[] cookies = ((HttpServletRequest) request).getCookies();
+		// 用户唯一id
+		String uidStr = CookieUtils.getParamFromCookie(cookies, ConstantApi.UID);
+		if (StringUtils.isEmpty(uidStr)) {
 			onLoginFail(response);
 			return false;
 		}
-		// 用户唯一id
-		Long uid = Long.parseLong(request.getParameter(ConstantBizFile.UID));
+		Long uid = Long.parseLong(uidStr);
+		// 用户token
+		String token = CookieUtils.getParamFromCookie(cookies, ConstantApi.TOKEN);
+		if (StringUtils.isEmpty(token)) {
+			onLoginFail(response);
+			return false;
+		}
 		// 用户所在平台
-		String sid = request.getParameter(ConstantBizFile.SID);
-		if (StringUtils.isEmpty(request.getParameter(ConstantBizFile.SID))) {
+		String sid = CookieUtils.getParamFromCookie(cookies, ConstantApi.SID);
+		if (StringUtils.isEmpty(sid)) {
 			onLoginFail(response);
 			return false;
 		}
@@ -55,7 +63,7 @@ public class StatelessAuthcFilter extends AccessControlFilter {
 			// 委托给Realm进行登录
 			getSubject(request, response).login(statelessToken);
 		} catch (Exception e) {
-			logger.error("getSubJect error->uid:{},sid:{},token:{},e:{}", uid, sid, token, e);
+			logger.error("getSubject error->uid:{},sid:{},token:{},e:{}", uid, sid, token, e);
 			// 登录失败
 			onLoginFail(response);
 			return false;
@@ -70,8 +78,8 @@ public class StatelessAuthcFilter extends AccessControlFilter {
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 		httpResponse.setStatus(HttpServletResponse.SC_OK);
 		BaseResponse baseResponse = new BaseResponse();
-		baseResponse.setCode(ConstantApiMsg.CODE.TOKEN_INVALID.getCode());
-		baseResponse.setMsg(ConstantApiMsg.CODE.TOKEN_INVALID.getDesc());
+		baseResponse.setCode(ConstantApi.CODE.TOKEN_INVALID.getCode());
+		baseResponse.setMsg(ConstantApi.CODE.TOKEN_INVALID.getDesc());
 		httpResponse.setContentType("application/json;charset=UTF-8");
 		httpResponse.getWriter().write(JSONObject.toJSONString(baseResponse));
 	}

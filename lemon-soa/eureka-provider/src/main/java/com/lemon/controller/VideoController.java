@@ -6,6 +6,7 @@ import com.lemon.soa.api.provider.VideoProvider;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author sjp
@@ -15,15 +16,21 @@ import javax.annotation.Resource;
 public class VideoController {
 
 	@Resource
-	private VideoProvider videoService;
+	private VideoProvider videoProvider;
 
 	@GetMapping(value = "/video/{videoId}")
 	public VideoDTO getVideo(@PathVariable long videoId) {
-		return videoService.getVideo(videoId);
+		return videoProvider.getVideo(videoId);
 	}
 
 	@GetMapping(value = "/video/detail/{videoId}")
 	public VideoDetailDTO getVideoDetail(@PathVariable long videoId) {
-		return videoService.getVideoDetail(videoId);
+		return videoProvider.getVideoDetail(videoId);
+	}
+
+	@GetMapping(value = "/video/getVideoOrderBySortKey/{sortKey}/{sortValue}")
+	List<VideoDTO> getVideoOrderBySortKey(@PathVariable(value = "sortKey") short sortKey,
+			@PathVariable(value = "sortValue") short sortValue) {
+		return videoProvider.getVideoOrderBySortKey(sortKey, sortValue);
 	}
 }

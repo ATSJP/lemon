@@ -7,10 +7,6 @@ package com.lemon.web.constant;
  */
 public interface ConstantBizFile {
 
-	String	TOKEN	= "token";
-	String	UID		= "uid";
-	String	SID		= "sid";
-
 	enum LINK_TYPE {
 		/**
 		 * 关联类型 ：0 视频 1 图片

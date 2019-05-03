@@ -3,7 +3,7 @@ package com.lemon.web.user.rest;
 import com.lemon.entity.LoginInfoEntity;
 import com.lemon.tools.RedissonTools;
 import com.lemon.tools.TokenGenerate;
-import com.lemon.web.constant.ConstantApiMsg;
+import com.lemon.web.constant.ConstantApi;
 import com.lemon.web.constant.ConstantCache;
 import com.lemon.web.user.request.LoginRequest;
 import com.lemon.web.user.response.LoginResponse;
@@ -44,7 +44,7 @@ public class LoginController {
 		Subject currentUser = SecurityUtils.getSubject();
 		if (currentUser.isAuthenticated()) {
 			response.setMsg("您已登录，无需重复登录！");
-			response.setCode(ConstantApiMsg.CODE.FAIL.getCode());
+			response.setCode(ConstantApi.CODE.FAIL.getCode());
 			return response;
 		} else {
 			UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginName, password);
@@ -53,27 +53,27 @@ public class LoginController {
 			} catch (UnknownAccountException uae) {
 				logger.error("do not found userName:{}", usernamePasswordToken.getPrincipal());
 				response.setMsg("用户名或密码不正确！");
-				response.setCode(ConstantApiMsg.CODE.FAIL.getCode());
+				response.setCode(ConstantApi.CODE.FAIL.getCode());
 				return response;
 			} catch (IncorrectCredentialsException ice) {
 				logger.error("userName and password error:{}", usernamePasswordToken.getPrincipal());
 				response.setMsg("用户名或密码不正确！");
-				response.setCode(ConstantApiMsg.CODE.FAIL.getCode());
+				response.setCode(ConstantApi.CODE.FAIL.getCode());
 				return response;
 			} catch (LockedAccountException lae) {
 				logger.error("userName is locked:{}", usernamePasswordToken.getPrincipal());
 				response.setMsg("您的账号被锁定，请联系客服！");
-				response.setCode(ConstantApiMsg.CODE.FAIL.getCode());
+				response.setCode(ConstantApi.CODE.FAIL.getCode());
 				return response;
 			} catch (AuthenticationException a) {
 				logger.error("userName is error:{}", usernamePasswordToken.getPrincipal());
 				response.setMsg("用户名或密码不正确！");
-				response.setCode(ConstantApiMsg.CODE.FAIL.getCode());
+				response.setCode(ConstantApi.CODE.FAIL.getCode());
 				return response;
 			}
 			if (!currentUser.isAuthenticated()) {
 				response.setMsg("用户名或密码不正确！");
-				response.setCode(ConstantApiMsg.CODE.FAIL.getCode());
+				response.setCode(ConstantApi.CODE.FAIL.getCode());
 				return response;
 			}
 		}
@@ -81,7 +81,7 @@ public class LoginController {
 		String token = TokenGenerate.getToken(loginInfoEntity.getLoginId(), request.getSid());
 		redissonTools.set(ConstantCache.KEY.LOGIN_TOKEN.key + loginInfoEntity.getLoginId(), token,
 				ConstantCache.KEY.LOGIN_TOKEN.timeOut);
-		response.setCode(ConstantApiMsg.CODE.SUCCESS.getCode());
+		response.setCode(ConstantApi.CODE.SUCCESS.getCode());
 		response.setToken(token);
 		response.setUid(loginInfoEntity.getLoginId());
 		if (logger.isDebugEnabled()) {
@@ -97,7 +97,7 @@ public class LoginController {
 	public LoginResponse logout(LoginRequest request) {
 		LoginResponse response = new LoginResponse();
 		redissonTools.delete(ConstantCache.KEY.LOGIN_TOKEN.key + request.getUid());
-		response.setCode(ConstantApiMsg.CODE.SUCCESS.getCode());
+		response.setCode(ConstantApi.CODE.SUCCESS.getCode());
 		response.setUid(request.getUid());
 		if (logger.isDebugEnabled()) {
 			logger.info("用户 " + request.getUid() + " 退出成功！");

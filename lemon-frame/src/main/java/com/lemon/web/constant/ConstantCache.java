@@ -12,7 +12,8 @@ public interface ConstantCache {
 		/**
 		 * 缓存key、描述、过期时间
 		 */
-		LOGIN_TOKEN("LOGIN_TOKEN_TIME_OUT_", "登陆token缓存key", 30 * 60);
+		LOGIN_TOKEN("LOGIN_TOKEN_KEY_", "登陆token缓存key", 30 * 60),
+		INDEX_VIDEO_LIST("INDEX_VIDEO_KEY_", "首页视频列表缓存key", 60 * 60);
 
 		public String	key;
 		public String	desc;

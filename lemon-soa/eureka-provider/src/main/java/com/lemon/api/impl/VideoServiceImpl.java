@@ -2,10 +2,13 @@ package com.lemon.api.impl;
 
 import com.lemon.entity.*;
 import com.lemon.repository.*;
+import com.lemon.service.VideoService;
 import com.lemon.soa.api.dto.*;
 import com.lemon.soa.api.provider.VideoProvider;
+import com.lemon.tools.RedissonTools;
 import com.lemon.web.constant.ConstantBaseData;
 import com.lemon.web.constant.ConstantBizFile;
+import com.lemon.web.constant.ConstantCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -26,6 +29,10 @@ public class VideoServiceImpl implements VideoProvider {
 
 	private Logger				logger	= LoggerFactory.getLogger(this.getClass());
 
+	@Resource
+	private RedissonTools		redissonTools;
+	@Resource
+	private VideoService		videoService;
 	@Resource
 	private VideoRepository		videoRepository;
 	@Resource
@@ -121,5 +128,19 @@ public class VideoServiceImpl implements VideoProvider {
 			return videoDetailDTO;
 		}
 		return null;
+	}
+
+	@Override
+	public List<VideoDTO> getVideoOrderBySortKey(short sortKey, short sortValue) {
+		// 从缓存取数据
+		List<VideoDTO> videoDTOList = redissonTools
+				.get(ConstantCache.KEY.INDEX_VIDEO_LIST.key + sortKey + "_" + sortValue);
+		if (!CollectionUtils.isEmpty(videoDTOList)) {
+			return videoDTOList;
+		}
+		// 主动加载数据
+		videoDTOList = videoService.getVideoOrderBySortKey(sortKey, sortValue);
+		redissonTools.set(ConstantCache.KEY.INDEX_VIDEO_LIST.key + sortKey + "_" + sortValue, videoDTOList);
+		return videoDTOList;
 	}
 }

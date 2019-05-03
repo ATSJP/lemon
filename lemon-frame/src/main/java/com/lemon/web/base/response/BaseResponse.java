@@ -1,6 +1,6 @@
 package com.lemon.web.base.response;
 
-import com.lemon.web.constant.ConstantApiMsg;
+import com.lemon.web.constant.ConstantApi;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -22,11 +22,11 @@ public class BaseResponse implements Serializable {
     /**
      * 返回状态码
      */
-    private Short code = ConstantApiMsg.CODE.SUCCESS.getCode();
+    private Short code = ConstantApi.CODE.SUCCESS.getCode();
     /**
      * 返回描述
      */
-    private String msg = ConstantApiMsg.CODE.SUCCESS.getDesc();
+    private String msg = ConstantApi.CODE.SUCCESS.getDesc();
     /**
      * 返回数据
      */

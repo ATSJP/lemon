@@ -8,6 +8,10 @@ spring:
     application:
         name: lemon-user
 
+    # 允许重复名称的bean定义
+    main:
+        allow-bean-definition-overriding: true
+
     profiles:
         include: logback
 
@@ -23,7 +27,7 @@ spring:
         properties:
             hibernate:
                 show_sql: true
-                format_sql: true
+                format_sql: false
 
     jackson:
         time-zone: GMT+8

@@ -4,6 +4,11 @@ server:
 spring:
     application:
         name: eureka-consumer
+
+    # 允许重复名称的bean定义
+    main:
+        allow-bean-definition-overriding: true
+
 eureka:
     instance:
         # 使用IP注册

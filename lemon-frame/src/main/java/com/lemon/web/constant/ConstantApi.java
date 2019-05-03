@@ -6,7 +6,11 @@ package com.lemon.web.constant;
  * @author sjp
  * @date 2019/4/15
  **/
-public interface ConstantApiMsg {
+public interface ConstantApi {
+
+    String	TOKEN	= "token";
+    String	UID		= "uid";
+    String	SID		= "sid";
 
 	enum CODE {
 		/**
