@@ -36,7 +36,6 @@
         <module>lemon-admin</module>
         <module>lemon-apply</module>
         <module>lemon-biz-all</module>
-        <module>lemon-common</module>
         <module>lemon-pay</module>
         <module>lemon-user</module>
         <module>lemon-frame</module>
