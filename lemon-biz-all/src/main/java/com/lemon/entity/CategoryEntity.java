@@ -21,6 +21,7 @@ public class CategoryEntity {
     private Timestamp updateTime;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
     public long getCategoryId() {
         return categoryId;

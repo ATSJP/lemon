@@ -23,6 +23,7 @@ public class BizFileEntity {
     private Timestamp updateTime;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "file_id")
     public long getFileId() {
         return fileId;

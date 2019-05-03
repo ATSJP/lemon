@@ -6,17 +6,17 @@ import com.lemon.tools.TokenGenerate;
 import com.lemon.web.constant.ConstantApi;
 import com.lemon.web.constant.ConstantCache;
 import com.lemon.web.user.request.LoginRequest;
+import com.lemon.web.user.request.RegisterRequest;
 import com.lemon.web.user.response.LoginResponse;
+import com.lemon.web.user.response.RegisterResponse;
 import com.lemon.web.user.service.UserService;
+import com.lemon.web.user.vo.LoginInfoVo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -24,19 +24,17 @@ import javax.validation.Valid;
 /**
  * @author sjp 2019/1/10
  */
-@Controller
-@RequestMapping("/user")
-public class LoginController {
+@RestController
+public class UserController {
 
-	private Logger			logger	= LoggerFactory.getLogger(LoginController.class);
-
+	private Logger			logger	= LoggerFactory.getLogger(UserController.class);
 	@Resource
 	private UserService		userService;
 	@Resource
 	private RedissonTools	redissonTools;
 
 	@ResponseBody
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@PostMapping(value = "/user/login")
 	public LoginResponse login(@Valid LoginRequest request) {
 		LoginResponse response = new LoginResponse();
 		String loginName = request.getLoginName();
@@ -81,9 +79,11 @@ public class LoginController {
 		String token = TokenGenerate.getToken(loginInfoEntity.getLoginId(), request.getSid());
 		redissonTools.set(ConstantCache.KEY.LOGIN_TOKEN.key + loginInfoEntity.getLoginId(), token,
 				ConstantCache.KEY.LOGIN_TOKEN.timeOut);
-		response.setCode(ConstantApi.CODE.SUCCESS.getCode());
-		response.setToken(token);
+		LoginInfoVo loginInfoVo = new LoginInfoVo();
+		loginInfoVo.setLoginName(loginName);
 		response.setUid(loginInfoEntity.getLoginId());
+		response.setToken(token);
+		response.setLoginInfoVo(loginInfoVo);
 		if (logger.isDebugEnabled()) {
 			logger.info("用户 " + currentUser.getPrincipal() + " 登陆成功！");
 			logger.info("是否拥有 admin 角色：" + currentUser.hasRole("admin"));
@@ -93,11 +93,27 @@ public class LoginController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/logout", method = RequestMethod.DELETE)
+	@PutMapping(value = "/user/register")
+	public RegisterResponse register(@Valid RegisterRequest request) {
+		RegisterResponse response = new RegisterResponse();
+		String loginName = request.getLoginName();
+		String password = request.getPassword();
+		String userName = request.getUserName();
+		LoginInfoEntity loginInfoEntity = userService.getByLoginName(loginName);
+		if (loginInfoEntity != null) {
+			response.setCode(ConstantApi.CODE.FAIL.getCode());
+			response.setMsg(ConstantApi.REGISTER_MESSAGE.FAIL.getDesc());
+			return response;
+		}
+		loginInfoEntity = userService.register(loginName, password, userName);
+		return response;
+	}
+
+	@ResponseBody
+	@DeleteMapping(value = "/user/logout")
 	public LoginResponse logout(LoginRequest request) {
 		LoginResponse response = new LoginResponse();
 		redissonTools.delete(ConstantCache.KEY.LOGIN_TOKEN.key + request.getUid());
-		response.setCode(ConstantApi.CODE.SUCCESS.getCode());
 		response.setUid(request.getUid());
 		if (logger.isDebugEnabled()) {
 			logger.info("用户 " + request.getUid() + " 退出成功！");

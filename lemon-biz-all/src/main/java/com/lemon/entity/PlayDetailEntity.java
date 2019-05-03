@@ -21,6 +21,7 @@ public class PlayDetailEntity {
     private Timestamp createTime;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "detail_id")
     public long getDetailId() {
         return detailId;

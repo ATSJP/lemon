@@ -34,7 +34,7 @@ import java.util.Map;
 @Configuration
 public class ShiroConfig {
 
-	private final static String URL_HEAD = "/u";
+	private final static String URL_HEAD = "/a";
 
 	/**
 	 * 使用FilterRegistrationBean管理DelegatingFilterProxy的生命周期，代替spring项目中shiro在web.xml的配置
@@ -62,8 +62,6 @@ public class ShiroConfig {
 		ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
 		shiroFilterFactoryBean.setSecurityManager(securityManager());
 		Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-		filterChainDefinitionMap.put(URL_HEAD + "/user/login", "anon");
-		filterChainDefinitionMap.put(URL_HEAD + "/user/register", "anon");
 		filterChainDefinitionMap.put(URL_HEAD + "/category/**", "anon");
 		filterChainDefinitionMap.put("/**", "statelessAuthcFilter");
 		shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);

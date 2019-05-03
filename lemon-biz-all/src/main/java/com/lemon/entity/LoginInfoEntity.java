@@ -19,7 +19,6 @@ public class LoginInfoEntity {
     private Short emailStatus;
     private String mobile;
     private Short mobileStatus;
-    private short loginStatus;
     private Timestamp registerTime;
     private String inviteCode;
     private Short auditStatus;
@@ -30,6 +29,7 @@ public class LoginInfoEntity {
     private Timestamp updateTime;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "login_id")
     public long getLoginId() {
         return loginId;
@@ -107,16 +107,6 @@ public class LoginInfoEntity {
 
     public void setMobileStatus(Short mobileStatus) {
         this.mobileStatus = mobileStatus;
-    }
-
-    @Basic
-    @Column(name = "login_status")
-    public short getLoginStatus() {
-        return loginStatus;
-    }
-
-    public void setLoginStatus(short loginStatus) {
-        this.loginStatus = loginStatus;
     }
 
     @Basic
@@ -206,7 +196,6 @@ public class LoginInfoEntity {
         LoginInfoEntity that = (LoginInfoEntity) o;
         return loginId == that.loginId &&
             loginNameUpdateTimes == that.loginNameUpdateTimes &&
-            loginStatus == that.loginStatus &&
             createId == that.createId &&
             updateId == that.updateId &&
             Objects.equals(loginName, that.loginName) &&
@@ -225,6 +214,6 @@ public class LoginInfoEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(loginId, loginName, loginPwd, loginNameUpdateTimes, email, emailStatus, mobile, mobileStatus, loginStatus, registerTime, inviteCode, auditStatus, auditRemark, createId, createTime, updateId, updateTime);
+        return Objects.hash(loginId, loginName, loginPwd, loginNameUpdateTimes, email, emailStatus, mobile, mobileStatus, registerTime, inviteCode, auditStatus, auditRemark, createId, createTime, updateId, updateTime);
     }
 }

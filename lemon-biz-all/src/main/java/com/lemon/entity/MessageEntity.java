@@ -24,6 +24,7 @@ public class MessageEntity {
     private Timestamp updateTime;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "message_id")
     public long getMessageId() {
         return messageId;

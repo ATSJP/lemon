@@ -23,6 +23,7 @@ public class VideoEntity {
     private Timestamp updateTime;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "video_id")
     public long getVideoId() {
         return videoId;

@@ -26,6 +26,7 @@ public class RemarkEntity {
     private Timestamp updateTime;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "remark_id")
     public long getRemarkId() {
         return remarkId;
