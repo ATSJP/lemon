@@ -14,6 +14,7 @@ public class VideoEntity {
     private long videoId;
     private String videoName;
     private String videoContext;
+    private String time;
     private long categoryId;
     private Long userId;
     private Short auditStatus;
@@ -51,6 +52,16 @@ public class VideoEntity {
 
     public void setVideoContext(String videoContext) {
         this.videoContext = videoContext;
+    }
+
+    @Basic
+    @Column(name = "time")
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     @Basic

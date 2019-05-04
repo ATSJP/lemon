@@ -63,6 +63,7 @@ public class ShiroConfig {
 		shiroFilterFactoryBean.setSecurityManager(securityManager());
 		Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
 		filterChainDefinitionMap.put(URL_HEAD + "/category/**", "anon");
+		filterChainDefinitionMap.put(URL_HEAD + "/video/**", "anon");
 		filterChainDefinitionMap.put("/**", "statelessAuthcFilter");
 		shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 		// 自定义拦截器

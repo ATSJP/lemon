@@ -11,8 +11,8 @@ public interface ConstantBizFile {
 		/**
 		 * 关联类型 ：0 视频 1 图片
 		 */
-		FALSE((short) 0, "视频"),
-		TRUE((short) 1, "图片");
+		VIDEO((short) 0, "视频"),
+		PIC((short) 1, "图片");
 
 		public Short	code;
 		public String	desc;

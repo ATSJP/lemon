@@ -1,6 +1,6 @@
 # Redisson配置
 singleServerConfig:
-    address: "redis://106.15.200.151:6379"
+    address: "redis://127.0.0.1:6379"
     password: null
     clientName: eureka-provider
     database: 1

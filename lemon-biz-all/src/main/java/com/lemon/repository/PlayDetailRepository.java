@@ -24,4 +24,11 @@ public interface PlayDetailRepository extends CrudRepository<PlayDetailEntity, L
 	@Query(value = "SELECT * FROM (SELECT video_id AS video_id, COUNT(1) AS total_play_num FROM play_detail GROUP BY video_id ) play_count ORDER BY total_play_num DESC", nativeQuery = true)
 	List<Map<String, Object>> countPlayNumByVideoId(@Param(value = "sortValue") String sortValue);
 
+	/**
+	 * 根据视频id，统计每个视频的播放量
+	 * 
+	 * @param videoId 视频id
+	 * @return int 播放量
+	 */
+	int countAllByVideoId(long videoId);
 }

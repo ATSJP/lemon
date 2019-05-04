@@ -3,6 +3,7 @@ package com.lemon.web.user.rest;
 import com.lemon.entity.LoginInfoEntity;
 import com.lemon.tools.RedissonTools;
 import com.lemon.tools.TokenGenerate;
+import com.lemon.utils.CookieUtils;
 import com.lemon.web.constant.ConstantApi;
 import com.lemon.web.constant.ConstantCache;
 import com.lemon.web.user.request.LoginRequest;
@@ -19,6 +20,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 /**
@@ -33,7 +36,6 @@ public class UserController {
 	@Resource
 	private RedissonTools	redissonTools;
 
-	@ResponseBody
 	@PostMapping(value = "/user/login")
 	public LoginResponse login(@Valid LoginRequest request) {
 		LoginResponse response = new LoginResponse();
@@ -92,7 +94,6 @@ public class UserController {
 		return response;
 	}
 
-	@ResponseBody
 	@PutMapping(value = "/user/register")
 	public RegisterResponse register(@Valid RegisterRequest request) {
 		RegisterResponse response = new RegisterResponse();
@@ -109,7 +110,6 @@ public class UserController {
 		return response;
 	}
 
-	@ResponseBody
 	@DeleteMapping(value = "/user/logout")
 	public LoginResponse logout(LoginRequest request) {
 		LoginResponse response = new LoginResponse();
@@ -117,6 +117,21 @@ public class UserController {
 		response.setUid(request.getUid());
 		if (logger.isDebugEnabled()) {
 			logger.info("用户 " + request.getUid() + " 退出成功！");
+		}
+		return response;
+	}
+
+	@GetMapping(value = "/user/checkStatus")
+	public LoginResponse checkStatus(HttpServletRequest request) {
+		LoginResponse response = new LoginResponse();
+		if (logger.isDebugEnabled()) {
+			Cookie[] cookies = request.getCookies();
+			// 用户唯一id
+			String uidStr = CookieUtils.getParamFromCookie(cookies, ConstantApi.UID);
+			String token = CookieUtils.getParamFromCookie(cookies, ConstantApi.TOKEN);
+			// 用户所在平台
+			String sid = CookieUtils.getParamFromCookie(cookies, ConstantApi.SID);
+			logger.info("用户检查登陆状态！->uid:{},sid={},token={}", uidStr, sid, token);
 		}
 		return response;
 	}

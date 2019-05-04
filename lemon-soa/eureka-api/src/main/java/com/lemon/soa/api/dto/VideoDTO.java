@@ -15,17 +15,17 @@ public class VideoDTO {
 	/**
 	 * 视频明细
 	 */
-	private VideoDetailDTO	videoDetailDTO;
+	private VideoDetailDTO		videoDetailDTO;
 	/**
-	 * 视频文件
+	 * 文件
 	 */
-	private BizFileDTO		bizFileDTO;
+	private List<BizFileDTO>	bizFileDTOList;
 	/**
 	 * 分类DTO
 	 */
-	private CategoryDTO		categoryDTO;
+	private CategoryDTO			categoryDTO;
 	/**
 	 * 评价
 	 */
-	private List<RemarkDTO>	remarkDTO;
+	private List<RemarkDTO>		remarkDTO;
 }

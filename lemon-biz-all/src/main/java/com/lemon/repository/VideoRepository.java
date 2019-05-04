@@ -1,9 +1,10 @@
 package com.lemon.repository;
 
+import com.lemon.entity.VideoEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.lemon.entity.VideoEntity;
+import java.util.List;
 
 /**
  * @author sjp 2019/1/10
@@ -11,4 +12,11 @@ import com.lemon.entity.VideoEntity;
 @Repository
 public interface VideoRepository extends CrudRepository<VideoEntity, Long> {
 
+	/**
+	 * 根据分类id查询视频list
+	 * 
+	 * @param categoryId 分类id
+	 * @return List<VideoEntity>
+	 */
+	List<VideoEntity> findAllByCategoryId(long categoryId);
 }

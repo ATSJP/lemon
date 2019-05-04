@@ -46,4 +46,16 @@ public interface VideoProvider {
 	List<VideoDTO> getVideoOrderBySortKey(@PathVariable(value = "sortKey") short sortKey,
 			@PathVariable(value = "sortValue") short sortValue);
 
+	/**
+	 * 按照指定分类查找视频列表，并按指定大小分页，取出第page页的list
+	 * 
+	 * @param categoryId 分类id
+	 * @param pageIndex 页码
+	 * @param size 大小
+	 * @return List<VideoDTO>
+	 */
+	@GetMapping(value = "/video/getVideoList/{categoryId}/{pageIndex}/{size}")
+	List<VideoDTO> getVideoListByCategoryId(@PathVariable(value = "categoryId") Long categoryId,
+			@PathVariable(value = "pageIndex") int pageIndex, @PathVariable(value = "size") int size);
+
 }

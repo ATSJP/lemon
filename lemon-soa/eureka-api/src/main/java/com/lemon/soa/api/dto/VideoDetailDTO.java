@@ -21,6 +21,14 @@ public class VideoDetailDTO {
 	 */
 	private String	videoContext;
 	/**
+	 * 视频长度
+	 */
+	private String	time;
+	/**
+	 * 播放量
+	 */
+	private Integer	playNum;
+	/**
 	 * 分类id
 	 */
 	private Long	categoryId;

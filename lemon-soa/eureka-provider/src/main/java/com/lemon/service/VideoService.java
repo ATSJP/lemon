@@ -1,12 +1,17 @@
 package com.lemon.service;
 
+import com.lemon.entity.LoginInfoEntity;
 import com.lemon.entity.VideoEntity;
+import com.lemon.repository.LoginInfoRepository;
 import com.lemon.repository.PlayDetailRepository;
 import com.lemon.repository.RemarkRepository;
 import com.lemon.repository.VideoRepository;
 import com.lemon.soa.api.contant.ConstantVideo;
+import com.lemon.soa.api.dto.BizFileDTO;
 import com.lemon.soa.api.dto.VideoDTO;
 import com.lemon.soa.api.dto.VideoDetailDTO;
+import com.lemon.soa.api.provider.FileProvider;
+import com.lemon.web.constant.ConstantBizFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -14,10 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * VideoManager
@@ -35,6 +37,10 @@ public class VideoService {
 	private PlayDetailRepository	playDetailRepository;
 	@Resource
 	private RemarkRepository		remarkRepository;
+	@Resource
+	private LoginInfoRepository		loginInfoRepository;
+	@Resource
+	private FileProvider			fileProvider;
 
 	/**
 	 * 根据当前排序规则，删选数据
@@ -94,4 +100,37 @@ public class VideoService {
 		return null;
 	}
 
+	/**
+	 * 根据分类获取视频列表
+	 * 
+	 * @param categoryId 分类id
+	 * @return List<VideoDetailDTO>
+	 */
+	public List<VideoDTO> getVideoListByCategoryId(Long categoryId) {
+		List<VideoEntity> videoEntityList = videoRepository.findAllByCategoryId(categoryId);
+		if (!CollectionUtils.isEmpty(videoEntityList)) {
+			List<VideoDTO> videoDTOList = new LinkedList<>();
+			videoEntityList.forEach(item -> {
+				VideoDTO videoDTO = new VideoDTO();
+				// 详情
+				VideoDetailDTO videoDetailDTO = new VideoDetailDTO();
+				BeanUtils.copyProperties(item, videoDetailDTO);
+				Optional<LoginInfoEntity> loginInfoEntityOptional = loginInfoRepository.findById(item.getUserId());
+				loginInfoEntityOptional
+						.ifPresent(loginInfoEntity -> videoDetailDTO.setUserName(loginInfoEntity.getLoginName()));
+				videoDetailDTO.setPlayNum(playDetailRepository.countAllByVideoId(item.getVideoId()));
+				videoDTO.setVideoDetailDTO(videoDetailDTO);
+				// 图片文件
+				BizFileDTO picFileDTO = fileProvider.getEffectFile(ConstantBizFile.LINK_TYPE.PIC.code,
+						item.getVideoId());
+				// 组装
+				List<BizFileDTO> bizFileDTOList = new LinkedList<>();
+				bizFileDTOList.add(picFileDTO);
+				videoDTO.setBizFileDTOList(bizFileDTOList);
+				videoDTOList.add(videoDTO);
+			});
+			return videoDTOList;
+		}
+		return Collections.emptyList();
+	}
 }

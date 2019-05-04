@@ -38,4 +38,13 @@ public class VideoController {
 		return response;
 	}
 
+	@GetMapping("/video/getVideoList/{categoryId}/{pageIndex}/{size}")
+	public VideoResponse getVideoListByCategoryId(@PathVariable(value = "categoryId") Long categoryId,
+			@PathVariable(value = "pageIndex") int pageIndex, @PathVariable(value = "size") int size) {
+		VideoResponse response = new VideoResponse();
+		List<VideoDTO> videoDTOList = videoProvider.getVideoListByCategoryId(categoryId, pageIndex, size);
+		response.setVideoDTOList(videoDTOList);
+		return response;
+	}
+
 }

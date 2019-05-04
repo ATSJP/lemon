@@ -1,5 +1,6 @@
 package com.lemon.api.impl;
 
+import com.google.common.collect.Iterables;
 import com.lemon.entity.*;
 import com.lemon.repository.*;
 import com.lemon.service.VideoService;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -50,13 +52,13 @@ public class VideoServiceImpl implements VideoProvider {
 		// 视频详情
 		VideoDetailDTO videoDetailDTO = new VideoDetailDTO();
 		// 文件
-		BizFileDTO bizFileDTO = new BizFileDTO();
+		List<BizFileDTO> bizFileDTOList = new LinkedList<>();
 		// 分类DTO
 		CategoryDTO categoryDTO = new CategoryDTO();
 		// 评价
 		List<RemarkDTO> remarkDTOList = new LinkedList<>();
 		videoDTO.setVideoDetailDTO(videoDetailDTO);
-		videoDTO.setBizFileDTO(bizFileDTO);
+		videoDTO.setBizFileDTOList(bizFileDTOList);
 		videoDTO.setCategoryDTO(categoryDTO);
 		videoDTO.setRemarkDTO(remarkDTOList);
 
@@ -66,18 +68,16 @@ public class VideoServiceImpl implements VideoProvider {
 			VideoEntity videoEntity = optionalVideoEntity.get();
 			BeanUtils.copyProperties(videoEntity, videoDetailDTO);
 			Optional<LoginInfoEntity> loginInfoEntityOptional = loginInfoRepository.findById(videoEntity.getUserId());
-			if (loginInfoEntityOptional.isPresent()) {
-				LoginInfoEntity loginInfoEntity = loginInfoEntityOptional.get();
-				videoDetailDTO.setUserName(loginInfoEntity.getLoginName());
-			}
+			loginInfoEntityOptional
+					.ifPresent(loginInfoEntity -> videoDetailDTO.setUserName(loginInfoEntity.getLoginName()));
 			// 文件
 			List<BizFileEntity> bizFileEntityList = bizFileRepository.findAllByLinkTypeAndLinkIdAndIsDel(
-					ConstantBizFile.LINK_TYPE.FALSE.code, videoId, ConstantBaseData.IS_DELETE.FALSE.code);
+					ConstantBizFile.LINK_TYPE.VIDEO.code, videoId, ConstantBaseData.IS_DELETE.FALSE.code);
 			if (!CollectionUtils.isEmpty(bizFileEntityList)) {
 				if (bizFileEntityList.size() > 1) {
 					logger.info("more than one file effect->linkId:{}", videoId);
 				}
-				BeanUtils.copyProperties(bizFileEntityList.get(0), bizFileDTO);
+///				BeanUtils.copyProperties(bizFileEntityList.get(0), bizFileDTO);
 			}
 			// 分类
 			this.getCategoryById(videoEntity.getCategoryId(), categoryDTO);
@@ -143,4 +143,41 @@ public class VideoServiceImpl implements VideoProvider {
 		redissonTools.set(ConstantCache.KEY.INDEX_VIDEO_LIST.key + sortKey + "_" + sortValue, videoDTOList);
 		return videoDTOList;
 	}
+
+	@Override
+	public List<VideoDTO> getVideoListByCategoryId(Long categoryId, int pageIndex, int pageSize) {
+		// 从缓存取数据
+		List<VideoDTO> videoDTOList = redissonTools
+				.get(ConstantCache.KEY.CATEGORY_VIDEO_LIST.key + categoryId);
+		if (!CollectionUtils.isEmpty(videoDTOList)) {
+			return videoDTOList;
+		}
+		// 主动加载数据
+		List<VideoDTO> allVideoDTOList = videoService.getVideoListByCategoryId(categoryId);
+		videoDTOList = this.getPageSizeVideoList(allVideoDTOList, pageIndex, pageSize);
+		redissonTools.set(ConstantCache.KEY.CATEGORY_VIDEO_LIST.key + categoryId, videoDTOList);
+		return videoDTOList;
+	}
+
+	private List<VideoDTO> getPageSizeVideoList(List<VideoDTO> allVideoDTOList, int pageIndex,
+			int pageSize) {
+		if (allVideoDTOList.size() > pageSize) {
+			// 分页
+			Iterable<List<VideoDTO>> pagesIterable = Iterables.partition(allVideoDTOList, pageSize);
+			if (Iterables.size(pagesIterable) < pageIndex) {
+				// 超出分页范围
+				return Collections.emptyList();
+			}
+			// 取出第pageIndex页
+			int index = 1;
+			for (List<VideoDTO> pageItemList : pagesIterable) {
+				if (index == pageIndex) {
+					return pageItemList;
+				}
+				index++;
+			}
+		}
+		return allVideoDTOList;
+	}
+
 }
