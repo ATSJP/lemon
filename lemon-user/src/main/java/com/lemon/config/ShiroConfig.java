@@ -180,7 +180,8 @@ public class ShiroConfig {
 	@DependsOn("lifecycleBeanPostProcessor")
 	public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
 		DefaultAdvisorAutoProxyCreator proxyCreator = new DefaultAdvisorAutoProxyCreator();
-		/// proxyCreator.setProxyTargetClass(true);
+		// true 基于类方法代码，false 基于接口代理
+		proxyCreator.setProxyTargetClass(true);
 		return proxyCreator;
 	}
 

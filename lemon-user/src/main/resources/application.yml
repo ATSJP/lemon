@@ -27,7 +27,7 @@ spring:
         properties:
             hibernate:
                 show_sql: true
-                format_sql: false
+#                database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
 
     jackson:
         time-zone: GMT+8

@@ -9,6 +9,7 @@ import com.lemon.utils.MD5Utils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 
 /**
  * @author sjp
@@ -36,7 +37,7 @@ public class UserService {
 	 * @param userName 真实姓名
 	 * @return LoginInfoEntity
 	 */
-//    @Transactional(rollbackOn = Exception.class)
+    @Transactional(rollbackOn = Exception.class)
 	public LoginInfoEntity register(String loginName, String password, String userName) {
 		LoginInfoEntity loginInfoEntity = new LoginInfoEntity();
 		loginInfoEntity.setLoginName(loginName);
@@ -46,7 +47,6 @@ public class UserService {
 		loginInfoEntity.setUpdateId(-1);
 		loginInfoEntity.setUpdateTime(DateUtils.getCurrentTime());
 		loginInfoRepository.save(loginInfoEntity);
-
 		UserInfoEntity userInfoEntity = new UserInfoEntity();
 		userInfoEntity.setLoginId(loginInfoEntity.getLoginId());
 		userInfoEntity.setUserName(userName);
