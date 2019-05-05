@@ -29,15 +29,27 @@ public class VideoController {
 		return response;
 	}
 
-	@GetMapping("/video/getIndexVideo")
-	public VideoResponse getIndexVideo() {
+	/**
+	 * 从缓存中获取指定排序方式进行排名的视频列表,仅仅取出detail信息，在首页或推荐处使用
+	 *
+	 * @return VideoResponse
+	 */
+	@GetMapping(value = "/video/getVideoOrderBySortKey/{sortKey}")
+	public VideoResponse getIndexVideo(@PathVariable(value = "sortKey") short sortKey) {
 		VideoResponse response = new VideoResponse();
-		List<VideoDTO> videoDTOList = videoProvider.getVideoOrderBySortKey(ConstantVideo.SORT_KEY.PLAY_NUM.code,
-				ConstantVideo.SORT_VALUE.DESC.code);
+		List<VideoDTO> videoDTOList = videoProvider.getVideoOrderBySortKey(sortKey, ConstantVideo.SORT_VALUE.DESC.code);
 		response.setVideoDTOList(videoDTOList);
 		return response;
 	}
 
+    /**
+     * 按照指定分类查找视频列表，并按指定大小分页，取出第page页的list
+     *
+     * @param categoryId 分类id
+     * @param pageIndex 页码
+     * @param size 大小
+     * @return VideoResponse
+     */
 	@GetMapping("/video/getVideoList/{categoryId}/{pageIndex}/{size}")
 	public VideoResponse getVideoListByCategoryId(@PathVariable(value = "categoryId") Long categoryId,
 			@PathVariable(value = "pageIndex") int pageIndex, @PathVariable(value = "size") int size) {

@@ -7,8 +7,8 @@ import com.lemon.service.VideoService;
 import com.lemon.soa.api.dto.*;
 import com.lemon.soa.api.provider.VideoProvider;
 import com.lemon.tools.RedissonTools;
+import com.lemon.utils.DateUtils;
 import com.lemon.web.constant.ConstantBaseData;
-import com.lemon.web.constant.ConstantBizFile;
 import com.lemon.web.constant.ConstantCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,24 +27,26 @@ import java.util.Optional;
  * @date 2019/1/24
  **/
 @Service
-public class VideoServiceImpl implements VideoProvider {
+public class VideoProviderImpl implements VideoProvider {
 
-	private Logger				logger	= LoggerFactory.getLogger(this.getClass());
+	private Logger					logger	= LoggerFactory.getLogger(this.getClass());
 
 	@Resource
-	private RedissonTools		redissonTools;
+	private RedissonTools			redissonTools;
 	@Resource
-	private VideoService		videoService;
+	private VideoService			videoService;
 	@Resource
-	private VideoRepository		videoRepository;
+	private VideoRepository			videoRepository;
 	@Resource
-	private BizFileRepository	bizFileRepository;
+	private BizFileRepository		bizFileRepository;
 	@Resource
-	private CategoryRepository	categoryRepository;
+	private CategoryRepository		categoryRepository;
 	@Resource
-	private RemarkRepository	remarkRepository;
+	private RemarkRepository		remarkRepository;
 	@Resource
-	private LoginInfoRepository	loginInfoRepository;
+	private LoginInfoRepository		loginInfoRepository;
+	@Resource
+	private PlayDetailRepository	playDetailRepository;
 
 	@Override
 	public VideoDTO getVideo(long videoId) {
@@ -57,42 +59,63 @@ public class VideoServiceImpl implements VideoProvider {
 		CategoryDTO categoryDTO = new CategoryDTO();
 		// 评价
 		List<RemarkDTO> remarkDTOList = new LinkedList<>();
-		videoDTO.setVideoDetailDTO(videoDetailDTO);
-		videoDTO.setBizFileDTOList(bizFileDTOList);
-		videoDTO.setCategoryDTO(categoryDTO);
-		videoDTO.setRemarkDTO(remarkDTOList);
 
 		Optional<VideoEntity> optionalVideoEntity = videoRepository.findById(videoId);
 		if (optionalVideoEntity.isPresent()) {
 			// 详情
 			VideoEntity videoEntity = optionalVideoEntity.get();
 			BeanUtils.copyProperties(videoEntity, videoDetailDTO);
-			Optional<LoginInfoEntity> loginInfoEntityOptional = loginInfoRepository.findById(videoEntity.getUserId());
-			loginInfoEntityOptional
-					.ifPresent(loginInfoEntity -> videoDetailDTO.setUserName(loginInfoEntity.getLoginName()));
+			Optional<LoginInfoEntity> loginInfoOptional = loginInfoRepository.findById(videoEntity.getUserId());
+			videoDetailDTO.setPlayNum(playDetailRepository.countAllByVideoId(videoEntity.getVideoId()));
+            loginInfoOptional.ifPresent(loginInfoEntity -> videoDetailDTO.setUserName(loginInfoEntity.getLoginName()));
+            videoDetailDTO.setCreateTime(DateUtils.formatTimestamp(videoEntity.getCreateTime().getTime()));
 			// 文件
-			List<BizFileEntity> bizFileEntityList = bizFileRepository.findAllByLinkTypeAndLinkIdAndIsDel(
-					ConstantBizFile.LINK_TYPE.VIDEO.code, videoId, ConstantBaseData.IS_DELETE.FALSE.code);
+			List<BizFileEntity> bizFileEntityList = bizFileRepository.findAllByLinkIdAndIsDel(videoId,
+					ConstantBaseData.IS_DELETE.FALSE.code);
 			if (!CollectionUtils.isEmpty(bizFileEntityList)) {
-				if (bizFileEntityList.size() > 1) {
-					logger.info("more than one file effect->linkId:{}", videoId);
+				// 有效封面一张 有效视频文件一张,超过2张属于系统异常,日志打印
+				int picAndVideoSize = 2;
+				if (bizFileEntityList.size() > picAndVideoSize) {
+					logger.error("more than one file effect->linkId:{}", videoId);
 				}
-///				BeanUtils.copyProperties(bizFileEntityList.get(0), bizFileDTO);
+				bizFileEntityList.forEach(item -> {
+					BizFileDTO bizFileDTO = new BizFileDTO();
+					BeanUtils.copyProperties(item, bizFileDTO);
+					bizFileDTOList.add(bizFileDTO);
+				});
 			}
 			// 分类
 			this.getCategoryById(videoEntity.getCategoryId(), categoryDTO);
 			// 一级评价
-			List<RemarkEntity> remarkEntityList = remarkRepository.findAllByVideoIdAndParentIdAndDelFlag(videoId, -1L,
-					ConstantBaseData.IS_DELETE.FALSE.code);
-			remarkEntityList.forEach(item -> {
-				RemarkDTO remarkDTO = new RemarkDTO();
-				BeanUtils.copyProperties(item, remarkDTO);
-				// 查询子评论
-				// TODO 待完成
-				remarkDTOList.add(remarkDTO);
-			});
+			List<RemarkEntity> parentRemarkEntityList = remarkRepository.findAllByVideoIdAndParentIdAndDelFlag(videoId,
+					-1L, ConstantBaseData.IS_DELETE.FALSE.code);
+			if (!CollectionUtils.isEmpty(parentRemarkEntityList)) {
+				parentRemarkEntityList.forEach(parent -> {
+					RemarkDTO remarkDTO = this.transformEntity2DTO(parent);
+					// 查询子评论
+					List<RemarkEntity> childRemarkEntityList = remarkRepository.findAllByVideoIdAndParentIdAndDelFlag(
+							videoId, parent.getRemarkId(), ConstantBaseData.IS_DELETE.FALSE.code);
+					if (!CollectionUtils.isEmpty(childRemarkEntityList)) {
+						List<RemarkDTO> childRemarkDTOList = new LinkedList<>();
+						childRemarkEntityList.forEach(child -> childRemarkDTOList.add(this.transformEntity2DTO(child)));
+						remarkDTO.setChildRemarkDTOList(childRemarkDTOList);
+					}
+					remarkDTOList.add(remarkDTO);
+				});
+			}
 		}
+		// 组装数据
+		videoDTO.setVideoDetailDTO(videoDetailDTO);
+		videoDTO.setBizFileDTOList(bizFileDTOList);
+		videoDTO.setCategoryDTO(categoryDTO);
+		videoDTO.setRemarkDTO(remarkDTOList);
 		return videoDTO;
+	}
+
+	private RemarkDTO transformEntity2DTO(RemarkEntity parent) {
+		RemarkDTO remarkDTO = new RemarkDTO();
+		BeanUtils.copyProperties(parent, remarkDTO);
+		return remarkDTO;
 	}
 
 	private void getCategoryById(long categoryId, CategoryDTO categoryDTO) {
@@ -118,19 +141,6 @@ public class VideoServiceImpl implements VideoProvider {
 	}
 
 	@Override
-	public VideoDetailDTO getVideoDetail(long videoId) {
-		Optional<VideoEntity> optionalVideoEntity = videoRepository.findById(videoId);
-		if (optionalVideoEntity.isPresent()) {
-			// 详情
-			VideoEntity videoEntity = optionalVideoEntity.get();
-			VideoDetailDTO videoDetailDTO = new VideoDetailDTO();
-			BeanUtils.copyProperties(videoEntity, videoDetailDTO);
-			return videoDetailDTO;
-		}
-		return null;
-	}
-
-	@Override
 	public List<VideoDTO> getVideoOrderBySortKey(short sortKey, short sortValue) {
 		// 从缓存取数据
 		List<VideoDTO> videoDTOList = redissonTools
@@ -147,8 +157,7 @@ public class VideoServiceImpl implements VideoProvider {
 	@Override
 	public List<VideoDTO> getVideoListByCategoryId(Long categoryId, int pageIndex, int pageSize) {
 		// 从缓存取数据
-		List<VideoDTO> videoDTOList = redissonTools
-				.get(ConstantCache.KEY.CATEGORY_VIDEO_LIST.key + categoryId);
+		List<VideoDTO> videoDTOList = redissonTools.get(ConstantCache.KEY.CATEGORY_VIDEO_LIST.key + categoryId);
 		if (!CollectionUtils.isEmpty(videoDTOList)) {
 			return videoDTOList;
 		}
@@ -159,8 +168,15 @@ public class VideoServiceImpl implements VideoProvider {
 		return videoDTOList;
 	}
 
-	private List<VideoDTO> getPageSizeVideoList(List<VideoDTO> allVideoDTOList, int pageIndex,
-			int pageSize) {
+	/**
+	 * 根据页数分页
+	 * 
+	 * @param allVideoDTOList 所有列表
+	 * @param pageIndex 第几页
+	 * @param pageSize 每页大小
+	 * @return List<VideoDTO> 第几页数据
+	 */
+	private List<VideoDTO> getPageSizeVideoList(List<VideoDTO> allVideoDTOList, int pageIndex, int pageSize) {
 		if (allVideoDTOList.size() > pageSize) {
 			// 分页
 			Iterable<List<VideoDTO>> pagesIterable = Iterables.partition(allVideoDTOList, pageSize);

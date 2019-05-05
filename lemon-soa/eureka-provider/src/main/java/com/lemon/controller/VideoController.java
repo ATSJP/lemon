@@ -1,9 +1,10 @@
 package com.lemon.controller;
 
 import com.lemon.soa.api.dto.VideoDTO;
-import com.lemon.soa.api.dto.VideoDetailDTO;
 import com.lemon.soa.api.provider.VideoProvider;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -20,14 +21,7 @@ public class VideoController {
 
 	@GetMapping(value = "/video/{videoId}")
 	public VideoDTO getVideo(@PathVariable long videoId) {
-        // TODO 待测试
 		return videoProvider.getVideo(videoId);
-	}
-
-	@GetMapping(value = "/video/detail/{videoId}")
-	public VideoDetailDTO getVideoDetail(@PathVariable long videoId) {
-        // TODO 待测试
-		return videoProvider.getVideoDetail(videoId);
 	}
 
 	@GetMapping(value = "/video/getVideoOrderBySortKey/{sortKey}/{sortValue}")

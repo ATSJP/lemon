@@ -44,4 +44,8 @@ public class VideoDetailDTO {
 	 * 审核状态： 0 未审核 1 审核通过 2 审核未通过 3 已删除
 	 */
 	private Short	auditStatus;
+	/**
+	 * 上传时间
+	 */
+	private String	createTime;
 }

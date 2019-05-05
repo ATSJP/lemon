@@ -23,10 +23,6 @@ public class CategoryDTO {
 	 */
 	private Long				parentId;
 	/**
-	 * 是否展示
-	 */
-	private Short				display;
-	/**
 	 * 子类分类
 	 */
 	private List<CategoryDTO>	subCategoryDTOList;

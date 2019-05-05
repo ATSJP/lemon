@@ -43,11 +43,7 @@ public class RemarkDTO {
 	 */
 	private Long			parentId;
 	/**
-	 * 逻辑删除标识（0：显示；1：隐藏）
-	 */
-	private String			delFlag;
-	/**
 	 * 子评论
 	 */
-	private List<RemarkDTO>	remarkDTOList;
+	private List<RemarkDTO>	childRemarkDTOList;
 }
