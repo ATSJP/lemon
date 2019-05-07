@@ -67,8 +67,8 @@ public class VideoProviderImpl implements VideoProvider {
 			BeanUtils.copyProperties(videoEntity, videoDetailDTO);
 			Optional<LoginInfoEntity> loginInfoOptional = loginInfoRepository.findById(videoEntity.getUserId());
 			videoDetailDTO.setPlayNum(playDetailRepository.countAllByVideoId(videoEntity.getVideoId()));
-            loginInfoOptional.ifPresent(loginInfoEntity -> videoDetailDTO.setUserName(loginInfoEntity.getLoginName()));
-            videoDetailDTO.setCreateTime(DateUtils.formatTimestamp(videoEntity.getCreateTime().getTime()));
+			loginInfoOptional.ifPresent(loginInfoEntity -> videoDetailDTO.setUserName(loginInfoEntity.getLoginName()));
+			videoDetailDTO.setCreateTime(DateUtils.formatTimestamp(videoEntity.getCreateTime().getTime()));
 			// 文件
 			List<BizFileEntity> bizFileEntityList = bizFileRepository.findAllByLinkIdAndIsDel(videoId,
 					ConstantBaseData.IS_DELETE.FALSE.code);
@@ -115,6 +115,7 @@ public class VideoProviderImpl implements VideoProvider {
 	private RemarkDTO transformEntity2DTO(RemarkEntity parent) {
 		RemarkDTO remarkDTO = new RemarkDTO();
 		BeanUtils.copyProperties(parent, remarkDTO);
+		remarkDTO.setRemarkTime(DateUtils.formatTimestamp(parent.getCreateTime().getTime()));
 		return remarkDTO;
 	}
 

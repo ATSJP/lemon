@@ -16,7 +16,7 @@ import java.util.List;
 public interface CategoryProvider {
 
 	/**
-	 * 获取有效文件所有信息
+	 * 获取分类树
 	 *
 	 * @return List<CategoryDTO>
 	 */

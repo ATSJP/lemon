@@ -40,4 +40,20 @@ public interface ConstantBaseData {
 		}
 	}
 
+	enum IS_DO {
+		/**
+		 * 是否完成 ：0 否 1 是
+		 */
+		FALSE((short) 0, "否"),
+		TRUE((short) 1, "是");
+
+		public Short	code;
+		public String	desc;
+
+		IS_DO(Short code, String desc) {
+			this.code = code;
+			this.desc = desc;
+		}
+	}
+
 }

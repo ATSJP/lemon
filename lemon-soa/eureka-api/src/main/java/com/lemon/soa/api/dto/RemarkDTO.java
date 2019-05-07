@@ -35,6 +35,10 @@ public class RemarkDTO {
 	 */
 	private String			loginName;
 	/**
+	 * 评价时间
+	 */
+	private String			remarkTime;
+	/**
 	 * 视频id
 	 */
 	private Long			videoId;

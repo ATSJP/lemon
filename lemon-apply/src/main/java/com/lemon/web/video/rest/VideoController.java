@@ -3,7 +3,9 @@ package com.lemon.web.video.rest;
 import com.lemon.soa.api.contant.ConstantVideo;
 import com.lemon.soa.api.dto.VideoDTO;
 import com.lemon.soa.api.provider.VideoProvider;
+import com.lemon.web.video.request.VideoRequest;
 import com.lemon.web.video.response.VideoResponse;
+import com.lemon.web.video.service.VideoService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,13 +21,14 @@ import java.util.List;
 public class VideoController {
 
 	@Resource
-	private VideoProvider videoProvider;
+	private VideoProvider	videoProvider;
+	@Resource
+	private VideoService	videoService;
 
-	@GetMapping("/video/get/{videoId}")
-	public VideoResponse getVideo(@PathVariable(value = "videoId") long videoId) {
+	@GetMapping("/video/get")
+	public VideoResponse getVideo(VideoRequest request) {
 		VideoResponse response = new VideoResponse();
-		VideoDTO videoDTO = videoProvider.getVideo(videoId);
-		response.setVideoDTO(videoDTO);
+		videoService.getVideo(request, response);
 		return response;
 	}
 
@@ -42,14 +45,14 @@ public class VideoController {
 		return response;
 	}
 
-    /**
-     * 按照指定分类查找视频列表，并按指定大小分页，取出第page页的list
-     *
-     * @param categoryId 分类id
-     * @param pageIndex 页码
-     * @param size 大小
-     * @return VideoResponse
-     */
+	/**
+	 * 按照指定分类查找视频列表，并按指定大小分页，取出第page页的list
+	 *
+	 * @param categoryId 分类id
+	 * @param pageIndex 页码
+	 * @param size 大小
+	 * @return VideoResponse
+	 */
 	@GetMapping("/video/getVideoList/{categoryId}/{pageIndex}/{size}")
 	public VideoResponse getVideoListByCategoryId(@PathVariable(value = "categoryId") Long categoryId,
 			@PathVariable(value = "pageIndex") int pageIndex, @PathVariable(value = "size") int size) {

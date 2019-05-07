@@ -28,4 +28,12 @@ public class VideoDTO {
 	 * 评价
 	 */
 	private List<RemarkDTO>		remarkDTO;
+	/**
+	 * 是否已经点赞 0 否 1 是
+	 */
+	private Short				isUp;
+	/**
+	 * 是否已经收藏 0 否 1 是
+	 */
+	private Short				isCollect;
 }
