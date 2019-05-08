@@ -27,8 +27,4 @@ public class BaseResponse implements Serializable {
      * 返回描述
      */
     private String msg = ConstantApi.CODE.SUCCESS.getDesc();
-    /**
-     * 返回数据
-     */
-    private Object data;
 }
