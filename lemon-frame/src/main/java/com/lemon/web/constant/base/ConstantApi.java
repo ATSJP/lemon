@@ -1,4 +1,4 @@
-package com.lemon.web.constant;
+package com.lemon.web.constant.base;
 
 /**
  * API接口公用返回提示code定义

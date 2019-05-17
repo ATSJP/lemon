@@ -1,6 +1,6 @@
 package com.lemon.web.base.response;
 
-import com.lemon.web.constant.ConstantApi;
+import com.lemon.web.constant.base.ConstantApi;
 import lombok.Data;
 
 import java.io.Serializable;

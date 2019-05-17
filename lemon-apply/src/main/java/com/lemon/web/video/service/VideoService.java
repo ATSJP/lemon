@@ -4,7 +4,7 @@ import com.lemon.repository.CollectionDetailRepository;
 import com.lemon.repository.UpDetailRepository;
 import com.lemon.soa.api.dto.VideoDTO;
 import com.lemon.soa.api.provider.VideoProvider;
-import com.lemon.web.constant.ConstantBaseData;
+import com.lemon.web.constant.base.ConstantBaseData;
 import com.lemon.web.video.request.VideoRequest;
 import com.lemon.web.video.response.VideoResponse;
 import org.springframework.stereotype.Service;
@@ -26,6 +26,12 @@ public class VideoService {
 	@Resource
 	private CollectionDetailRepository	collectionDetailRepository;
 
+	/**
+	 * 获取单个视频详情
+	 *
+	 * @param request req
+	 * @param response res
+	 */
 	public void getVideo(VideoRequest request, VideoResponse response) {
 		Long videoId = request.getVideoId();
 		VideoDTO videoDTO = videoProvider.getVideo(videoId);

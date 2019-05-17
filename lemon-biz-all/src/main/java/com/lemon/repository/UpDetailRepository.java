@@ -7,24 +7,31 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * @author sjp 2019/1/10
+ * UpDetailRepository
+ * 
+ * @author sjp
+ * @date 2019/1/10
  */
 @Repository
 public interface UpDetailRepository extends CrudRepository<UpDetailEntity, Long> {
 
 	/**
+	 * 根据用户id，获取指定视频id，点赞数list
 	 * 
-	 * @param videoId
-	 * @param createId
+	 * @param videoId 视频id
+	 * @param createId 用户id
+	 * @param isDel 是否删除
 	 * @return List<UpDetailEntity>
 	 */
-	List<UpDetailEntity> findAllByVideoIdAndCreateId(long videoId, long createId);
+	List<UpDetailEntity> findAllByVideoIdAndCreateIdAndIsDel(long videoId, long createId, short isDel);
 
 	/**
-	 *
-	 * @param videoId
-	 * @param createId
+	 * 根据用户id，统计指定视频id，点赞数
+	 * 
+	 * @param videoId 视频id
+	 * @param createId 用户id
+	 * @param isDel 是否删除
 	 * @return List<UpDetailEntity>
 	 */
-	int countAllByVideoIdAndCreateId(long videoId, long createId);
+	int countAllByVideoIdAndCreateIdAndIsDel(long videoId, long createId, short isDel);
 }

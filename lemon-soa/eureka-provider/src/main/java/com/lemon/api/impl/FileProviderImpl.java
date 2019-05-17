@@ -4,7 +4,7 @@ import com.lemon.entity.BizFileEntity;
 import com.lemon.repository.BizFileRepository;
 import com.lemon.soa.api.dto.BizFileDTO;
 import com.lemon.soa.api.provider.FileProvider;
-import com.lemon.web.constant.ConstantBaseData;
+import com.lemon.web.constant.base.ConstantBaseData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;

@@ -1,4 +1,4 @@
-package com.lemon.web.constant;
+package com.lemon.web.constant.base;
 
 /**
  * 缓存公用cacheKey定义

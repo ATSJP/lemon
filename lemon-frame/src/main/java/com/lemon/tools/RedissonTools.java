@@ -59,6 +59,7 @@ public class RedissonTools {
 	public boolean tryLock(String key, int timeout, int expires) {
 		RLock rLock = redissonClient.getLock(key);
 		try {
+			// 获取锁有timeout等待时间 expires后释放锁
 			return rLock.tryLock(timeout, expires, TimeUnit.SECONDS);
 		} catch (InterruptedException e) {
 			logger.error("try lock fail，key:{} exception:{}", key, e.getMessage());

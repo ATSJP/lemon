@@ -25,6 +25,12 @@ public class VideoController {
 	@Resource
 	private VideoService	videoService;
 
+	/**
+	 * 获取单个视频详情
+	 * 
+	 * @param request req
+	 * @return VideoResponse
+	 */
 	@GetMapping("/video/get")
 	public VideoResponse getVideo(VideoRequest request) {
 		VideoResponse response = new VideoResponse();

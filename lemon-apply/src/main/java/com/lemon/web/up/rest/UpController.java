@@ -1,5 +1,6 @@
 package com.lemon.web.up.rest;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,10 +22,29 @@ public class UpController {
 	@Resource
 	private UpService upService;
 
+	/**
+	 * 用户点赞视频
+	 * 
+	 * @param request req
+	 * @return UpResponse
+	 */
 	@PutMapping("/up")
-	public UpResponse up(UpRequest request) {
+	public UpResponse upVideo(UpRequest request) {
 		UpResponse response = new UpResponse();
-		upService.add(request, response);
+		upService.upVideo(request, response);
+		return response;
+	}
+
+	/**
+	 * 用户取消点赞
+	 * 
+	 * @param request req
+	 * @return UpResponse
+	 */
+	@DeleteMapping("/up")
+	public UpResponse cancelUpVideo(UpRequest request) {
+		UpResponse response = new UpResponse();
+		upService.cancelUpVideo(request, response);
 		return response;
 	}
 

@@ -2,7 +2,7 @@ package com.lemon.shiro.realm;
 
 import com.lemon.shiro.token.StatelessToken;
 import com.lemon.tools.RedissonTools;
-import com.lemon.web.constant.ConstantCache;
+import com.lemon.web.constant.base.ConstantCache;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;

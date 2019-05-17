@@ -4,7 +4,7 @@ import com.lemon.entity.CategoryEntity;
 import com.lemon.repository.CategoryRepository;
 import com.lemon.soa.api.dto.CategoryDTO;
 import com.lemon.soa.api.provider.CategoryProvider;
-import com.lemon.web.constant.ConstantBaseData;
+import com.lemon.web.constant.base.ConstantBaseData;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;

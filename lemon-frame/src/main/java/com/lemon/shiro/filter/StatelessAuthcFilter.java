@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.lemon.shiro.token.StatelessToken;
 import com.lemon.utils.CookieUtils;
 import com.lemon.web.base.response.BaseResponse;
-import com.lemon.web.constant.ConstantApi;
+import com.lemon.web.constant.base.ConstantApi;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

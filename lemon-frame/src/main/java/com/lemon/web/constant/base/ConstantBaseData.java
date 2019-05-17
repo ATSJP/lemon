@@ -1,4 +1,4 @@
-package com.lemon.web.constant;
+package com.lemon.web.constant.base;
 
 /**
  * 基础常量枚举
@@ -7,10 +7,14 @@ package com.lemon.web.constant;
  * @date 2019/4/30
  **/
 public interface ConstantBaseData {
+	/**
+	 * 连字符
+	 */
+	String CN = "_";
 
 	enum IS_DELETE {
 		/**
-		 * 0 未删除 1 已删除
+		 * 逻辑删除标识 0 未删除 1 已删除
 		 */
 		FALSE((short) 0, "未删除"),
 		TRUE((short) 1, "已删除");
