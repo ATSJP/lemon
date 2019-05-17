@@ -98,10 +98,10 @@ public class CollectionDetailEntity {
 			return true;
 		if (o == null || getClass() != o.getClass())
 			return false;
-		CollectionDetailEntity that = (CollectionDetailEntity) o;
-		return collectionId == that.collectionId && videoId == that.videoId && createId == that.createId
-				&& Objects.equals(isDel, that.isDel) && Objects.equals(createTime, that.createTime)
-				&& Objects.equals(updateId, that.updateId) && Objects.equals(updateTime, that.updateTime);
+		CollectionDetailEntity entity = (CollectionDetailEntity) o;
+		return collectionId == entity.collectionId && videoId == entity.videoId && createId == entity.createId
+				&& Objects.equals(isDel, entity.isDel) && Objects.equals(createTime, entity.createTime)
+				&& Objects.equals(updateId, entity.updateId) && Objects.equals(updateTime, entity.updateTime);
 	}
 
 	@Override

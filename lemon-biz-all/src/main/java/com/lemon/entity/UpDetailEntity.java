@@ -15,6 +15,7 @@ import java.util.Objects;
 public class UpDetailEntity {
 	private long		upId;
 	private long		videoId;
+	private Short		isDel;
 	private long		createId;
 	private Timestamp	createTime;
 	private Long		updateId;
@@ -39,6 +40,16 @@ public class UpDetailEntity {
 
 	public void setVideoId(long videoId) {
 		this.videoId = videoId;
+	}
+
+	@Basic
+	@Column(name = "is_del")
+	public Short getIsDel() {
+		return isDel;
+	}
+
+	public void setIsDel(Short isDel) {
+		this.isDel = isDel;
 	}
 
 	@Basic
@@ -89,12 +100,12 @@ public class UpDetailEntity {
 			return false;
 		UpDetailEntity that = (UpDetailEntity) o;
 		return upId == that.upId && videoId == that.videoId && createId == that.createId
-				&& Objects.equals(createTime, that.createTime) && Objects.equals(updateId, that.updateId)
-				&& Objects.equals(updateTime, that.updateTime);
+				&& Objects.equals(isDel, that.isDel) && Objects.equals(createTime, that.createTime)
+				&& Objects.equals(updateId, that.updateId) && Objects.equals(updateTime, that.updateTime);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(upId, videoId, createId, createTime, updateId, updateTime);
+		return Objects.hash(upId, videoId, isDel, createId, createTime, updateId, updateTime);
 	}
 }

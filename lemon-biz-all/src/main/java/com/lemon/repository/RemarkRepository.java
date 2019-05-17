@@ -22,7 +22,7 @@ public interface RemarkRepository extends CrudRepository<RemarkEntity, Long> {
 	 * @param delFlag 是否删除
 	 * @return List<RemarkEntity>
 	 */
-	List<RemarkEntity> findAllByVideoIdAndParentIdAndDelFlag(long videoId, long parentId, short delFlag);
+	List<RemarkEntity> findAllByVideoIdAndParentIdAndIsDel(long videoId, long parentId, short delFlag);
 
     /**
      * 统计每个视频的播放量

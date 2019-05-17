@@ -5,31 +5,31 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
- * PayLogEntity
+ * PayTypeEntity
  *
  * @author sjp
  * @date 2019/5/17
  */
 @Entity
-@Table(name = "pay_log", schema = "lemon", catalog = "")
-public class PayLogEntity {
-	private long		logId;
+@Table(name = "pay_type", schema = "lemon", catalog = "")
+public class PayTypeEntity {
+	private long		id;
 	private short		payTypeKey;
-	private Timestamp	payTime;
-	private Short		isDel;
+	private String		payTypeName;
+	private short		inUse;
 	private Long		createId;
 	private Timestamp	createTime;
 	private Long		updateId;
 	private Timestamp	updateTime;
 
 	@Id
-	@Column(name = "log_id")
-	public long getLogId() {
-		return logId;
+	@Column(name = "id")
+	public long getId() {
+		return id;
 	}
 
-	public void setLogId(long logId) {
-		this.logId = logId;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	@Basic
@@ -43,23 +43,23 @@ public class PayLogEntity {
 	}
 
 	@Basic
-	@Column(name = "pay_time")
-	public Timestamp getPayTime() {
-		return payTime;
+	@Column(name = "pay_type_name")
+	public String getPayTypeName() {
+		return payTypeName;
 	}
 
-	public void setPayTime(Timestamp payTime) {
-		this.payTime = payTime;
+	public void setPayTypeName(String payTypeName) {
+		this.payTypeName = payTypeName;
 	}
 
 	@Basic
-	@Column(name = "is_del")
-	public Short getIsDel() {
-		return isDel;
+	@Column(name = "in_use")
+	public short getInUse() {
+		return inUse;
 	}
 
-	public void setIsDel(Short isDel) {
-		this.isDel = isDel;
+	public void setInUse(short inUse) {
+		this.inUse = inUse;
 	}
 
 	@Basic
@@ -108,15 +108,15 @@ public class PayLogEntity {
 			return true;
 		if (o == null || getClass() != o.getClass())
 			return false;
-		PayLogEntity that = (PayLogEntity) o;
-		return logId == that.logId && payTypeKey == that.payTypeKey && Objects.equals(payTime, that.payTime)
-				&& Objects.equals(isDel, that.isDel) && Objects.equals(createId, that.createId)
+		PayTypeEntity that = (PayTypeEntity) o;
+		return id == that.id && payTypeKey == that.payTypeKey && inUse == that.inUse
+				&& Objects.equals(payTypeName, that.payTypeName) && Objects.equals(createId, that.createId)
 				&& Objects.equals(createTime, that.createTime) && Objects.equals(updateId, that.updateId)
 				&& Objects.equals(updateTime, that.updateTime);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(logId, payTypeKey, payTime, isDel, createId, createTime, updateId, updateTime);
+		return Objects.hash(id, payTypeKey, payTypeName, inUse, createId, createTime, updateId, updateTime);
 	}
 }

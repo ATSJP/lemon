@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
+ * RemarkEntity
+ *
  * @author sjp
  * @date 2019/5/1
  **/
@@ -19,7 +21,7 @@ public class RemarkEntity {
     private String loginName;
     private long videoId;
     private Long parentId;
-    private Short delFlag;
+	private Short		isDel;
     private long createId;
     private Timestamp createTime;
     private long updateId;
@@ -107,13 +109,13 @@ public class RemarkEntity {
     }
 
     @Basic
-    @Column(name = "del_flag")
-    public Short getDelFlag() {
-        return delFlag;
+	@Column(name = "is_del")
+	public Short getIsDel() {
+		return isDel;
     }
 
-    public void setDelFlag(Short delFlag) {
-        this.delFlag = delFlag;
+	public void setIsDel(Short isDel) {
+		this.isDel = isDel;
     }
 
     @Basic
@@ -171,13 +173,14 @@ public class RemarkEntity {
             Objects.equals(repeatName, that.repeatName) &&
             Objects.equals(loginName, that.loginName) &&
             Objects.equals(parentId, that.parentId) &&
-            Objects.equals(delFlag, that.delFlag) &&
+				Objects.equals(isDel, that.isDel) &&
             Objects.equals(createTime, that.createTime) &&
             Objects.equals(updateTime, that.updateTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(remarkId, remarkContext, repeatId, repeatName, loginId, loginName, videoId, parentId, delFlag, createId, createTime, updateId, updateTime);
+		return Objects.hash(remarkId, remarkContext, repeatId, repeatName, loginId, loginName, videoId, parentId, isDel,
+				createId, createTime, updateId, updateTime);
     }
 }

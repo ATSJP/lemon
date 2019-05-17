@@ -1,10 +1,13 @@
 package com.lemon.entity;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
+ * UserInfoEntity
+ *
  * @author sjp
  * @date 2019/2/11
  **/
@@ -14,15 +17,15 @@ public class UserInfoEntity {
     private long loginId;
     private String userName;
     private String engName;
-    private short gender;
-    private Timestamp birthday;
+	private Short		gender;
+	private Date		birthday;
     private Integer grade;
     private String userType;
     private String idCard;
     private String qqAccount;
     private String weChatAccount;
-    private String armCard;
     private String drivingLicense;
+	private String		armCard;
     private String passPort;
     private String simplifiedChinese;
     private long createId;
@@ -62,21 +65,21 @@ public class UserInfoEntity {
 
     @Basic
     @Column(name = "gender")
-    public short getGender() {
+	public Short getGender() {
         return gender;
     }
 
-    public void setGender(short gender) {
+	public void setGender(Short gender) {
         this.gender = gender;
     }
 
     @Basic
     @Column(name = "birthday")
-    public Timestamp getBirthday() {
+	public Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Timestamp birthday) {
+	public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 
@@ -131,16 +134,6 @@ public class UserInfoEntity {
     }
 
     @Basic
-    @Column(name = "arm_card")
-    public String getArmCard() {
-        return armCard;
-    }
-
-    public void setArmCard(String armCard) {
-        this.armCard = armCard;
-    }
-
-    @Basic
     @Column(name = "driving_license")
     public String getDrivingLicense() {
         return drivingLicense;
@@ -149,6 +142,16 @@ public class UserInfoEntity {
     public void setDrivingLicense(String drivingLicense) {
         this.drivingLicense = drivingLicense;
     }
+
+	@Basic
+	@Column(name = "arm_card")
+	public String getArmCard() {
+		return armCard;
+	}
+
+	public void setArmCard(String armCard) {
+		this.armCard = armCard;
+	}
 
     @Basic
     @Column(name = "pass_port")
@@ -216,27 +219,28 @@ public class UserInfoEntity {
         if (o == null || getClass() != o.getClass()) return false;
         UserInfoEntity that = (UserInfoEntity) o;
         return loginId == that.loginId &&
-            gender == that.gender &&
             createId == that.createId &&
             updateId == that.updateId &&
             Objects.equals(userName, that.userName) &&
             Objects.equals(engName, that.engName) &&
+				Objects.equals(gender, that.gender) &&
             Objects.equals(birthday, that.birthday) &&
             Objects.equals(grade, that.grade) &&
             Objects.equals(userType, that.userType) &&
             Objects.equals(idCard, that.idCard) &&
             Objects.equals(qqAccount, that.qqAccount) &&
             Objects.equals(weChatAccount, that.weChatAccount) &&
-            Objects.equals(createTime, that.createTime) &&
-            Objects.equals(updateTime, that.updateTime) &&
-            Objects.equals(armCard, that.armCard) &&
             Objects.equals(drivingLicense, that.drivingLicense) &&
+				Objects.equals(armCard, that.armCard) &&
             Objects.equals(passPort, that.passPort) &&
-            Objects.equals(simplifiedChinese, that.simplifiedChinese);
+				Objects.equals(simplifiedChinese, that.simplifiedChinese) && Objects.equals(createTime, that.createTime)
+				&& Objects.equals(updateTime, that.updateTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(loginId, userName, engName, gender, birthday, grade, userType, idCard, qqAccount, weChatAccount, createId, createTime, updateId, updateTime, armCard, drivingLicense, passPort, simplifiedChinese);
+		return Objects.hash(loginId, userName, engName, gender, birthday, grade, userType, idCard, qqAccount,
+				weChatAccount, drivingLicense, armCard, passPort, simplifiedChinese, createId, createTime, updateId,
+				updateTime);
     }
 }

@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
+ * LoginInfoEntity
+ *
  * @author sjp
  * @date 2019/5/1
  **/
@@ -14,7 +16,7 @@ public class LoginInfoEntity {
     private long loginId;
     private String loginName;
     private String loginPwd;
-    private short loginNameUpdateTimes;
+	private Short		loginNameUpdateTimes;
     private String email;
     private Short emailStatus;
     private String mobile;
@@ -61,11 +63,11 @@ public class LoginInfoEntity {
 
     @Basic
     @Column(name = "login_name_update_times")
-    public short getLoginNameUpdateTimes() {
+	public Short getLoginNameUpdateTimes() {
         return loginNameUpdateTimes;
     }
 
-    public void setLoginNameUpdateTimes(short loginNameUpdateTimes) {
+	public void setLoginNameUpdateTimes(Short loginNameUpdateTimes) {
         this.loginNameUpdateTimes = loginNameUpdateTimes;
     }
 
@@ -195,11 +197,11 @@ public class LoginInfoEntity {
         if (o == null || getClass() != o.getClass()) return false;
         LoginInfoEntity that = (LoginInfoEntity) o;
         return loginId == that.loginId &&
-            loginNameUpdateTimes == that.loginNameUpdateTimes &&
             createId == that.createId &&
             updateId == that.updateId &&
             Objects.equals(loginName, that.loginName) &&
             Objects.equals(loginPwd, that.loginPwd) &&
+				Objects.equals(loginNameUpdateTimes, that.loginNameUpdateTimes) &&
             Objects.equals(email, that.email) &&
             Objects.equals(emailStatus, that.emailStatus) &&
             Objects.equals(mobile, that.mobile) &&

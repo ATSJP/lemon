@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
+ * CategoryEntity
+ *
  * @author sjp
  * @date 2019/2/11
  **/

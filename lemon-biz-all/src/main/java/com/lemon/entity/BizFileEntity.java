@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
+ * ` * BizFileEntity
+ *
  * @author sjp
  * @date 2019/5/1
  **/

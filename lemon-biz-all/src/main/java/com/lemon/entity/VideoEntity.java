@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
+ * VideoEntity
+ *
  * @author sjp
  * @date 2019/2/11
  **/
@@ -145,6 +147,7 @@ public class VideoEntity {
             updateId == that.updateId &&
             Objects.equals(videoName, that.videoName) &&
             Objects.equals(videoContext, that.videoContext) &&
+				Objects.equals(time, that.time) &&
             Objects.equals(userId, that.userId) &&
             Objects.equals(auditStatus, that.auditStatus) &&
             Objects.equals(createTime, that.createTime) &&
@@ -153,6 +156,7 @@ public class VideoEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(videoId, videoName, videoContext, categoryId, userId, auditStatus, createId, createTime, updateId, updateTime);
+		return Objects.hash(videoId, videoName, videoContext, time, categoryId, userId, auditStatus, createId,
+				createTime, updateId, updateTime);
     }
 }

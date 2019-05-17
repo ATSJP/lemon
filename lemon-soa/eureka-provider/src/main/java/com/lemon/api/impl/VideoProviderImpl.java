@@ -87,13 +87,13 @@ public class VideoProviderImpl implements VideoProvider {
 			// 分类
 			this.getCategoryById(videoEntity.getCategoryId(), categoryDTO);
 			// 一级评价
-			List<RemarkEntity> parentRemarkEntityList = remarkRepository.findAllByVideoIdAndParentIdAndDelFlag(videoId,
+			List<RemarkEntity> parentRemarkEntityList = remarkRepository.findAllByVideoIdAndParentIdAndIsDel(videoId,
 					-1L, ConstantBaseData.IS_DELETE.FALSE.code);
 			if (!CollectionUtils.isEmpty(parentRemarkEntityList)) {
 				parentRemarkEntityList.forEach(parent -> {
 					RemarkDTO remarkDTO = this.transformEntity2DTO(parent);
 					// 查询子评论
-					List<RemarkEntity> childRemarkEntityList = remarkRepository.findAllByVideoIdAndParentIdAndDelFlag(
+					List<RemarkEntity> childRemarkEntityList = remarkRepository.findAllByVideoIdAndParentIdAndIsDel(
 							videoId, parent.getRemarkId(), ConstantBaseData.IS_DELETE.FALSE.code);
 					if (!CollectionUtils.isEmpty(childRemarkEntityList)) {
 						List<RemarkDTO> childRemarkDTOList = new LinkedList<>();

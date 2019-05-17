@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
+ * MessageEntity
+ *
  * @author sjp
  * @date 2019/2/11
  **/
@@ -17,7 +19,7 @@ public class MessageEntity {
     private Long repeatId;
     private long loginId;
     private Long parentId;
-    private String delFlag;
+	private Short		isDel;
     private long createId;
     private Timestamp createTime;
     private long updateId;
@@ -85,13 +87,13 @@ public class MessageEntity {
     }
 
     @Basic
-    @Column(name = "del_flag")
-    public String getDelFlag() {
-        return delFlag;
+	@Column(name = "is_del")
+	public Short getIsDel() {
+		return isDel;
     }
 
-    public void setDelFlag(String delFlag) {
-        this.delFlag = delFlag;
+	public void setIsDel(Short isDel) {
+		this.isDel = isDel;
     }
 
     @Basic
@@ -147,13 +149,14 @@ public class MessageEntity {
             Objects.equals(messageContext, that.messageContext) &&
             Objects.equals(repeatId, that.repeatId) &&
             Objects.equals(parentId, that.parentId) &&
-            Objects.equals(delFlag, that.delFlag) &&
+				Objects.equals(isDel, that.isDel) &&
             Objects.equals(createTime, that.createTime) &&
             Objects.equals(updateTime, that.updateTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(messageId, messageContext, videoId, repeatId, loginId, parentId, delFlag, createId, createTime, updateId, updateTime);
+		return Objects.hash(messageId, messageContext, videoId, repeatId, loginId, parentId, isDel, createId,
+				createTime, updateId, updateTime);
     }
 }

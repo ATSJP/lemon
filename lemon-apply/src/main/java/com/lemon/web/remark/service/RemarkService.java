@@ -73,7 +73,7 @@ public class RemarkService {
 		entity.setLoginId(loginId);
 		entity.setLoginName(loginUser.getLoginName());
 		entity.setParentId(parentId);
-		entity.setDelFlag(ConstantBaseData.IS_DELETE.FALSE.code);
+		entity.setIsDel(ConstantBaseData.IS_DELETE.FALSE.code);
 		entity.setCreateTime(DateUtils.getCurrentTime());
 		entity.setCreateId(loginId);
 		entity.setUpdateId(loginId);

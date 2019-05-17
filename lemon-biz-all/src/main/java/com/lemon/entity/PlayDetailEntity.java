@@ -19,6 +19,8 @@ public class PlayDetailEntity {
     private String sid;
     private Long createId;
     private Timestamp createTime;
+	private Long		updateId;
+	private Timestamp	updateTime;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -81,6 +83,26 @@ public class PlayDetailEntity {
         this.createTime = createTime;
     }
 
+	@Basic
+	@Column(name = "update_id")
+	public Long getUpdateId() {
+		return updateId;
+	}
+
+	public void setUpdateId(Long updateId) {
+		this.updateId = updateId;
+	}
+
+	@Basic
+	@Column(name = "update_time")
+	public Timestamp getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Timestamp updateTime) {
+		this.updateTime = updateTime;
+	}
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -91,11 +113,12 @@ public class PlayDetailEntity {
             Objects.equals(ip, that.ip) &&
             Objects.equals(sid, that.sid) &&
             Objects.equals(createId, that.createId) &&
-            Objects.equals(createTime, that.createTime);
+				Objects.equals(createTime, that.createTime) && Objects.equals(updateId, that.updateId)
+				&& Objects.equals(updateTime, that.updateTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(detailId, videoId, ip, sid, createId, createTime);
+		return Objects.hash(detailId, videoId, ip, sid, createId, createTime, updateId, updateTime);
     }
 }
