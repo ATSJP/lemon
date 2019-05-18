@@ -35,13 +35,22 @@ public class VideoService {
 	public void getVideo(VideoRequest request, VideoResponse response) {
 		Long videoId = request.getVideoId();
 		VideoDTO videoDTO = videoProvider.getVideo(videoId);
-		// 是否已经点赞
-		int upNum = upDetailRepository.countAllByVideoIdAndCreateId(videoId, request.getUid());
-		// 是否已经收藏
-		int collectNum = collectionDetailRepository.countAllByVideoIdAndCreateIdAndIsDel(videoId, request.getUid(),
-				ConstantBaseData.IS_DELETE.FALSE.code);
-		videoDTO.setIsCollect(collectNum <= 0 ? ConstantBaseData.IS_DO.FALSE.code : ConstantBaseData.IS_DO.TRUE.code);
-		videoDTO.setIsUp(upNum <= 0 ? ConstantBaseData.IS_DO.FALSE.code : ConstantBaseData.IS_DO.TRUE.code);
+		// 如果当前已有用户登陆，则需要查询当前用户的数据
+		if (request.getUid() != null) {
+			// 是否已经点赞
+			int upNum = upDetailRepository.countAllByVideoIdAndCreateIdAndIsDel(videoId, request.getUid(),
+					ConstantBaseData.IS_DELETE.FALSE.code);
+			// 是否已经收藏
+			int collectNum = collectionDetailRepository.countAllByVideoIdAndCreateIdAndIsDel(videoId, request.getUid(),
+					ConstantBaseData.IS_DELETE.FALSE.code);
+			videoDTO.setIsCollect(
+					collectNum <= 0 ? ConstantBaseData.IS_DO.FALSE.code : ConstantBaseData.IS_DO.TRUE.code);
+			videoDTO.setIsUp(upNum <= 0 ? ConstantBaseData.IS_DO.FALSE.code : ConstantBaseData.IS_DO.TRUE.code);
+			response.setVideoDTO(videoDTO);
+			return;
+		}
+		videoDTO.setIsCollect(ConstantBaseData.IS_DO.FALSE.code);
+		videoDTO.setIsUp(ConstantBaseData.IS_DO.FALSE.code);
 		response.setVideoDTO(videoDTO);
 	}
 
