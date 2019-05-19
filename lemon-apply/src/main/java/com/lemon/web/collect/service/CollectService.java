@@ -44,6 +44,7 @@ public class CollectService {
 		if (redissonTools.tryLock(ConstantLock.KEY.COLLECT_LOCK.key + videoId + ConstantBaseData.CN + uid,
 				ConstantLock.KEY.COLLECT_LOCK.timeOut, ConstantLock.KEY.COLLECT_LOCK.expires)) {
 			this.addNewCollect(response, videoId, uid);
+			redissonTools.unlockNoWait(ConstantLock.KEY.COLLECT_LOCK.key + videoId + ConstantBaseData.CN + uid);
 		} else {
 			response.setCode(ConstantApi.CODE.SYSTEM_ERROR.getCode());
 			response.setMsg(ConstantApi.CODE.SYSTEM_ERROR.getDesc());

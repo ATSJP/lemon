@@ -12,8 +12,8 @@ public interface ConstantLock {
 		/**
 		 * 业务分布式锁key、描述、超时时间
 		 */
-		COLLECT_LOCK("COLLECT_LOCK_", "收藏锁", 2, 5),
-		UP_LOCK("UP_LOCK_", "点赞锁", 2, 5);
+		COLLECT_LOCK("COLLECT_LOCK_", "收藏锁", 2, 1),
+		UP_LOCK("UP_LOCK_", "点赞锁", 2, 1);
 
 		public String	key;
 		public String	desc;

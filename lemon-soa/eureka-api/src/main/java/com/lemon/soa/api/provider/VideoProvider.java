@@ -48,4 +48,16 @@ public interface VideoProvider {
 	List<VideoDTO> getVideoListByCategoryId(@PathVariable(value = "categoryId") Long categoryId,
 			@PathVariable(value = "pageIndex") int pageIndex, @PathVariable(value = "size") int size);
 
+	/**
+	 * 分页查找当前用户的视频列表
+	 *
+	 * @param loginId 会员id
+	 * @param pageIndex 页面
+	 * @param size 分页大小
+	 * @return List<VideoDTO>
+	 */
+	@GetMapping("/video/getVideoListByLoginId/{loginId}/{pageIndex}/{size}")
+	List<VideoDTO> getVideoListByLoginId(@PathVariable(value = "loginId") Long loginId,
+			@PathVariable(value = "pageIndex") int pageIndex, @PathVariable(value = "size") int size);
+
 }

@@ -42,3 +42,8 @@ eureka:
     client:
         service-url:
             defaultZone: http://eureka.lemon.com/eureka/
+
+# 视频上传路径
+video_source_path: E:\IDEA_WORK\web\openSource\lemon-front\src\video\
+# 图片上传路径
+image_source_path: E:\IDEA_WORK\web\openSource\lemon-front\src\image\

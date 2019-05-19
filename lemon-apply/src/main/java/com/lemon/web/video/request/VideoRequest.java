@@ -11,5 +11,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class VideoRequest extends BaseRequest {
-	private Long videoId;
+	private Long	videoId;
+	private String	videoName;
+	private String	videoContext;
+	private Long	categoryId;
 }

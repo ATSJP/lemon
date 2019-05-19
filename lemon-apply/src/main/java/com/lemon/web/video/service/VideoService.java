@@ -1,9 +1,14 @@
 package com.lemon.web.video.service;
 
+import com.lemon.entity.VideoEntity;
 import com.lemon.repository.CollectionDetailRepository;
 import com.lemon.repository.UpDetailRepository;
+import com.lemon.repository.VideoRepository;
+import com.lemon.soa.api.contant.ConstantVideo;
 import com.lemon.soa.api.dto.VideoDTO;
+import com.lemon.soa.api.dto.VideoDetailDTO;
 import com.lemon.soa.api.provider.VideoProvider;
+import com.lemon.utils.DateUtils;
 import com.lemon.web.constant.base.ConstantBaseData;
 import com.lemon.web.video.request.VideoRequest;
 import com.lemon.web.video.response.VideoResponse;
@@ -21,6 +26,8 @@ import javax.annotation.Resource;
 public class VideoService {
 	@Resource
 	private VideoProvider				videoProvider;
+	@Resource
+	private VideoRepository				videoRepository;
 	@Resource
 	private UpDetailRepository			upDetailRepository;
 	@Resource
@@ -54,4 +61,22 @@ public class VideoService {
 		response.setVideoDTO(videoDTO);
 	}
 
+	public void addVideo(VideoRequest request, VideoResponse response) {
+		Long categoryId = request.getCategoryId();
+		String videoName = request.getVideoName();
+		String videoContext = request.getVideoContext();
+		VideoEntity videoEntity = new VideoEntity();
+		videoEntity.setVideoName(videoName);
+		videoEntity.setVideoContext(videoContext);
+		videoEntity.setCategoryId(categoryId);
+		videoEntity.setUserId(request.getUid());
+		videoEntity.setAuditStatus(ConstantVideo.AUDIT_STATUS.WAIT_AUDIT.code);
+		videoEntity.setCreateId(request.getUid());
+		videoEntity.setCreateTime(DateUtils.getCurrentTime());
+		videoRepository.save(videoEntity);
+		VideoDetailDTO videoDetailDTO = new VideoDetailDTO();
+		videoDetailDTO.setVideoId(videoEntity.getVideoId());
+		videoDetailDTO.setVideoName(videoName);
+		response.setVideoDetailDTO(videoDetailDTO);
+	}
 }

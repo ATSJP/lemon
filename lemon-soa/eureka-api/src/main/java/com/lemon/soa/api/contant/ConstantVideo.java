@@ -51,4 +51,23 @@ public interface ConstantVideo {
 		}
 	}
 
+	enum AUDIT_STATUS {
+		/**
+		 * 审核状态： 0 未审核 1 审核通过 2 审核未通过 3 已删除
+		 */
+		WAIT_AUDIT((short) 0, "未审核"),
+		PASS((short) 1, "审核通过"),
+		REJECT((short) 2, "审核未通过"),
+		DELETE((short) 3, "已删除"),;
+
+		public Short	code;
+		public String	desc;
+
+		AUDIT_STATUS(Short code, String desc) {
+			this.code = code;
+			this.desc = desc;
+		}
+
+	}
+
 }
