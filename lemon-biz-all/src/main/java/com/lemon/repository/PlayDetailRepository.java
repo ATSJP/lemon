@@ -31,4 +31,11 @@ public interface PlayDetailRepository extends CrudRepository<PlayDetailEntity, L
 	 * @return int 播放量
 	 */
 	int countAllByVideoId(long videoId);
+
+	/**
+	 * 统计当前视频该用户是否已经看过
+	 * @param createId 创建人id
+	 * @return int 播放量
+	 */
+	int countAllByCreateIdAndVideoId(long createId, long videoId);
 }

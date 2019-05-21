@@ -25,6 +25,15 @@ public interface CollectionDetailRepository extends CrudRepository<CollectionDet
 	List<CollectionDetailEntity> findAllByVideoIdAndCreateIdAndIsDel(long videoId, long createId, short isDel);
 
 	/**
+	 * 根据创建人获取收藏list
+	 * 
+	 * @param createId 创建人id
+	 * @param isDel 是否删除
+	 * @return List<CollectionDetailEntity>
+	 */
+	List<CollectionDetailEntity> findAllByCreateIdAndIsDel(long createId, short isDel);
+
+	/**
 	 * 统计当前指定视频，该用户收藏量
 	 * 
 	 * @param videoId 视频id

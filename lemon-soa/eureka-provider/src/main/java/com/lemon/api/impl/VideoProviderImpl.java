@@ -1,6 +1,5 @@
 package com.lemon.api.impl;
 
-import com.google.common.collect.Iterables;
 import com.lemon.entity.*;
 import com.lemon.repository.*;
 import com.lemon.service.VideoService;
@@ -8,6 +7,7 @@ import com.lemon.soa.api.dto.*;
 import com.lemon.soa.api.provider.VideoProvider;
 import com.lemon.tools.RedissonTools;
 import com.lemon.utils.DateUtils;
+import com.lemon.utils.PageUtils;
 import com.lemon.web.constant.base.ConstantBaseData;
 import com.lemon.web.constant.base.ConstantCache;
 import org.slf4j.Logger;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -29,40 +28,23 @@ import java.util.Optional;
 @Service
 public class VideoProviderImpl implements VideoProvider {
 
-	private Logger					logger	= LoggerFactory.getLogger(this.getClass());
-
+	private Logger				logger	= LoggerFactory.getLogger(this.getClass());
 	@Resource
-	private RedissonTools			redissonTools;
+	private RedissonTools		redissonTools;
 	@Resource
-	private VideoService			videoService;
+	private VideoService		videoService;
 	@Resource
-	private VideoRepository			videoRepository;
+	private VideoRepository		videoRepository;
 	@Resource
-	private BizFileRepository		bizFileRepository;
+	private BizFileRepository	bizFileRepository;
 	@Resource
-	private CategoryRepository		categoryRepository;
+	private CategoryRepository	categoryRepository;
 	@Resource
-	private RemarkRepository		remarkRepository;
-	@Resource
-	private LoginInfoRepository		loginInfoRepository;
-	@Resource
-	private PlayDetailRepository	playDetailRepository;
+	private RemarkRepository	remarkRepository;
 
 	@Override
 	public VideoDetailDTO getVideoSimpleDetail(long videoId) {
-		// 视频详情
-		VideoDetailDTO videoDetailDTO = new VideoDetailDTO();
-		Optional<VideoEntity> optionalVideoEntity = videoRepository.findById(videoId);
-		if (optionalVideoEntity.isPresent()) {
-			// 详情
-			VideoEntity videoEntity = optionalVideoEntity.get();
-			BeanUtils.copyProperties(videoEntity, videoDetailDTO);
-			Optional<LoginInfoEntity> loginInfoOptional = loginInfoRepository.findById(videoEntity.getUserId());
-			videoDetailDTO.setPlayNum(playDetailRepository.countAllByVideoId(videoEntity.getVideoId()));
-			loginInfoOptional.ifPresent(loginInfoEntity -> videoDetailDTO.setUserName(loginInfoEntity.getLoginName()));
-			videoDetailDTO.setCreateTime(DateUtils.formatTimestamp(videoEntity.getCreateTime().getTime()));
-		}
-		return videoDetailDTO;
+		return videoService.getVideoSimpleDetail(videoId);
 	}
 
 	@Override
@@ -174,7 +156,7 @@ public class VideoProviderImpl implements VideoProvider {
 		}
 		// 主动加载数据
 		List<VideoDTO> allVideoDTOList = videoService.getVideoListByCategoryId(categoryId);
-		videoDTOList = this.getPageSizeVideoList(allVideoDTOList, pageIndex, pageSize);
+		videoDTOList = PageUtils.getPageList(allVideoDTOList, pageIndex, pageSize);
 		redissonTools.set(ConstantCache.KEY.CATEGORY_VIDEO_LIST.key + categoryId + ConstantBaseData.CN + pageIndex
 				+ ConstantBaseData.CN + pageSize, videoDTOList);
 		return videoDTOList;
@@ -183,55 +165,21 @@ public class VideoProviderImpl implements VideoProvider {
 	@Override
 	public List<VideoDTO> getVideoListByLoginId(Long loginId, int pageIndex, int size) {
 		// 从缓存取数据
-		List<VideoDTO> videoDTOList = redissonTools.get(ConstantCache.KEY.CATEGORY_VIDEO_SELF_LIST.key + loginId
+		List<VideoDTO> videoDTOList = redissonTools.get(ConstantCache.KEY.VIDEO_SELF_LIST_KEY_.key + loginId
 				+ ConstantBaseData.CN + pageIndex + ConstantBaseData.CN + size);
 		if (!CollectionUtils.isEmpty(videoDTOList)) {
 			return videoDTOList;
 		}
-		if (videoDTOList == null) {
-			videoDTOList = new LinkedList<>();
-		}
 		// 主动加载数据
-		List<VideoEntity> videoEntityList = videoRepository.findAllByUserId(loginId);
-		if (!CollectionUtils.isEmpty(videoEntityList)) {
-			videoEntityList = this.getPageSizeVideoList(videoEntityList, pageIndex, size);
-			for (VideoEntity item : videoEntityList) {
-				VideoDTO videoDTO = this.getVideo(item.getVideoId());
-				videoDTOList.add(videoDTO);
-			}
-			return videoDTOList;
-		}
-		redissonTools.set(ConstantCache.KEY.CATEGORY_VIDEO_SELF_LIST.key + loginId + ConstantBaseData.CN + pageIndex
+		videoDTOList = videoService.getVideoListByLoginId(loginId, pageIndex, size);
+		redissonTools.set(ConstantCache.KEY.VIDEO_SELF_LIST_KEY_.key + loginId + ConstantBaseData.CN + pageIndex
 				+ ConstantBaseData.CN + size, videoDTOList);
 		return videoDTOList;
 	}
 
-	/**
-	 * 根据页数分页
-	 * 
-	 * @param list 所有列表
-	 * @param pageIndex 第几页
-	 * @param pageSize 每页大小
-	 * @return List<VideoDTO> 第几页数据
-	 */
-	private List getPageSizeVideoList(List list, int pageIndex, int pageSize) {
-		if (list.size() > pageSize) {
-			// 分页
-			Iterable<List> pagesIterable = Iterables.partition(list, pageSize);
-			if (Iterables.size(pagesIterable) < pageIndex) {
-				// 超出分页范围
-				return Collections.emptyList();
-			}
-			// 取出第pageIndex页
-			int index = 1;
-			for (List pageItemList : pagesIterable) {
-				if (index == pageIndex) {
-					return pageItemList;
-				}
-				index++;
-			}
-		}
-		return list;
+	@Override
+	public List<VideoDTO> getCollectVideoListByLoginId(Long loginId, int pageIndex, int size) {
+		return videoService.getCollectVideoListByLoginId(loginId, pageIndex, size);
 	}
 
 }

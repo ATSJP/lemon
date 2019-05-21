@@ -85,6 +85,36 @@ public class VideoController {
 	}
 
 	/**
+	 * 分页查找当前用户收藏的视频列表
+	 *
+	 * @param loginId 会员id
+	 * @param pageIndex 页面
+	 * @param size 分页大小
+	 * @return List<VideoDTO>
+	 */
+	@GetMapping("/video/getCollectVideoListByLoginId/{pageIndex}/{size}")
+	public VideoResponse getCollectVideoListByLoginId(@PathVariable(value = "pageIndex") int pageIndex,
+			@PathVariable(value = "size") int size, @RequestParam(value = "uid") Long loginId) {
+		VideoResponse response = new VideoResponse();
+		List<VideoDTO> videoDTOList = videoProvider.getCollectVideoListByLoginId(loginId, pageIndex, size);
+		response.setVideoDTOList(videoDTOList);
+		return response;
+	}
+
+	/**
+	 * 播放记录
+	 * 
+	 * @param request req
+	 * @return VideoResponse
+	 */
+	@PostMapping("/video/play")
+	public VideoResponse playVideo(VideoRequest request) {
+		VideoResponse response = new VideoResponse();
+		videoService.playVideo(request, response);
+		return response;
+	}
+
+	/**
 	 * 添加视频
 	 * 
 	 * @param request req

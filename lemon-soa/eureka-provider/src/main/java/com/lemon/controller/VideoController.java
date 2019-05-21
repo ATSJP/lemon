@@ -48,4 +48,10 @@ public class VideoController {
 		return videoProvider.getVideoListByLoginId(loginId, pageIndex, size);
 	}
 
+	@GetMapping("/video/getCollectVideoListByLoginId/{loginId}/{pageIndex}/{size}")
+	List<VideoDTO> getCollectVideoListByLoginId(@PathVariable(value = "loginId") Long loginId,
+			@PathVariable(value = "pageIndex") int pageIndex, @PathVariable(value = "size") int size) {
+		return videoProvider.getCollectVideoListByLoginId(loginId, pageIndex, size);
+	}
+
 }

@@ -1,7 +1,9 @@
 package com.lemon.web.video.service;
 
+import com.lemon.entity.PlayDetailEntity;
 import com.lemon.entity.VideoEntity;
 import com.lemon.repository.CollectionDetailRepository;
+import com.lemon.repository.PlayDetailRepository;
 import com.lemon.repository.UpDetailRepository;
 import com.lemon.repository.VideoRepository;
 import com.lemon.soa.api.contant.ConstantVideo;
@@ -34,6 +36,8 @@ public class VideoService {
 	private UpDetailRepository			upDetailRepository;
 	@Resource
 	private CollectionDetailRepository	collectionDetailRepository;
+	@Resource
+	private PlayDetailRepository		playDetailRepository;
 
 	/**
 	 * 获取单个视频详情
@@ -95,16 +99,7 @@ public class VideoService {
 	 * @param response res
 	 */
 	public void updateVideo(VideoRequest request, VideoResponse response) {
-		Long videoId = request.getVideoId();
-		if (videoId == null) {
-			response.setCode(ConstantApi.CODE.PARAM_NULL.getCode());
-			response.setMsg(ConstantApi.CODE.PARAM_NULL.getDesc());
-			return;
-		}
-		VideoDetailDTO videoDetailDTO = videoProvider.getVideoSimpleDetail(videoId);
-		if (videoDetailDTO == null || !ConstantVideo.AUDIT_STATUS.PASS.code.equals(videoDetailDTO.getAuditStatus())) {
-			response.setCode(ConstantApi.CODE.ILLEGAL_REQUEST.getCode());
-			response.setMsg(ConstantApi.CODE.ILLEGAL_REQUEST.getDesc());
+		if (isVideoCorrectAndExist(request, response)) {
 			return;
 		}
 		VideoEntity videoEntity = new VideoEntity();
@@ -112,5 +107,45 @@ public class VideoService {
 		videoEntity.setUpdateId(request.getUid());
 		videoEntity.setUpdateTime(DateUtils.getCurrentTime());
 		videoRepository.save(videoEntity);
+	}
+
+	public void playVideo(VideoRequest request, VideoResponse response) {
+		if (!isVideoCorrectAndExist(request, response)) {
+			return;
+		}
+		int count = playDetailRepository.countAllByCreateIdAndVideoId(request.getUid(), request.getVideoId());
+		if (count > 0) {
+			return;
+		}
+		PlayDetailEntity playDetailEntity = new PlayDetailEntity();
+		playDetailEntity.setVideoId(request.getVideoId());
+		playDetailEntity.setIp("");
+		playDetailEntity.setSid(request.getSid());
+		playDetailEntity.setCreateId(request.getUid());
+		playDetailEntity.setCreateTime(DateUtils.getCurrentTime());
+		playDetailRepository.save(playDetailEntity);
+	}
+
+	/**
+	 * 检查当前的videoId是否合法
+	 *
+	 * @param request req
+	 * @param response res
+	 * @return boolean true 合法存在 false 不合法
+	 */
+	private boolean isVideoCorrectAndExist(VideoRequest request, VideoResponse response) {
+		Long videoId = request.getVideoId();
+		if (videoId == null) {
+			response.setCode(ConstantApi.CODE.PARAM_NULL.getCode());
+			response.setMsg(ConstantApi.CODE.PARAM_NULL.getDesc());
+			return true;
+		}
+		VideoDetailDTO videoDetailDTO = videoProvider.getVideoSimpleDetail(videoId);
+		if (videoDetailDTO == null || !ConstantVideo.AUDIT_STATUS.PASS.code.equals(videoDetailDTO.getAuditStatus())) {
+			response.setCode(ConstantApi.CODE.ILLEGAL_REQUEST.getCode());
+			response.setMsg(ConstantApi.CODE.ILLEGAL_REQUEST.getDesc());
+			return true;
+		}
+		return false;
 	}
 }
