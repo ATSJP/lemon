@@ -19,4 +19,12 @@ public interface VideoRepository extends CrudRepository<VideoEntity, Long> {
 	 * @return List<VideoEntity>
 	 */
 	List<VideoEntity> findAllByCategoryId(long categoryId);
+
+	/**
+	 * 根据用户id获取视频list
+	 *
+	 * @param userId 用户id
+	 * @return
+	 */
+	List<VideoEntity> findAllByUserId(long userId);
 }

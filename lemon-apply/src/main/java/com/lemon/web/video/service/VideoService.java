@@ -9,9 +9,11 @@ import com.lemon.soa.api.dto.VideoDTO;
 import com.lemon.soa.api.dto.VideoDetailDTO;
 import com.lemon.soa.api.provider.VideoProvider;
 import com.lemon.utils.DateUtils;
+import com.lemon.web.constant.base.ConstantApi;
 import com.lemon.web.constant.base.ConstantBaseData;
 import com.lemon.web.video.request.VideoRequest;
 import com.lemon.web.video.response.VideoResponse;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -61,6 +63,12 @@ public class VideoService {
 		response.setVideoDTO(videoDTO);
 	}
 
+	/**
+	 * 添加视频
+	 * 
+	 * @param request req
+	 * @param response res
+	 */
 	public void addVideo(VideoRequest request, VideoResponse response) {
 		Long categoryId = request.getCategoryId();
 		String videoName = request.getVideoName();
@@ -78,5 +86,31 @@ public class VideoService {
 		videoDetailDTO.setVideoId(videoEntity.getVideoId());
 		videoDetailDTO.setVideoName(videoName);
 		response.setVideoDetailDTO(videoDetailDTO);
+	}
+
+	/**
+	 * 修改视频
+	 * 
+	 * @param request req
+	 * @param response res
+	 */
+	public void updateVideo(VideoRequest request, VideoResponse response) {
+		Long videoId = request.getVideoId();
+		if (videoId == null) {
+			response.setCode(ConstantApi.CODE.PARAM_NULL.getCode());
+			response.setMsg(ConstantApi.CODE.PARAM_NULL.getDesc());
+			return;
+		}
+		VideoDetailDTO videoDetailDTO = videoProvider.getVideoSimpleDetail(videoId);
+		if (videoDetailDTO == null || !ConstantVideo.AUDIT_STATUS.PASS.code.equals(videoDetailDTO.getAuditStatus())) {
+			response.setCode(ConstantApi.CODE.ILLEGAL_REQUEST.getCode());
+			response.setMsg(ConstantApi.CODE.ILLEGAL_REQUEST.getDesc());
+			return;
+		}
+		VideoEntity videoEntity = new VideoEntity();
+		BeanUtils.copyProperties(request, videoEntity);
+		videoEntity.setUpdateId(request.getUid());
+		videoEntity.setUpdateTime(DateUtils.getCurrentTime());
+		videoRepository.save(videoEntity);
 	}
 }

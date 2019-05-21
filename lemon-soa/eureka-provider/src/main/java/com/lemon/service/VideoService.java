@@ -68,7 +68,7 @@ public class VideoService {
 				Long videoId = Long.parseLong(item.get("video_id").toString());
 				Long totalRemarkNum = Long.parseLong(item.get("total_remark_num").toString());
 				logger.info("query video info->videoId:{},totalRemarkNum:{}", videoId, totalRemarkNum);
-				VideoDTO videoDTO = getVideoDTOById(videoId);
+				VideoDTO videoDTO = this.getVideoDTOById(videoId);
 				videoDTOList.add(videoDTO);
 			});
 		}
@@ -81,7 +81,7 @@ public class VideoService {
 				Long videoId = Long.parseLong(item.get("video_id").toString());
 				Long totalPlayNum = Long.parseLong(item.get("total_play_num").toString());
 				logger.info("query video info->videoId:{},totalPlayNum:{}", videoId, totalPlayNum);
-				VideoDTO videoDTO = getVideoDTOById(videoId);
+				VideoDTO videoDTO = this.getVideoDTOById(videoId);
 				videoDTOList.add(videoDTO);
 			});
 		}

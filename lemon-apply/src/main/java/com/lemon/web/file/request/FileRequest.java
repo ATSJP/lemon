@@ -27,7 +27,7 @@ public class FileRequest extends BaseRequest {
 	@NotNull
 	private Long			linkId;
 	/**
-	 * 上传的文件
+	 * 上传的文件List
 	 */
 	private MultipartFile[]	files;
 }

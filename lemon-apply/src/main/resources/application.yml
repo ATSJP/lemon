@@ -8,6 +8,11 @@ spring:
     application:
         name: lemon-apply
 
+    servlet:
+        multipart:
+            max-file-size: 20MB
+            max-request-size: 20MB
+
     # 允许重复名称的bean定义
     main:
         allow-bean-definition-overriding: true

@@ -1,6 +1,7 @@
 package com.lemon.controller;
 
 import com.lemon.soa.api.dto.VideoDTO;
+import com.lemon.soa.api.dto.VideoDetailDTO;
 import com.lemon.soa.api.provider.VideoProvider;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,11 @@ public class VideoController {
 	@Resource
 	private VideoProvider videoProvider;
 
+	@GetMapping(value = "/video/simple/{videoId}")
+	public VideoDetailDTO getVideoSimpleDetail(@PathVariable long videoId) {
+		return videoProvider.getVideoSimpleDetail(videoId);
+	}
+
 	@GetMapping(value = "/video/{videoId}")
 	public VideoDTO getVideo(@PathVariable long videoId) {
 		return videoProvider.getVideo(videoId);
@@ -27,7 +33,6 @@ public class VideoController {
 	@GetMapping(value = "/video/getVideoOrderBySortKey/{sortKey}/{sortValue}")
 	List<VideoDTO> getVideoOrderBySortKey(@PathVariable(value = "sortKey") short sortKey,
 			@PathVariable(value = "sortValue") short sortValue) {
-	    // TODO 待测试
 		return videoProvider.getVideoOrderBySortKey(sortKey, sortValue);
 	}
 
@@ -36,4 +41,11 @@ public class VideoController {
 			@PathVariable(value = "pageIndex") int pageIndex, @PathVariable(value = "size") int size) {
 		return videoProvider.getVideoListByCategoryId(categoryId, pageIndex, size);
 	}
+
+	@GetMapping("/video/getVideoListByLoginId/{loginId}/{pageIndex}/{size}")
+	List<VideoDTO> getVideoListByLoginId(@PathVariable(value = "loginId") Long loginId,
+			@PathVariable(value = "pageIndex") int pageIndex, @PathVariable(value = "size") int size) {
+		return videoProvider.getVideoListByLoginId(loginId, pageIndex, size);
+	}
+
 }

@@ -20,6 +20,12 @@ public class FileController {
 	@Resource
 	private FileService fileService;
 
+	/**
+	 * 小文件上传
+	 * 
+	 * @param request req
+	 * @return FileResponse
+	 */
 	@PostMapping("/file/upload")
 	public FileResponse upload(@Valid FileRequest request) {
 		FileResponse response = new FileResponse();

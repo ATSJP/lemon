@@ -49,17 +49,9 @@ public class VideoProviderImpl implements VideoProvider {
 	private PlayDetailRepository	playDetailRepository;
 
 	@Override
-	public VideoDTO getVideo(long videoId) {
-		VideoDTO videoDTO = new VideoDTO();
+	public VideoDetailDTO getVideoSimpleDetail(long videoId) {
 		// 视频详情
 		VideoDetailDTO videoDetailDTO = new VideoDetailDTO();
-		// 文件
-		List<BizFileDTO> bizFileDTOList = new LinkedList<>();
-		// 分类DTO
-		CategoryDTO categoryDTO = new CategoryDTO();
-		// 评价
-		List<RemarkDTO> remarkDTOList = new LinkedList<>();
-
 		Optional<VideoEntity> optionalVideoEntity = videoRepository.findById(videoId);
 		if (optionalVideoEntity.isPresent()) {
 			// 详情
@@ -69,40 +61,56 @@ public class VideoProviderImpl implements VideoProvider {
 			videoDetailDTO.setPlayNum(playDetailRepository.countAllByVideoId(videoEntity.getVideoId()));
 			loginInfoOptional.ifPresent(loginInfoEntity -> videoDetailDTO.setUserName(loginInfoEntity.getLoginName()));
 			videoDetailDTO.setCreateTime(DateUtils.formatTimestamp(videoEntity.getCreateTime().getTime()));
-			// 文件
-			List<BizFileEntity> bizFileEntityList = bizFileRepository.findAllByLinkIdAndIsDel(videoId,
-					ConstantBaseData.IS_DELETE.FALSE.code);
-			if (!CollectionUtils.isEmpty(bizFileEntityList)) {
-				// 有效封面一张 有效视频文件一张,超过2张属于系统异常,日志打印
-				int picAndVideoSize = 2;
-				if (bizFileEntityList.size() > picAndVideoSize) {
-					logger.error("more than one file effect->linkId:{}", videoId);
+		}
+		return videoDetailDTO;
+	}
+
+	@Override
+	public VideoDTO getVideo(long videoId) {
+		VideoDTO videoDTO = new VideoDTO();
+		// 视频详情
+		VideoDetailDTO videoDetailDTO;
+		// 文件
+		List<BizFileDTO> bizFileDTOList = new LinkedList<>();
+		// 分类DTO
+		CategoryDTO categoryDTO = new CategoryDTO();
+		// 评价
+		List<RemarkDTO> remarkDTOList = new LinkedList<>();
+		// 详情
+		videoDetailDTO = this.getVideoSimpleDetail(videoId);
+		// 文件
+		List<BizFileEntity> bizFileEntityList = bizFileRepository.findAllByLinkIdAndIsDel(videoId,
+				ConstantBaseData.IS_DELETE.FALSE.code);
+		if (!CollectionUtils.isEmpty(bizFileEntityList)) {
+			// 有效封面一张 有效视频文件一张,超过2张属于系统异常,日志打印
+			int picAndVideoSize = 2;
+			if (bizFileEntityList.size() > picAndVideoSize) {
+				logger.error("more than one file effect->linkId:{}", videoId);
+			}
+			bizFileEntityList.forEach(item -> {
+				BizFileDTO bizFileDTO = new BizFileDTO();
+				BeanUtils.copyProperties(item, bizFileDTO);
+				bizFileDTOList.add(bizFileDTO);
+			});
+		}
+		// 分类
+		this.getCategoryById(videoDetailDTO.getCategoryId(), categoryDTO);
+		// 一级评价
+		List<RemarkEntity> parentRemarkEntityList = remarkRepository.findAllByVideoIdAndParentIdAndIsDel(videoId, -1L,
+				ConstantBaseData.IS_DELETE.FALSE.code);
+		if (!CollectionUtils.isEmpty(parentRemarkEntityList)) {
+			parentRemarkEntityList.forEach(parent -> {
+				RemarkDTO remarkDTO = this.transformEntity2DTO(parent);
+				// 查询子评论
+				List<RemarkEntity> childRemarkEntityList = remarkRepository.findAllByVideoIdAndParentIdAndIsDel(videoId,
+						parent.getRemarkId(), ConstantBaseData.IS_DELETE.FALSE.code);
+				if (!CollectionUtils.isEmpty(childRemarkEntityList)) {
+					List<RemarkDTO> childRemarkDTOList = new LinkedList<>();
+					childRemarkEntityList.forEach(child -> childRemarkDTOList.add(this.transformEntity2DTO(child)));
+					remarkDTO.setChildRemarkDTOList(childRemarkDTOList);
 				}
-				bizFileEntityList.forEach(item -> {
-					BizFileDTO bizFileDTO = new BizFileDTO();
-					BeanUtils.copyProperties(item, bizFileDTO);
-					bizFileDTOList.add(bizFileDTO);
-				});
-			}
-			// 分类
-			this.getCategoryById(videoEntity.getCategoryId(), categoryDTO);
-			// 一级评价
-			List<RemarkEntity> parentRemarkEntityList = remarkRepository.findAllByVideoIdAndParentIdAndIsDel(videoId,
-					-1L, ConstantBaseData.IS_DELETE.FALSE.code);
-			if (!CollectionUtils.isEmpty(parentRemarkEntityList)) {
-				parentRemarkEntityList.forEach(parent -> {
-					RemarkDTO remarkDTO = this.transformEntity2DTO(parent);
-					// 查询子评论
-					List<RemarkEntity> childRemarkEntityList = remarkRepository.findAllByVideoIdAndParentIdAndIsDel(
-							videoId, parent.getRemarkId(), ConstantBaseData.IS_DELETE.FALSE.code);
-					if (!CollectionUtils.isEmpty(childRemarkEntityList)) {
-						List<RemarkDTO> childRemarkDTOList = new LinkedList<>();
-						childRemarkEntityList.forEach(child -> childRemarkDTOList.add(this.transformEntity2DTO(child)));
-						remarkDTO.setChildRemarkDTOList(childRemarkDTOList);
-					}
-					remarkDTOList.add(remarkDTO);
-				});
-			}
+				remarkDTOList.add(remarkDTO);
+			});
 		}
 		// 组装数据
 		videoDTO.setVideoDetailDTO(videoDetailDTO);
@@ -151,50 +159,79 @@ public class VideoProviderImpl implements VideoProvider {
 		}
 		// 主动加载数据
 		videoDTOList = videoService.getVideoOrderBySortKey(sortKey, sortValue);
-		redissonTools.set(ConstantCache.KEY.INDEX_VIDEO_LIST.key + sortKey + "_" + sortValue, videoDTOList);
+		redissonTools.set(ConstantCache.KEY.INDEX_VIDEO_LIST.key + sortKey + ConstantBaseData.CN + sortValue,
+				videoDTOList);
 		return videoDTOList;
 	}
 
 	@Override
 	public List<VideoDTO> getVideoListByCategoryId(Long categoryId, int pageIndex, int pageSize) {
 		// 从缓存取数据
-		List<VideoDTO> videoDTOList = redissonTools.get(ConstantCache.KEY.CATEGORY_VIDEO_LIST.key + categoryId);
+		List<VideoDTO> videoDTOList = redissonTools.get(ConstantCache.KEY.CATEGORY_VIDEO_LIST.key + categoryId
+				+ ConstantBaseData.CN + pageIndex + ConstantBaseData.CN + pageSize);
 		if (!CollectionUtils.isEmpty(videoDTOList)) {
 			return videoDTOList;
 		}
 		// 主动加载数据
 		List<VideoDTO> allVideoDTOList = videoService.getVideoListByCategoryId(categoryId);
 		videoDTOList = this.getPageSizeVideoList(allVideoDTOList, pageIndex, pageSize);
-		redissonTools.set(ConstantCache.KEY.CATEGORY_VIDEO_LIST.key + categoryId, videoDTOList);
+		redissonTools.set(ConstantCache.KEY.CATEGORY_VIDEO_LIST.key + categoryId + ConstantBaseData.CN + pageIndex
+				+ ConstantBaseData.CN + pageSize, videoDTOList);
+		return videoDTOList;
+	}
+
+	@Override
+	public List<VideoDTO> getVideoListByLoginId(Long loginId, int pageIndex, int size) {
+		// 从缓存取数据
+		List<VideoDTO> videoDTOList = redissonTools.get(ConstantCache.KEY.CATEGORY_VIDEO_SELF_LIST.key + loginId
+				+ ConstantBaseData.CN + pageIndex + ConstantBaseData.CN + size);
+		if (!CollectionUtils.isEmpty(videoDTOList)) {
+			return videoDTOList;
+		}
+		if (videoDTOList == null) {
+			videoDTOList = new LinkedList<>();
+		}
+		// 主动加载数据
+		List<VideoEntity> videoEntityList = videoRepository.findAllByUserId(loginId);
+		if (!CollectionUtils.isEmpty(videoEntityList)) {
+			videoEntityList = this.getPageSizeVideoList(videoEntityList, pageIndex, size);
+			for (VideoEntity item : videoEntityList) {
+				VideoDTO videoDTO = this.getVideo(item.getVideoId());
+				videoDTOList.add(videoDTO);
+			}
+			return videoDTOList;
+		}
+		redissonTools.set(ConstantCache.KEY.CATEGORY_VIDEO_SELF_LIST.key + loginId + ConstantBaseData.CN + pageIndex
+				+ ConstantBaseData.CN + size, videoDTOList);
 		return videoDTOList;
 	}
 
 	/**
 	 * 根据页数分页
 	 * 
-	 * @param allVideoDTOList 所有列表
+	 * @param list 所有列表
 	 * @param pageIndex 第几页
 	 * @param pageSize 每页大小
 	 * @return List<VideoDTO> 第几页数据
 	 */
-	private List<VideoDTO> getPageSizeVideoList(List<VideoDTO> allVideoDTOList, int pageIndex, int pageSize) {
-		if (allVideoDTOList.size() > pageSize) {
+	private List getPageSizeVideoList(List list, int pageIndex, int pageSize) {
+		if (list.size() > pageSize) {
 			// 分页
-			Iterable<List<VideoDTO>> pagesIterable = Iterables.partition(allVideoDTOList, pageSize);
+			Iterable<List> pagesIterable = Iterables.partition(list, pageSize);
 			if (Iterables.size(pagesIterable) < pageIndex) {
 				// 超出分页范围
 				return Collections.emptyList();
 			}
 			// 取出第pageIndex页
 			int index = 1;
-			for (List<VideoDTO> pageItemList : pagesIterable) {
+			for (List pageItemList : pagesIterable) {
 				if (index == pageIndex) {
 					return pageItemList;
 				}
 				index++;
 			}
 		}
-		return allVideoDTOList;
+		return list;
 	}
 
 }
