@@ -8,8 +8,10 @@ import com.lemon.web.constant.base.ConstantApi;
 import com.lemon.web.constant.base.ConstantCache;
 import com.lemon.web.user.request.LoginRequest;
 import com.lemon.web.user.request.RegisterRequest;
+import com.lemon.web.user.request.UserInfoRequest;
 import com.lemon.web.user.response.LoginResponse;
 import com.lemon.web.user.response.RegisterResponse;
+import com.lemon.web.user.response.UserInfoResponse;
 import com.lemon.web.user.service.UserService;
 import com.lemon.web.user.vo.LoginInfoVo;
 import org.apache.shiro.SecurityUtils;
@@ -36,6 +38,12 @@ public class UserController {
 	@Resource
 	private RedissonTools	redissonTools;
 
+	/**
+	 * 登陆
+	 *
+	 * @param request req
+	 * @return LoginResponse
+	 */
 	@PostMapping(value = "/user/login")
 	public LoginResponse login(@Valid LoginRequest request) {
 		LoginResponse response = new LoginResponse();
@@ -94,7 +102,13 @@ public class UserController {
 		return response;
 	}
 
-	@PutMapping(value = "/user/register")
+	/**
+	 * 注册
+	 * 
+	 * @param request req
+	 * @return RegisterResponse
+	 */
+	@PostMapping(value = "/user/register")
 	public RegisterResponse register(@Valid RegisterRequest request) {
 		RegisterResponse response = new RegisterResponse();
 		String loginName = request.getLoginName();
@@ -110,6 +124,12 @@ public class UserController {
 		return response;
 	}
 
+	/**
+	 * 登出
+	 * 
+	 * @param request req
+	 * @return LoginResponse
+	 */
 	@DeleteMapping(value = "/user/logout")
 	public LoginResponse logout(LoginRequest request) {
 		LoginResponse response = new LoginResponse();
@@ -121,6 +141,12 @@ public class UserController {
 		return response;
 	}
 
+	/**
+	 * 检查登陆状态
+	 * 
+	 * @param request req
+	 * @return LoginResponse
+	 */
 	@GetMapping(value = "/user/checkStatus")
 	public LoginResponse checkStatus(HttpServletRequest request) {
 		LoginResponse response = new LoginResponse();
@@ -133,6 +159,32 @@ public class UserController {
 			String sid = CookieUtils.getParamFromCookie(cookies, ConstantApi.SID);
 			logger.info("用户检查登陆状态！->uid:{},sid={},token={}", uidStr, sid, token);
 		}
+		return response;
+	}
+
+	/**
+	 * 获取用户信息
+	 * 
+	 * @param request req
+	 * @return UserInfoResponse
+	 */
+	@GetMapping(value = "/user")
+	public UserInfoResponse getUserInfo(UserInfoRequest request) {
+		UserInfoResponse response = new UserInfoResponse();
+		userService.getUserInfo(request, response);
+		return response;
+	}
+
+	/**
+	 * 修改资料
+	 * 
+	 * @param request req
+	 * @return UserInfoResponse
+	 */
+	@PutMapping(value = "/user")
+	public UserInfoResponse update(@Valid UserInfoRequest request) {
+		UserInfoResponse response = new UserInfoResponse();
+		userService.update(request, response);
 		return response;
 	}
 }

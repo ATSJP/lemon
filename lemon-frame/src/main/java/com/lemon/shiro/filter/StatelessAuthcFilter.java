@@ -63,7 +63,7 @@ public class StatelessAuthcFilter extends AccessControlFilter {
 			// 委托给Realm进行登录
 			getSubject(request, response).login(statelessToken);
 		} catch (Exception e) {
-			logger.error("getSubject error->uid:{},sid:{},token:{},e:{}", uid, sid, token, e);
+			logger.info("auth error->uid:{},sid:{},token:{},e:{}", uid, sid, token, e);
 			// 登录失败
 			onLoginFail(response);
 			return false;

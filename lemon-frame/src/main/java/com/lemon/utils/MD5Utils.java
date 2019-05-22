@@ -4,8 +4,8 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 
 /**
- * MD5Utils
- *
+ * MD5Utils 使用bean管理
+ * 
  * @author sjp
  * @date 2019/5/3
  */
