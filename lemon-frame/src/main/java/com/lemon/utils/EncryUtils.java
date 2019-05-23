@@ -109,7 +109,7 @@ public class EncryUtils {
 
 	public static void main(String args[]) {
 		String key = "ORDER_ENCRY_KEY";
-		String id = "1558580605419";
+		String id = "1558580605411";
 		String encode = encode3Des(key, id);
 		System.out.println("原串：" + id);
 		System.out.println(("加密后的串：" + encode));

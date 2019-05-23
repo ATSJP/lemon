@@ -36,21 +36,19 @@ public class AliPayClock {
 		if (CollectionUtils.isEmpty(orderIds)) {
 			return;
 		}
-		orderIds.forEach(item -> {
-			AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();
-			request.setBizContent("{\"out_trade_no\":\"" + item + "\",\"trade_no\":\"" + item + "\"}");
-			AlipayTradeQueryResponse response;
-			try {
-				response = alipayClient.execute(request);
-			} catch (AlipayApiException e) {
-				logger.error("pay record request error->e:{}", e);
-				return;
-			}
-			if (response.isSuccess()) {
-				System.out.println("调用成功");
-			} else {
-				System.out.println("调用失败");
-			}
-		});
+		AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();
+		request.setBizContent("{" + "\"out_trade_no\":\"20150320010101001\","
+				+ "\"trade_no\":\"2014112611001004680 073956707\"," + "\"org_pid\":\"2088101117952222\"" + "  }");
+		AlipayTradeQueryResponse response = null;
+		try {
+			response = alipayClient.execute(request);
+		} catch (AlipayApiException e) {
+			e.printStackTrace();
+		}
+		if (response.isSuccess()) {
+			System.out.println("调用成功");
+		} else {
+			System.out.println("调用失败");
+		}
 	}
 }

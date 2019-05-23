@@ -1,6 +1,7 @@
 package com.lemon.entity;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -15,9 +16,9 @@ import java.util.Objects;
 public class OrderInfoEntity {
 	private long		orderId;
 	private String		prodName;
-	private int			payAmt;
-	private int			realAmt;
-	private int			discount;
+	private BigDecimal	payAmt;
+	private BigDecimal	realAmt;
+	private BigDecimal	discount;
 	private short		orderStatus;
 	private Long		createId;
 	private Timestamp	createTime;
@@ -46,31 +47,31 @@ public class OrderInfoEntity {
 
 	@Basic
 	@Column(name = "pay_amt")
-	public int getPayAmt() {
+	public BigDecimal getPayAmt() {
 		return payAmt;
 	}
 
-	public void setPayAmt(int payAmt) {
+	public void setPayAmt(BigDecimal payAmt) {
 		this.payAmt = payAmt;
 	}
 
 	@Basic
 	@Column(name = "real_amt")
-	public int getRealAmt() {
+	public BigDecimal getRealAmt() {
 		return realAmt;
 	}
 
-	public void setRealAmt(int realAmt) {
+	public void setRealAmt(BigDecimal realAmt) {
 		this.realAmt = realAmt;
 	}
 
 	@Basic
 	@Column(name = "discount")
-	public int getDiscount() {
+	public BigDecimal getDiscount() {
 		return discount;
 	}
 
-	public void setDiscount(int discount) {
+	public void setDiscount(BigDecimal discount) {
 		this.discount = discount;
 	}
 

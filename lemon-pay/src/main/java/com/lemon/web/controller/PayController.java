@@ -38,14 +38,25 @@ public class PayController {
 
 	@GetMapping("/pay")
 	public void toPay(HttpServletResponse httpResponse, @Valid PayRequest request) throws IOException {
+		String msg = "";
 		String orderIdEn = request.getOrderIdEn();
 		String orderIdStr = EncryUtils.decode3Des(ConstantEncryKey.ORDER_ENCRY_KEY, orderIdEn);
 		if (StringUtils.isEmpty(orderIdStr)) {
+			msg = "error";
+			// 直接将完整的表单html输出到页面
+			httpResponse.getWriter().write(msg);
+			httpResponse.getWriter().flush();
+			httpResponse.getWriter().close();
 			return;
 		}
 		long orderId = Long.parseLong(orderIdStr);
 		Optional<OrderInfoEntity> orderInfoEntityOptional = orderInfoRepository.findById(orderId);
 		if (!orderInfoEntityOptional.isPresent()) {
+			msg = "error";
+			// 直接将完整的表单html输出到页面
+			httpResponse.getWriter().write(msg);
+			httpResponse.getWriter().flush();
+			httpResponse.getWriter().close();
 			return;
 		}
 		// 创建API对应的request
@@ -56,16 +67,15 @@ public class PayController {
 		// 填充业务参数
 		alipayRequest.setBizContent("{\"out_trade_no\":\"" + orderId + "\",\"product_code\":\"FAST_INSTANT_TRADE_PAY\","
 				+ "\"total_amount\":12.00,\"subject\":\"柠檬会员\",\"body\":\"充值会员享受会员服务\"}");
-		String form = "";
 		try {
 			// 调用SDK生成表单
-			form = alipayClient.pageExecute(alipayRequest).getBody();
+			msg = alipayClient.pageExecute(alipayRequest).getBody();
 		} catch (AlipayApiException e) {
 			logger.error("pay error->e:{}", e);
 		}
 		httpResponse.setContentType("text/html;charset=" + resource.getAliPayCharset());
 		// 直接将完整的表单html输出到页面
-		httpResponse.getWriter().write(form);
+		httpResponse.getWriter().write(msg);
 		httpResponse.getWriter().flush();
 		httpResponse.getWriter().close();
 	}
