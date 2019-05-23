@@ -2,6 +2,7 @@ package com.lemon.web.order.rest;
 
 import com.lemon.entity.OrderInfoEntity;
 import com.lemon.repository.OrderInfoRepository;
+import com.lemon.utils.DateUtils;
 import com.lemon.utils.EncryUtils;
 import com.lemon.web.constant.ConstantOrder;
 import com.lemon.web.constant.base.ConstantEncryKey;
@@ -39,6 +40,10 @@ public class OrderController {
 				orderInfoEntity.setPayAmt(prodInfo.amt);
 				orderInfoEntity.setRealAmt(prodInfo.amt);
 				orderInfoEntity.setDiscount(prodInfo.amt);
+				orderInfoEntity.setCreateId(request.getUid());
+				orderInfoEntity.setCreateTime(DateUtils.getCurrentTime());
+				orderInfoEntity.setUpdateId(request.getUid());
+				orderInfoEntity.setUpdateTime(DateUtils.getCurrentTime());
 				orderInfoRepository.save(orderInfoEntity);
 				String orderIdEn = EncryUtils.encode3Des(ConstantEncryKey.ORDER_ENCRY_KEY, orderId + "");
 				msg = "<script>window.location.replace(\"http://www.lemon.com/p/pay?orderIdEn=" + orderIdEn

@@ -16,7 +16,7 @@ public interface ConstantOrder {
 		 */
 		YEAY((short) 1, new BigDecimal(124), "年充"),
 		QUARTER((short) 2, new BigDecimal(28.8), "季充"),
-		MONTH((short) 3, new BigDecimal(1), "月充");
+		MONTH((short) 3, new BigDecimal(11), "月充");
 
 		public Short		code;
 		public BigDecimal	amt;
