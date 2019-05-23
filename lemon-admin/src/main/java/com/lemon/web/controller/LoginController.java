@@ -1,4 +1,4 @@
-package com.lemon.controller;
+package com.lemon.web.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

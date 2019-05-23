@@ -1,0 +1,15 @@
+# 支付宝配置
+com:
+    lemon:
+        pay:
+            returnUrl:
+            notifyUrl:
+            url: https://openapi.alipay.com/gateway.do
+            charset: GBK
+            format: json
+            signType: RSA2
+            appId:
+            appPrivateKey:
+            aliPayPublicKey:
+
+

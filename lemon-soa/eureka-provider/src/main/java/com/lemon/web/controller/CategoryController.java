@@ -1,4 +1,4 @@
-package com.lemon.controller;
+package com.lemon.web.controller;
 
 import com.lemon.soa.api.dto.CategoryDTO;
 import com.lemon.soa.api.provider.CategoryProvider;
