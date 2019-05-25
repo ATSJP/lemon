@@ -2,8 +2,8 @@
 com:
     lemon:
         pay:
-            returnUrl: http://www.lemon.com/p/pay/callback
-            notifyUrl: http://www.lemon.com/p/pay/toSuccess
+            returnUrl: http://www.lemon.com/p/pay/toSuccess
+            notifyUrl: http://www.lemon.com/p/pay/callback
             url: https://openapi.alipaydev.com/gateway.do
             charset: GBK
             format: json

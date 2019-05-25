@@ -24,4 +24,9 @@ public class ConfigProperties {
 	 */
 	@Value("${image_source_path}")
 	private String	imageSourceDir;
+	/**
+	 * 搜索索引保存路径
+	 */
+	@Value("${video_index_path}")
+	private String	videoIndexDir;
 }

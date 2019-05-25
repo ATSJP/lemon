@@ -61,6 +61,8 @@ public class ShiroConfig {
 		ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
 		shiroFilterFactoryBean.setSecurityManager(securityManager());
 		Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
+		filterChainDefinitionMap.put("/pay/callback", "anon");
+		filterChainDefinitionMap.put("/pay/toSuccess", "anon");
 		filterChainDefinitionMap.put("/**", "statelessAuthcFilter");
 		shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 		// 自定义拦截器

@@ -36,6 +36,7 @@ public class OrderController {
 			if (prodInfo != null) {
 				OrderInfoEntity orderInfoEntity = new OrderInfoEntity();
 				orderInfoEntity.setOrderId(orderId);
+				orderInfoEntity.setLoginId(request.getUid());
 				orderInfoEntity.setProdName(prodInfo.desc);
 				orderInfoEntity.setPayAmt(prodInfo.amt);
 				orderInfoEntity.setRealAmt(prodInfo.amt);

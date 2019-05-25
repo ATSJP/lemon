@@ -9,12 +9,13 @@ import java.util.Objects;
  * OrderInfoEntity
  *
  * @author sjp
- * @date 2019/5/23
+ * @date 2019/5/25
  */
 @Entity
 @Table(name = "order_info", schema = "lemon", catalog = "")
 public class OrderInfoEntity {
 	private long		orderId;
+	private long		loginId;
 	private String		prodName;
 	private BigDecimal	payAmt;
 	private BigDecimal	realAmt;
@@ -33,6 +34,16 @@ public class OrderInfoEntity {
 
 	public void setOrderId(long orderId) {
 		this.orderId = orderId;
+	}
+
+	@Basic
+	@Column(name = "login_id")
+	public long getLoginId() {
+		return loginId;
+	}
+
+	public void setLoginId(long loginId) {
+		this.loginId = loginId;
 	}
 
 	@Basic
@@ -132,15 +143,16 @@ public class OrderInfoEntity {
 		if (o == null || getClass() != o.getClass())
 			return false;
 		OrderInfoEntity that = (OrderInfoEntity) o;
-		return orderId == that.orderId && payAmt == that.payAmt && realAmt == that.realAmt && discount == that.discount
-				&& orderStatus == that.orderStatus && Objects.equals(prodName, that.prodName)
-				&& Objects.equals(createId, that.createId) && Objects.equals(createTime, that.createTime)
-				&& Objects.equals(updateId, that.updateId) && Objects.equals(updateTime, that.updateTime);
+		return orderId == that.orderId && loginId == that.loginId && payAmt == that.payAmt && realAmt == that.realAmt
+				&& discount == that.discount && orderStatus == that.orderStatus
+				&& Objects.equals(prodName, that.prodName) && Objects.equals(createId, that.createId)
+				&& Objects.equals(createTime, that.createTime) && Objects.equals(updateId, that.updateId)
+				&& Objects.equals(updateTime, that.updateTime);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(orderId, prodName, payAmt, realAmt, discount, orderStatus, createId, createTime, updateId,
-				updateTime);
+		return Objects.hash(orderId, loginId, prodName, payAmt, realAmt, discount, orderStatus, createId, createTime,
+				updateId, updateTime);
 	}
 }

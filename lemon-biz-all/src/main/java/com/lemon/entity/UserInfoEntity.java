@@ -9,8 +9,8 @@ import java.util.Objects;
  * UserInfoEntity
  *
  * @author sjp
- * @date 2019/2/11
- **/
+ * @date 2019/5/25
+ */
 @Entity
 @Table(name = "user_info", schema = "lemon", catalog = "")
 public class UserInfoEntity {
@@ -20,13 +20,13 @@ public class UserInfoEntity {
 	private Short		gender;
 	private Date		birthday;
 	private Integer		grade;
-	private String		userType;
+	private Short		userType;
 	private String		idCard;
 	private String		qqAccount;
 	private String		weChatAccount;
-	private long		createId;
+	private Long		createId;
 	private Timestamp	createTime;
-	private long		updateId;
+	private Long		updateId;
 	private Timestamp	updateTime;
 
 	@Id
@@ -91,11 +91,11 @@ public class UserInfoEntity {
 
 	@Basic
 	@Column(name = "user_type")
-	public String getUserType() {
+	public Short getUserType() {
 		return userType;
 	}
 
-	public void setUserType(String userType) {
+	public void setUserType(Short userType) {
 		this.userType = userType;
 	}
 
@@ -131,11 +131,11 @@ public class UserInfoEntity {
 
 	@Basic
 	@Column(name = "create_id")
-	public long getCreateId() {
+	public Long getCreateId() {
 		return createId;
 	}
 
-	public void setCreateId(long createId) {
+	public void setCreateId(Long createId) {
 		this.createId = createId;
 	}
 
@@ -151,11 +151,11 @@ public class UserInfoEntity {
 
 	@Basic
 	@Column(name = "update_id")
-	public long getUpdateId() {
+	public Long getUpdateId() {
 		return updateId;
 	}
 
-	public void setUpdateId(long updateId) {
+	public void setUpdateId(Long updateId) {
 		this.updateId = updateId;
 	}
 
@@ -176,13 +176,13 @@ public class UserInfoEntity {
 		if (o == null || getClass() != o.getClass())
 			return false;
 		UserInfoEntity that = (UserInfoEntity) o;
-		return loginId == that.loginId && createId == that.createId && updateId == that.updateId
-				&& Objects.equals(userName, that.userName) && Objects.equals(engName, that.engName)
-				&& Objects.equals(gender, that.gender) && Objects.equals(birthday, that.birthday)
-				&& Objects.equals(grade, that.grade) && Objects.equals(userType, that.userType)
-				&& Objects.equals(idCard, that.idCard) && Objects.equals(qqAccount, that.qqAccount)
-				&& Objects.equals(weChatAccount, that.weChatAccount) && Objects.equals(createTime, that.createTime)
-				&& Objects.equals(updateTime, that.updateTime);
+		return loginId == that.loginId && Objects.equals(userName, that.userName)
+				&& Objects.equals(engName, that.engName) && Objects.equals(gender, that.gender)
+				&& Objects.equals(birthday, that.birthday) && Objects.equals(grade, that.grade)
+				&& Objects.equals(userType, that.userType) && Objects.equals(idCard, that.idCard)
+				&& Objects.equals(qqAccount, that.qqAccount) && Objects.equals(weChatAccount, that.weChatAccount)
+				&& Objects.equals(createId, that.createId) && Objects.equals(createTime, that.createTime)
+				&& Objects.equals(updateId, that.updateId) && Objects.equals(updateTime, that.updateTime);
 	}
 
 	@Override

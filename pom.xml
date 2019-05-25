@@ -29,6 +29,8 @@
         <common-codec>1.10</common-codec>
         <lombok.version>1.16.10</lombok.version>
         <guava.version>18.0</guava.version>
+        <ikanalyzer.version>2012_u6</ikanalyzer.version>
+        <lunece.version>4.10.2</lunece.version>
 
         <maven.compiler.plugin.version>3.1</maven.compiler.plugin.version>
     </properties>
@@ -127,6 +129,37 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
+            </dependency>
+            <!-- ik.中文分词器依赖-->
+            <dependency>
+                <groupId>com.janeluo</groupId>
+                <artifactId>ikanalyzer</artifactId>
+                <version>${ikanalyzer.version}</version>
+            </dependency>
+            <!-- lucene依赖 -->
+            <!-- lucene核心库 -->
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-core</artifactId>
+                <version>${lunece.version}</version>
+            </dependency>
+            <!-- Lucene的查询解析器 -->
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-queryparser</artifactId>
+                <version>${lunece.version}</version>
+            </dependency>
+            <!-- lucene的默认分词器库 -->
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-analyzers-common</artifactId>
+                <version>${lunece.version}</version>
+            </dependency>
+            <!-- lucene的高亮显示 -->
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-highlighter</artifactId>
+                <version>${lunece.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
