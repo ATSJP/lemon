@@ -29,3 +29,26 @@ lemon，高品质生活的人，闲着没事的时候，即使喝白开，也喜
 #### Nginx配置
 
 [nginx.conf]( https://github.com/ATSJP/lemon/blob/master/nginx.conf)                         
+
+#### 技术栈
+
+##### 后端
+
+- SpringCloud SpringBoot 
+- 安全认证框架 基于Shiro实现无状态 （SSO待实现）
+- 搜索 Lucene 中文分词器 IK
+- 缓存 redis client使用Redisson
+- 数据库 mysql
+- 连接池 druid
+- 持久层 Spring Data
+- 支付 ali沙箱环境
+- Json fastJson
+- 工具包 lombok、guava、apache common、urlRewrite
+
+##### 前端
+
+一期前端模仿B站，如果将来有好的项目进行重构。
+
+- Jquery
+- Layer
+- CkPlayer
