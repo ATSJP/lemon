@@ -1,0 +1,10 @@
+server:
+    port: 9000
+spring:
+    application:
+        name: lemon-config-server
+    cloud:
+        config:
+            server:
+                git:
+                    uri: https://github.com/ATSJP/lemon-config.git

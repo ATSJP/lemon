@@ -10,6 +10,7 @@ lemon，高品质生活的人，闲着没事的时候，即使喝白开，也喜
 - lemon-admin   后台管理
 - lemon-apply   应用
 - lemon-biz-all 基础持久
+- lemon-config  配置中心
 - lemon-frame  常用工具
 - lemon-pay     支付对接技术
 - lemon-soa     微服务
