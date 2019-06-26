@@ -31,6 +31,7 @@
         <guava.version>18.0</guava.version>
         <ikanalyzer.version>2012_u6</ikanalyzer.version>
         <lunece.version>4.10.2</lunece.version>
+        <alipay-sdk.version>3.7.26.ALL</alipay-sdk.version>
 
         <maven.compiler.plugin.version>3.1</maven.compiler.plugin.version>
     </properties>
@@ -160,6 +161,12 @@
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-highlighter</artifactId>
                 <version>${lunece.version}</version>
+            </dependency>
+            <!-- 阿里支付sdk -->
+            <dependency>
+                <groupId>com.alipay.sdk</groupId>
+                <artifactId>alipay-sdk-java</artifactId>
+                <version>${alipay-sdk.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
