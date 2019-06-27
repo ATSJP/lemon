@@ -1,0 +1,11 @@
+# 对应着config server所获取配置文件的{application}和URL
+spring:
+    application:
+        name: lemon
+    cloud:
+        config:
+            uri: http://localhost:9000/
+            # 对应着文件后面的后缀{profile}
+            profile: dev
+            # 分支
+            label: master
