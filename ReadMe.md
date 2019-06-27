@@ -53,3 +53,8 @@ lemon，高品质生活的人，闲着没事的时候，即使喝白开，也喜
 - Jquery
 - Layer
 - CkPlayer
+
+#### 技术解决
+
+- 分布式事务 基于Redis完成分布式锁的设计
+- 前后端分离 基于Shiro的无状态Token认证
