@@ -14,6 +14,11 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode()
 @Component
 public class ConfigProperties {
+    /**
+     * redission配置文件
+     */
+    @Value("${redission_config}")
+    private String	redissionConfig;
 	/**
 	 * 视频保存路径
 	 */
