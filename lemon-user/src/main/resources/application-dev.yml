@@ -1,17 +1,12 @@
 server:
-    port: 8082
+    port: 8081
     tomcat:
         max-threads: 1000
         min-spare-threads: 10
 
 spring:
     application:
-        name: lemon-apply
-
-    servlet:
-        multipart:
-            max-file-size: 20MB
-            max-request-size: 20MB
+        name: lemon-user
 
     # 允许重复名称的bean定义
     main:
@@ -55,9 +50,3 @@ logging:
 
 # redission配置文件
 redission_config: redisson-config-dev.yml
-# 搜索索引位置
-video_index_path: E:\opt\index\
-# 视频上传路径
-video_source_path: E:\IDEA_WORK\web\openSource\lemon-front\src\video\
-# 图片上传路径
-image_source_path: E:\IDEA_WORK\web\openSource\lemon-front\src\image\

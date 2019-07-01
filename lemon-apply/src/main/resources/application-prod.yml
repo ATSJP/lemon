@@ -17,8 +17,9 @@ spring:
     main:
         allow-bean-definition-overriding: true
 
+    # 引入其他yml配置
     profiles:
-        include: logback
+        include:
 
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
@@ -47,6 +48,10 @@ eureka:
     client:
         service-url:
             defaultZone: http://eureka.lemon.com/eureka/
+
+logging:
+    #日志
+    config: classpath:logback-prod.xml
 
 # redission配置文件
 redission_config: redisson-config-prod.yml
