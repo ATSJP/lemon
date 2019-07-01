@@ -44,13 +44,13 @@ eureka:
     instance:
         # 使用IP注册
         prefer-ip-address: true
-    #注册地址
+    # 注册地址
     client:
         service-url:
             defaultZone: http://eureka.lemon.com/eureka/
 
 logging:
-    #日志
+    # 日志
     config: classpath:logback-prod.xml
 
 # redission配置文件

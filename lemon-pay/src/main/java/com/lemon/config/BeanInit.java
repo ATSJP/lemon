@@ -2,7 +2,6 @@ package com.lemon.config;
 
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
-import com.lemon.properties.LemonResource;
 import com.lemon.utils.MD5Utils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +19,7 @@ import javax.annotation.Resource;
 public class BeanInit {
 
 	@Resource
-	private LemonResource resource;
+	private ConfigProperties resource;
 
 	@Bean
 	public MD5Utils md5Utils() {

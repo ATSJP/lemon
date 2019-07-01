@@ -33,7 +33,7 @@ import java.util.Map;
 @Configuration
 public class ShiroConfig {
 
-	private final static String URL_HEAD = "/u";
+	private final static String URL_HEAD = "/p";
 
 	/**
 	 * 使用FilterRegistrationBean管理DelegatingFilterProxy的生命周期，代替spring项目中shiro在web.xml的配置

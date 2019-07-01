@@ -3,9 +3,9 @@ package com.lemon.web.controller;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.request.AlipayTradePagePayRequest;
+import com.lemon.config.ConfigProperties;
 import com.lemon.entity.OrderInfoEntity;
 import com.lemon.entity.UserInfoEntity;
-import com.lemon.properties.LemonResource;
 import com.lemon.repository.OrderInfoRepository;
 import com.lemon.repository.UserInfoRepository;
 import com.lemon.utils.EncryUtils;
@@ -32,15 +32,15 @@ import java.util.Optional;
 @Controller
 public class PayController {
 
-	private Logger				logger	= LoggerFactory.getLogger(this.getClass());
+	private Logger              logger	= LoggerFactory.getLogger(this.getClass());
 	@Resource
-	private LemonResource		resource;
+	private ConfigProperties    resource;
 	@Resource
-	private AlipayClient		alipayClient;
+	private AlipayClient        alipayClient;
 	@Resource
-	private OrderInfoRepository	orderInfoRepository;
+	private OrderInfoRepository orderInfoRepository;
 	@Resource
-	private UserInfoRepository	userInfoRepository;
+	private UserInfoRepository  userInfoRepository;
 
 	@GetMapping("/pay")
 	public void toPay(HttpServletResponse httpResponse, @Valid PayRequest request) throws IOException {
