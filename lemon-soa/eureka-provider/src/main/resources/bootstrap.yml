@@ -1,0 +1,11 @@
+# 对应着config server所获取配置文件的{application}和URL
+spring:
+    application:
+        name: provider
+    cloud:
+        config:
+            uri: http://config.lemon.com:9000/
+            # 对应着文件后面的后缀{profile} 此参数由启动时带入，默认为dev
+            profile: dev
+            # 分支
+            label: dv_lemon_2019_07
