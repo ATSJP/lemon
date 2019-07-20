@@ -5,8 +5,8 @@ server:
         min-spare-threads: 10
 
 spring:
-    application:
-        name: lemon-user
+#    application:
+#        name: lemon-user
 
     # 允许重复名称的bean定义
     main:
@@ -49,5 +49,5 @@ logging:
     config: classpath:logback-${spring.cloud.config.profile}.xml
 
 # redission配置文件
-redission_config: classpath:redisson-config-${spring.cloud.config.profile}.xml
+redission_config: redisson-config-${spring.cloud.config.profile}.yml
 

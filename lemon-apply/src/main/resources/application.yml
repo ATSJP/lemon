@@ -1,3 +1,63 @@
+server:
+    port: 8082
+    tomcat:
+        max-threads: 1000
+        min-spare-threads: 10
+
 spring:
+#    application:
+#        name: lemon-apply
+
+    servlet:
+        multipart:
+            max-file-size: 20MB
+            max-request-size: 20MB
+
+    # 允许重复名称的bean定义
+    main:
+        allow-bean-definition-overriding: true
+
+    # 引入其他yml配置
     profiles:
-        active: dev
+        include:
+
+    datasource:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: ${jdbc.url}
+        username: ${jdbc.username}
+        password: ${jdbc.password}
+
+    jpa:
+        generateDdl: ${hibernate.generateDdl}
+        properties:
+            hibernate:
+                show_sql: ${hibernate.show_sql}
+                format_sql: ${hibernate.format_sql}
+    #                database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+
+    jackson:
+        time-zone: GMT+8
+        date-format: yyyy-MM-dd HH:mm:ss
+
+eureka:
+    instance:
+        # 使用IP注册
+        prefer-ip-address: true
+    # 注册地址
+    client:
+        service-url:
+            defaultZone: http://eureka.lemon.com/eureka/
+
+logging:
+    #日志
+    config: classpath:logback-${spring.cloud.config.profile}.xml
+
+# redission配置文件
+redission_config: redisson-config-${spring.cloud.config.profile}.yml
+# 搜索索引位置
+video_index_path: ${video_index_path}
+# 视频上传路径
+video_source_path: ${video_source_path}
+# 图片上传路径
+image_source_path: ${image_source_path}

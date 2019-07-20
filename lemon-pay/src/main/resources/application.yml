@@ -1,3 +1,64 @@
+server:
+    port: 8083
+    tomcat:
+        max-threads: 1000
+        min-spare-threads: 10
+
 spring:
+#    application:
+#        name: lemon-pay
+
+    # 允许上传文件和请求大小
+    servlet:
+        multipart:
+            max-file-size: 20MB
+            max-request-size: 20MB
+
+    # 允许重复名称的bean定义
+    main:
+        allow-bean-definition-overriding: true
+
     profiles:
-        active: dev
+        include:
+
+    datasource:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: ${jdbc.url}
+        username: ${jdbc.username}
+        password: ${jdbc.password}
+
+    jpa:
+        generateDdl: ${hibernate.generateDdl}
+        properties:
+            hibernate:
+                show_sql: ${hibernate.show_sql}
+                format_sql: ${hibernate.format_sql}
+                database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+
+    jackson:
+        time-zone: GMT+8
+        date-format: yyyy-MM-dd HH:mm:ss
+
+logging:
+    # 日志
+    config: classpath:logback-dev.xml
+
+# redission配置文件
+redission_config: redisson-config-${spring.cloud.config.profile}.yml
+
+# 支付宝配置
+com:
+    lemon:
+        pay:
+            returnUrl: ${alipay.returnUrl}
+            notifyUrl: ${alipay.notifyUrl}
+            url: ${alipay.url}
+            charset: ${alipay.charset}
+            format: ${alipay.format}
+            signType: ${alipay.signType}
+            appId: ${alipay.appId}
+            appPrivateKey: ${alipay.appPrivateKey}
+            aliPayPublicKey: ${alipay.aliPayPublicKey}
+
+
