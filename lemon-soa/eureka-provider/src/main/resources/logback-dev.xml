@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="true">
-    <contextName>logback</contextName>
-    <property name="log.path" value="/opt/lemon-user.log" />
+    <contextName>logback-dev</contextName>
 
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
@@ -13,20 +12,8 @@
         </encoder>
     </appender>
 
-    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${log.path}</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${log.path}.%d{yyyy-MM-dd}.zip</fileNamePattern>
-        </rollingPolicy>
-        <encoder>
-            <pattern>%date %level [%thread] %logger{36} [%file : %line] %msg%n
-            </pattern>
-        </encoder>
-    </appender>
-
-    <root level="debug">
+    <root level="info">
         <appender-ref ref="console" />
-        <!--<appender-ref ref="file" />-->
     </root>
 
     <logger name="org.springframework.scheduling"  level="error" />
@@ -34,8 +21,6 @@
     <Logger name="org.apache.coyote.http11.Http11NioProtocol" level="warn" />
     <Logger name="org.apache.tomcat.util.net.NioSelectorPool" level="warn" />
     <Logger name="org.springframework" level="debug" />
-    <logger name="com.lzw" level="debug" />
-    <logger name="org.mybatis" level="debug" />
     <logger name="java.sql" level="error" />
     <logger name="java.sql.Connection" level="error" />
     <logger name="java.sql.Statement" level="error" />

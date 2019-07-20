@@ -1,6 +1,6 @@
 # Redisson配置
 singleServerConfig:
-    address: "redis://106.15.200.151:9001"
+    address: "redis://192.168.221.130:6379"
     password: null
     clientName: lemon-pay
     database: 1
