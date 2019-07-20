@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LoginController {
 
-    @Value("${version-config}")
+    @Value("${redission_config}")
     private String version;
 
     @GetMapping("/test")

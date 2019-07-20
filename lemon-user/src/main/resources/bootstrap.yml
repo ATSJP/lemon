@@ -1,7 +1,7 @@
 # 对应着config server所获取配置文件的{application}和URL
 spring:
     application:
-        name: admin
+        name: user
     cloud:
         config:
             uri: http://config.lemon.com:9000/
