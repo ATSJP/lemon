@@ -14,7 +14,7 @@ import java.util.List;
  * @author sjp
  * @date 2019/1/24
  **/
-@FeignClient("eureka-provider")
+@FeignClient("provider")
 public interface VideoProvider {
 
 	/**

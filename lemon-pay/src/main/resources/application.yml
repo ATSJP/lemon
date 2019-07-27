@@ -5,9 +5,6 @@ server:
         min-spare-threads: 10
 
 spring:
-#    application:
-#        name: lemon-pay
-
     # 允许上传文件和请求大小
     servlet:
         multipart:

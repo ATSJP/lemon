@@ -12,7 +12,7 @@ import java.util.List;
  * @author sjp
  * @date 2019/5/2
  */
-@FeignClient("eureka-provider")
+@FeignClient("provider")
 public interface CategoryProvider {
 
 	/**

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
  * @author sjp
  * @date 2019/5/1
  **/
-@FeignClient("eureka-provider")
+@FeignClient("provider")
 public interface FileProvider {
 
 	/**
