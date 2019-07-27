@@ -12,8 +12,8 @@ spring:
 eureka:
     instance:
         # 使用IP注册
-        prefer-ip-address: true
-    #注册地址
+        prefer-ip-address: ${use-ip-address}
+    # 注册地址
     client:
         service-url:
-            defaultZone: http://eureka.lemon.com/eureka/
+            defaultZone: ${register.url}

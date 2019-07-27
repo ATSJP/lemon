@@ -1,8 +1,8 @@
 server:
     port: 8083
     tomcat:
-        max-threads: 1000
-        min-spare-threads: 10
+        max-threads: ${tomcat-max-threads}
+        min-spare-threads: ${tomcat-min-spare-threads}
 
 spring:
     # 允许上传文件和请求大小

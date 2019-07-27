@@ -1,8 +1,8 @@
 server:
     port: 8082
     tomcat:
-        max-threads: 1000
-        min-spare-threads: 10
+        max-threads: ${tomcat-max-threads}
+        min-spare-threads: ${tomcat-min-spare-threads}
 
 spring:
     servlet:
@@ -40,11 +40,11 @@ spring:
 eureka:
     instance:
         # 使用IP注册
-        prefer-ip-address: true
+        prefer-ip-address: ${use-ip-address}
     # 注册地址
     client:
         service-url:
-            defaultZone: http://eureka.lemon.com/eureka/
+            defaultZone: ${register.url}
 
 logging:
     #日志
