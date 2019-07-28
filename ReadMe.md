@@ -1,7 +1,8 @@
 #### lemon
 
 #### 前后端分离
-[前端项目地址](https://github.com/ATSJP/lemon-front)
+- [前端项目地址](https://github.com/ATSJP/lemon-front)
+- [配置仓库](https://github.com/ATSJP/lemon-config）)
 
 #### Project Structure
 
@@ -24,11 +25,7 @@
 | ----------- | ---------------- |
 | SpringBoot  | 2.0.0.RELEASE    |                         
 | SpringCloud | Finchley.RELEASE |
-         
-#### Nginx配置
-
-[nginx.conf]( https://github.com/ATSJP/lemon/blob/master/nginx.conf)                         
-
+                         
 #### 技术栈
 
 ##### 后端
@@ -58,11 +55,23 @@
 - 前后端分离 基于Shiro的无状态Token认证
 
 #### 快速开始
-启动参数：
--Dspring.cloud.config.profile=dev
+         
+##### Nginx配置
 
-启动顺序：
+[nginx.conf]( https://github.com/ATSJP/lemon/blob/master/nginx.conf)       
+         
+##### Hosts配置
+
+[hosts]( https://github.com/ATSJP/lemon/blob/master/hosts)       
+   
+##### 启动参数(可选，默认Dev)
+```text
+-Dspring.cloud.config.profile=dev
+// 所有应用均是，dev为开发环境，详细配置请clone配置仓库
+```
+
+##### 启动顺序
 eureka-server、lemon-config并行启动，
 启动完成之后在启动eureka-provider、lemon-user、lemon-pay、lemon-apply、lemon-admin（并行启动）
 
-注意：其中支付宝的沙箱环境的参数，需要各自自行配置，git地址该参数未配置。（https://github.com/ATSJP/lemon-config）
+注意：其中支付宝的沙箱环境的参数，需要各自自行配置，git地址该参数未配置。
