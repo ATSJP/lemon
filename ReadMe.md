@@ -1,8 +1,8 @@
 #### lemon
 
 #### 前后端分离
-- [前端项目地址](https://github.com/ATSJP/lemon-front)
-- [配置仓库](https://github.com/ATSJP/lemon-config）)
+- [前端项目地址](https://github.com/ATSJP/lemon-front) 分支：master
+- [配置仓库](https://github.com/ATSJP/lemon-config) 分支：dv_lemon_2019_07
 
 #### Project Structure
 
