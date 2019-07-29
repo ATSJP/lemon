@@ -29,6 +29,14 @@ public class StatelessAuthcFilter extends AccessControlFilter {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    /**
+     * 判断请求是否需要被拦截，拦截后执行onAccessDenied方法
+     *
+     * @param request req
+     * @param response res
+     * @param mappedValue map
+     * @return true 不拦截 false 拦截
+     */
 	@Override
 	protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
 		return false;
