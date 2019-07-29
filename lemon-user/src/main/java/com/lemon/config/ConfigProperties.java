@@ -17,6 +17,6 @@ public class ConfigProperties {
     /**
      * redission配置文件
      */
-    @Value("${redission_config}")
+    @Value("${redission.config}")
     private String	redissionConfig;
 }

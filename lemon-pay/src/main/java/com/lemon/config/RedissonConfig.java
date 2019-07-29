@@ -21,9 +21,8 @@ public class RedissonConfig {
 
 	@Bean
 	public RedissonClient redisson() throws IOException {
-		// 本模块使用的是yaml格式的配置文件，读取使用Config.fromYAML，如果是Json文件，则使用Config.fromJSON
-		Config config = Config
-				.fromYAML(RedissonConfig.class.getClassLoader().getResource(configProperties.getRedissionConfig()));
-		return Redisson.create(config);
+        // 本模块使用的是json格式的配置文件，读取使用Config.fromJSON，如果是yaml文件，则使用Config.fromYAML
+        Config config = Config.fromJSON(configProperties.getRedissionConfig());
+        return Redisson.create(config);
 	}
 }

@@ -41,6 +41,7 @@ logging:
     #日志
     config: classpath:logback-${spring.cloud.config.profile}.xml
 
-# redission配置文件
-redission_config: redisson-config-${spring.cloud.config.profile}.yml
+# redission配置
+redission:
+    config: ${redission.single.config}
 
