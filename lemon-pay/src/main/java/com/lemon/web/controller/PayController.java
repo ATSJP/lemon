@@ -119,7 +119,7 @@ public class PayController {
 		}
 		if (signVerified) {
 			// 充值成功
-			msg = "<script>window.location.replace(\"http://www.lemon.com/userInfo.html?state=paysuccess\")</script> ";
+			msg = "<script>window.location.replace(\"http://lemon.shijianpeng.top/userInfo.html?state=paysuccess\")</script> ";
 			Long orderId = Long.parseLong(request.getOut_trade_no());
 			Optional<OrderInfoEntity> orderInfoEntityOptional = orderInfoRepository.findById(orderId);
 			if (orderInfoEntityOptional.isPresent()) {

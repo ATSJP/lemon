@@ -47,7 +47,7 @@ public class OrderController {
 				orderInfoEntity.setUpdateTime(DateUtils.getCurrentTime());
 				orderInfoRepository.save(orderInfoEntity);
 				String orderIdEn = EncryUtils.encode3Des(ConstantEncryKey.ORDER_ENCRY_KEY, orderId + "");
-				msg = "<script>window.location.replace(\"http://www.lemon.com/p/pay?orderIdEn=" + orderIdEn
+				msg = "<script>window.location.replace(\"http://lemon.shijianpeng.top/p/pay?orderIdEn=" + orderIdEn
 						+ "\")</script> ";
 			}
 		}

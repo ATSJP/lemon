@@ -18,7 +18,7 @@ eureka:
         fetch-registry: false
         # 注册中心地址
         service-url:
-            defaultZone: http://eureka.lemon.com/eureka/
+            defaultZone: http://eureka.shijianpeng.top/eureka/
 
 # actuator 监控
 management:
@@ -38,6 +38,6 @@ management:
 
 info:
     app.name: eureka-provider
-    company.name: www.lemon.com
+    company.name: lemon.shijianpeng.top
     build.artifactId: eureka-server
     build.version: 0.0.1

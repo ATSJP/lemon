@@ -44,7 +44,7 @@ management:
 
 info:
     app.name: eureka-provider
-    company.name: www.lemon.com
+    company.name: lemon.shijianpeng.top
     build.artifactId: eureka-provider
     build.version: 0.0.1
 
