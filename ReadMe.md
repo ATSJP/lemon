@@ -73,5 +73,3 @@
 ##### 启动顺序
 eureka-server、lemon-config并行启动，
 启动完成之后在启动eureka-provider、lemon-user、lemon-pay、lemon-apply、lemon-admin（并行启动）
-
-注意：其中支付宝的沙箱环境的参数
