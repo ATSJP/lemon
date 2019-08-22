@@ -12,9 +12,9 @@ pipeline {
         sh 'mvn -B -DskipTests clean package'
       }
     }
-    stage('post') {
+    stage('collect') {
       steps {
-        archiveArtifacts '.*/target/**.jar'
+        archiveArtifacts '**/target/**.jar'
       }
     }
   }
