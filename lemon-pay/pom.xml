@@ -111,7 +111,7 @@
                 <configuration>
                     <!-- 指定该Main Class为全局的唯一入口 -->
                     <mainClass>com.lemon.LemonPayApplication</mainClass>
-                    <layout>ZIP</layout>
+                    <layout>JAR</layout>
                 </configuration>
                 <executions>
                     <execution>
