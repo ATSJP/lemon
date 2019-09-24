@@ -43,9 +43,13 @@ public class FileService {
 	public void upload(FileRequest request, FileResponse response) {
 		// Get file name
 		MultipartFile[] files = request.getFiles();
-		String uploadedFileName = files == null ? ""
-				: Arrays.stream(files).map(MultipartFile::getOriginalFilename).filter(x -> !StringUtils.isEmpty(x))
-						.collect(Collectors.joining(" , "));
+		if (files == null) {
+			response.setCode(ConstantApi.CODE.PARAM_NULL.getCode());
+			response.setMsg(ConstantApi.FILE_UPLOAD.FAIL.getDesc());
+			return;
+		}
+		String uploadedFileName = Arrays.stream(files).map(MultipartFile::getOriginalFilename)
+				.filter(x -> !StringUtils.isEmpty(x)).collect(Collectors.joining(" , "));
 		if (StringUtils.isEmpty(uploadedFileName)) {
 			response.setCode(ConstantApi.CODE.FAIL.getCode());
 			response.setMsg(ConstantApi.FILE_UPLOAD.FAIL.getDesc());
@@ -63,7 +67,7 @@ public class FileService {
 			response.setMsg(ConstantApi.CODE.ILLEGAL_REQUEST.getDesc());
 			return;
 		}
-		List<BizFileDTO> fileDTOList = new LinkedList<>();
+		List<BizFileDTO> fileDtoList = new LinkedList<>();
 		Arrays.asList(files).forEach(item -> {
 			if (!item.isEmpty()) {
 				String fileName = String.valueOf(System.currentTimeMillis());
@@ -76,7 +80,7 @@ public class FileService {
 					Files.write(path, bytes);
 					isSaveFileSuccess = true;
 				} catch (Exception e) {
-					logger.error("upload fail->Exception:{}", e);
+					logger.error("upload fail->Exception:", e);
 				}
 				if (isSaveFileSuccess) {
 					// 保存上传文件记录
@@ -94,12 +98,12 @@ public class FileService {
 					BizFileDTO bizFileDTO = new BizFileDTO();
 					bizFileDTO.setFileId(fileEntity.getFileId());
 					bizFileDTO.setFileName(fileEntity.getFileName());
-					fileDTOList.add(bizFileDTO);
+					fileDtoList.add(bizFileDTO);
 				}
 			}
 		});
 		response.setCode(ConstantApi.CODE.SUCCESS.getCode());
-		response.setFileDTOList(fileDTOList);
+		response.setFileDTOList(fileDtoList);
 	}
 
 }
