@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="true">
-    <contextName>lemon-pay</contextName>
-    <property name="log.path" value="/data/log/lemon/lemon-pay.log" />
+    <contextName>lemon-config</contextName>
+    <property name="log.path" value="/data/log/lemon/lemon-config.log" />
 
     <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${log.path}</file>

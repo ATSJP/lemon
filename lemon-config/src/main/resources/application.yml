@@ -10,3 +10,6 @@ spring:
                     uri: https://github.com/ATSJP/lemon-config
                     # 指定搜索根路径下的所有目录，若有多个路径使用逗号隔开
                     search-paths: /**
+logging:
+    #日志
+    config: classpath:logback-${spring.cloud.config.profile}.xml
