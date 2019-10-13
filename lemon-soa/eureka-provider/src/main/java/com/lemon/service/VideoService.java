@@ -52,7 +52,7 @@ public class VideoService {
 	 * @param sortValue 排序value: 0 升序 1 降序
 	 * @return List<VideoDTO>
 	 */
-	public List<VideoDTO> getVideoOrderBySortKey(short sortKey, short sortValue) {
+	public List<VideoDTO> getVideoOrderBySortKeyFromCache(short sortKey, short sortValue) {
 		String sortValueSql = ConstantVideo.SORT_VALUE.transformCodeToSqlKey(sortValue);
 		List<VideoDTO> videoDTOList = new LinkedList<>();
 		if (ConstantVideo.SORT_KEY.PLAY_NUM.code == sortKey) {
@@ -64,6 +64,12 @@ public class VideoService {
 		return videoDTOList;
 	}
 
+	/**
+	 * 根据评论数进行排序，筛选数据
+	 * 
+	 * @param sortValueSql 排序规则
+	 * @param videoDTOList 视频列表
+	 */
 	private void getVideoListByCountRemarkNum(String sortValueSql, List<VideoDTO> videoDTOList) {
 		List<Map<String, Object>> resultMap = remarkRepository.countRemarkNumByVideoId(sortValueSql);
 		if (!CollectionUtils.isEmpty(resultMap)) {
@@ -72,11 +78,20 @@ public class VideoService {
 				Long totalRemarkNum = Long.parseLong(item.get("total_remark_num").toString());
 				logger.info("query video info->videoId:{},totalRemarkNum:{}", videoId, totalRemarkNum);
 				VideoDTO videoDTO = this.getVideoDTOById(videoId);
-				videoDTOList.add(videoDTO);
+                // 仅展示已审核过的视频
+                if (ConstantVideo.AUDIT_STATUS.PASS.code.equals(videoDTO.getVideoDetailDTO().getAuditStatus())) {
+                    videoDTOList.add(videoDTO);
+                }
 			});
 		}
 	}
 
+	/**
+	 * 根据播放次数排序，筛选数据
+	 * 
+	 * @param sortValueSql 排序规则
+	 * @param videoDTOList 视频列表
+	 */
 	private void getVideoListByCountPlayNum(String sortValueSql, List<VideoDTO> videoDTOList) {
 		List<Map<String, Object>> resultMap = playDetailRepository.countPlayNumByVideoId(sortValueSql);
 		if (!CollectionUtils.isEmpty(resultMap)) {
@@ -85,7 +100,10 @@ public class VideoService {
 				Long totalPlayNum = Long.parseLong(item.get("total_play_num").toString());
 				logger.info("query video info->videoId:{},totalPlayNum:{}", videoId, totalPlayNum);
 				VideoDTO videoDTO = this.getVideoDTOById(videoId);
-				videoDTOList.add(videoDTO);
+				// 仅展示已审核过的视频
+				if (ConstantVideo.AUDIT_STATUS.PASS.code.equals(videoDTO.getVideoDetailDTO().getAuditStatus())) {
+					videoDTOList.add(videoDTO);
+				}
 			});
 		}
 	}
@@ -117,10 +135,12 @@ public class VideoService {
 	 * 根据分类获取视频列表
 	 * 
 	 * @param categoryId 分类id
+	 * @param auditStatus 审核状态
 	 * @return List<VideoDetailDTO>
 	 */
-	public List<VideoDTO> getVideoListByCategoryId(Long categoryId) {
-		List<VideoEntity> videoEntityList = videoRepository.findAllByCategoryId(categoryId);
+	public List<VideoDTO> getVideoListByCategoryIdFromCache(Long categoryId, ConstantVideo.AUDIT_STATUS auditStatus) {
+		List<VideoEntity> videoEntityList = videoRepository.findAllByCategoryIdAndAuditStatus(categoryId,
+				auditStatus.code);
 		if (!CollectionUtils.isEmpty(videoEntityList)) {
 			List<VideoDTO> videoDTOList = new LinkedList<>();
 			videoEntityList.forEach(item -> {

@@ -21,6 +21,7 @@ public class PageUtils {
 	 * @param pageSize 每页大小
 	 * @return List<VideoDTO> 第几页数据
 	 */
+    @SuppressWarnings("unchecked")
 	public static List getPageList(List list, int pageIndex, int pageSize) {
 		if (list.size() > pageSize) {
 			// 分页

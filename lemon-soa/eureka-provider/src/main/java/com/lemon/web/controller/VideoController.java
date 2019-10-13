@@ -30,16 +30,16 @@ public class VideoController {
 		return videoProvider.getVideo(videoId);
 	}
 
-	@GetMapping(value = "/video/getVideoOrderBySortKey/{sortKey}/{sortValue}")
-	List<VideoDTO> getVideoOrderBySortKey(@PathVariable(value = "sortKey") short sortKey,
+	@GetMapping(value = "/video/getVideoOrderBySortKeyFromCache/{sortKey}/{sortValue}")
+	List<VideoDTO> getVideoOrderBySortKeyFromCache(@PathVariable(value = "sortKey") short sortKey,
 			@PathVariable(value = "sortValue") short sortValue) {
-		return videoProvider.getVideoOrderBySortKey(sortKey, sortValue);
+		return videoProvider.getVideoOrderBySortKeyFromCache(sortKey, sortValue);
 	}
 
 	@GetMapping(value = "/video/getVideoList/{categoryId}/{pageIndex}/{size}")
-	List<VideoDTO> getVideoListByCategoryId(@PathVariable(value = "categoryId") Long categoryId,
+	List<VideoDTO> getVideoListByCategoryIdFromCache(@PathVariable(value = "categoryId") Long categoryId,
 			@PathVariable(value = "pageIndex") int pageIndex, @PathVariable(value = "size") int size) {
-		return videoProvider.getVideoListByCategoryId(categoryId, pageIndex, size);
+		return videoProvider.getVideoListByCategoryIdFromCache(categoryId, pageIndex, size);
 	}
 
 	@GetMapping("/video/getVideoListByLoginId/{loginId}/{pageIndex}/{size}")

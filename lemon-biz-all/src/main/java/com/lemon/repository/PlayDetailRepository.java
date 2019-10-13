@@ -21,7 +21,7 @@ public interface PlayDetailRepository extends CrudRepository<PlayDetailEntity, L
 	 * @param sortValue 排序value: 0 升序 1 降序
 	 * @return List<Map<String, Object>>
 	 */
-	@Query(value = "SELECT * FROM (SELECT video_id AS video_id, COUNT(1) AS total_play_num FROM play_detail GROUP BY video_id ) play_count ORDER BY total_play_num DESC", nativeQuery = true)
+	@Query(value = "SELECT * FROM (SELECT video_id AS video_id, COUNT(1) AS total_play_num FROM play_detail GROUP BY video_id) play_count ORDER BY total_play_num DESC", nativeQuery = true)
 	List<Map<String, Object>> countPlayNumByVideoId(@Param(value = "sortValue") String sortValue);
 
 	/**
@@ -34,8 +34,20 @@ public interface PlayDetailRepository extends CrudRepository<PlayDetailEntity, L
 
 	/**
 	 * 统计当前视频该用户是否已经看过
+	 * 
 	 * @param createId 创建人id
+	 * @param videoId 视频Id
 	 * @return int 播放量
 	 */
 	int countAllByCreateIdAndVideoId(long createId, long videoId);
+
+	/**
+	 * 根据IP和创建人Id统计播放次数
+	 * 
+	 * @param videoId 视频Id
+	 * @param ip ip
+	 * @param createId 创建人ID
+	 * @return int 播放量
+	 */
+	int countAllByVideoIdAndIpAndCreateId(long videoId, String ip, long createId);
 }

@@ -11,6 +11,7 @@ import com.lemon.soa.api.dto.VideoDTO;
 import com.lemon.soa.api.dto.VideoDetailDTO;
 import com.lemon.soa.api.provider.VideoProvider;
 import com.lemon.utils.DateUtils;
+import com.lemon.utils.IPUtils;
 import com.lemon.web.constant.base.ConstantApi;
 import com.lemon.web.constant.base.ConstantBaseData;
 import com.lemon.web.video.request.VideoRequest;
@@ -19,6 +20,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * VideoService
@@ -99,7 +101,7 @@ public class VideoService {
 	 * @param response res
 	 */
 	public void updateVideo(VideoRequest request, VideoResponse response) {
-		if (isVideoCorrectAndExist(request, response)) {
+		if (!isVideoCorrectAndExist(request, response)) {
 			return;
 		}
 		VideoEntity videoEntity = new VideoEntity();
@@ -109,19 +111,43 @@ public class VideoService {
 		videoRepository.save(videoEntity);
 	}
 
-	public void playVideo(VideoRequest request, VideoResponse response) {
+	/**
+	 * 播放记录
+	 *
+	 * @param request req
+	 * @param response res
+	 */
+	public void playVideo(HttpServletRequest httpServletRequest, VideoRequest request, VideoResponse response) {
 		if (!isVideoCorrectAndExist(request, response)) {
 			return;
 		}
-		int count = playDetailRepository.countAllByCreateIdAndVideoId(request.getUid(), request.getVideoId());
+		Long uid = request.getUid();
+		String sid = request.getSid();
+		Long videoId = request.getVideoId();
+		String ip = IPUtils.getIpAddress(httpServletRequest);
+		// 未登陆下，检测当前IP地址是否已经播放过视频
+		if (request.getUid() == -1L) {
+			int count = playDetailRepository.countAllByVideoIdAndIpAndCreateId(videoId, ip, uid);
+			if (count > 0) {
+				return;
+			}
+			this.savePlayDetail(uid, sid, videoId, ip);
+			return;
+		}
+		// 已登陆下，检测当前用户是否播放过视频
+		int count = playDetailRepository.countAllByCreateIdAndVideoId(uid, videoId);
 		if (count > 0) {
 			return;
 		}
+		this.savePlayDetail(uid, sid, videoId, ip);
+	}
+
+	private void savePlayDetail(Long uid, String sid, Long videoId, String ip) {
 		PlayDetailEntity playDetailEntity = new PlayDetailEntity();
-		playDetailEntity.setVideoId(request.getVideoId());
-		playDetailEntity.setIp("");
-		playDetailEntity.setSid(request.getSid());
-		playDetailEntity.setCreateId(request.getUid());
+		playDetailEntity.setVideoId(videoId);
+		playDetailEntity.setIp(ip);
+		playDetailEntity.setSid(sid);
+		playDetailEntity.setCreateId(uid);
 		playDetailEntity.setCreateTime(DateUtils.getCurrentTime());
 		playDetailRepository.save(playDetailEntity);
 	}
@@ -133,19 +159,20 @@ public class VideoService {
 	 * @param response res
 	 * @return boolean true 合法存在 false 不合法
 	 */
+	@SuppressWarnings("all")
 	private boolean isVideoCorrectAndExist(VideoRequest request, VideoResponse response) {
 		Long videoId = request.getVideoId();
 		if (videoId == null) {
 			response.setCode(ConstantApi.CODE.PARAM_NULL.getCode());
 			response.setMsg(ConstantApi.CODE.PARAM_NULL.getDesc());
-			return true;
+			return false;
 		}
 		VideoDetailDTO videoDetailDTO = videoProvider.getVideoSimpleDetail(videoId);
 		if (videoDetailDTO == null || !ConstantVideo.AUDIT_STATUS.PASS.code.equals(videoDetailDTO.getAuditStatus())) {
 			response.setCode(ConstantApi.CODE.ILLEGAL_REQUEST.getCode());
 			response.setMsg(ConstantApi.CODE.ILLEGAL_REQUEST.getDesc());
-			return true;
+			return false;
 		}
-		return false;
+		return true;
 	}
 }

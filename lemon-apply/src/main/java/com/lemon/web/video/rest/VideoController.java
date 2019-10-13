@@ -9,6 +9,7 @@ import com.lemon.web.video.service.VideoService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -45,7 +46,8 @@ public class VideoController {
 	@GetMapping(value = "/video/getVideoOrderRank/{sortKey}")
 	public VideoResponse getVideoOrderRank(@PathVariable(value = "sortKey") short sortKey) {
 		VideoResponse response = new VideoResponse();
-		List<VideoDTO> videoDTOList = videoProvider.getVideoOrderBySortKey(sortKey, ConstantVideo.SORT_VALUE.DESC.code);
+		List<VideoDTO> videoDTOList = videoProvider.getVideoOrderBySortKeyFromCache(sortKey,
+				ConstantVideo.SORT_VALUE.DESC.code);
 		response.setVideoDTOList(videoDTOList);
 		return response;
 	}
@@ -59,10 +61,10 @@ public class VideoController {
 	 * @return VideoResponse
 	 */
 	@GetMapping("/video/getVideoList/{categoryId}/{pageIndex}/{size}")
-	public VideoResponse getVideoListByCategoryId(@PathVariable(value = "categoryId") Long categoryId,
+	public VideoResponse getVideoListByCategoryIdFromCache(@PathVariable(value = "categoryId") Long categoryId,
 			@PathVariable(value = "pageIndex") int pageIndex, @PathVariable(value = "size") int size) {
 		VideoResponse response = new VideoResponse();
-		List<VideoDTO> videoDTOList = videoProvider.getVideoListByCategoryId(categoryId, pageIndex, size);
+		List<VideoDTO> videoDTOList = videoProvider.getVideoListByCategoryIdFromCache(categoryId, pageIndex, size);
 		response.setVideoDTOList(videoDTOList);
 		return response;
 	}
@@ -108,9 +110,9 @@ public class VideoController {
 	 * @return VideoResponse
 	 */
 	@PostMapping("/video/play")
-	public VideoResponse playVideo(VideoRequest request) {
+	public VideoResponse playVideo(HttpServletRequest httpServletRequest, VideoRequest request) {
 		VideoResponse response = new VideoResponse();
-		videoService.playVideo(request, response);
+		videoService.playVideo(httpServletRequest, request, response);
 		return response;
 	}
 
