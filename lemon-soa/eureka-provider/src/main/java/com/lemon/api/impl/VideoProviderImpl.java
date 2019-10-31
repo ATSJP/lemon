@@ -133,7 +133,6 @@ public class VideoProviderImpl implements VideoProvider {
 				CategoryEntity categoryEntityTop = categoryEntityOptionalTop.get();
 				BeanUtils.copyProperties(categoryEntityTop, categoryDTO);
 			}
-			// TODO 待完成
 		}
 	}
 
@@ -172,17 +171,7 @@ public class VideoProviderImpl implements VideoProvider {
 
 	@Override
 	public List<VideoDTO> getVideoListByLoginId(Long loginId, int pageIndex, int size) {
-		// 从缓存取数据
-		List<VideoDTO> videoDTOList = redissonTools.get(ConstantCache.KEY.VIDEO_SELF_LIST_KEY_.key + loginId
-				+ ConstantBaseData.CN + pageIndex + ConstantBaseData.CN + size);
-		if (!CollectionUtils.isEmpty(videoDTOList)) {
-			return videoDTOList;
-		}
-		// 主动加载数据
-		videoDTOList = videoService.getVideoListByLoginId(loginId, pageIndex, size);
-		redissonTools.set(ConstantCache.KEY.VIDEO_SELF_LIST_KEY_.key + loginId + ConstantBaseData.CN + pageIndex
-				+ ConstantBaseData.CN + size, videoDTOList);
-		return videoDTOList;
+		return videoService.getVideoListByLoginId(loginId, pageIndex, size);
 	}
 
 	@Override

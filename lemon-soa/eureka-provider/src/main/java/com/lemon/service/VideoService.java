@@ -186,7 +186,6 @@ public class VideoService {
 	 * @return List<VideoDTO>
 	 */
 	public List<VideoDTO> getVideoListByLoginId(Long loginId, int pageIndex, int size) {
-		// 从缓存取数据
 		List<VideoDTO> videoDTOList = new LinkedList<>();
 		List<VideoEntity> videoEntityList = videoRepository.findAllByUserId(loginId);
 		if (!CollectionUtils.isEmpty(videoEntityList)) {
