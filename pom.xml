@@ -30,7 +30,7 @@
         <lombok.version>1.16.10</lombok.version>
         <guava.version>18.0</guava.version>
         <ikanalyzer.version>2012_u6</ikanalyzer.version>
-        <lunece.version>4.10.2</lunece.version>
+        <lunece.version>8.3.0</lunece.version>
         <alipay-sdk.version>3.7.26.ALL</alipay-sdk.version>
 
         <maven.compiler.plugin.version>3.1</maven.compiler.plugin.version>
