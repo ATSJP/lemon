@@ -23,6 +23,8 @@ management:
     server:
         # 监控端口
         port: 10000
+        servlet:
+            context-path: /
     endpoint:
         health:
             # heath展示全部信息 其他配置 when_authorized、never，
