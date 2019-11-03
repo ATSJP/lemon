@@ -39,6 +39,10 @@ management:
         health:
             # heath展示全部信息 其他配置 when_authorized、never，
             show-details: always
+    # micrometer监控
+    metrics:
+        tags:
+            application: ${spring.application.name}
 
 info:
     app.name: eureka-provider

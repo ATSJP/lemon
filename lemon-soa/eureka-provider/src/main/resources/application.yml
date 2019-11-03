@@ -41,6 +41,10 @@ management:
     endpoint:
         health:
             show-details: ${actuator.health.show-details}
+    # micrometer监控
+    metrics:
+        tags:
+            application: ${spring.application.name}
 
 info:
     app.name: eureka-provider

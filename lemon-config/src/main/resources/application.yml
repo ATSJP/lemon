@@ -10,6 +10,28 @@ spring:
                     uri: https://github.com/ATSJP/lemon-config
                     # 指定搜索根路径下的所有目录，若有多个路径使用逗号隔开
                     search-paths: /**
+
+
+# actuator 监控
+management:
+    endpoints:
+        web:
+            basePath: /appInfo
+            exposure:
+                # 开启全部监控请求
+                include: "*"
+    server:
+        # 监控端口
+        port: 10000
+    endpoint:
+        health:
+            # heath展示全部信息 其他配置 when_authorized、never，
+            show-details: always
+    # micrometer监控
+    metrics:
+        tags:
+            application: ${spring.application.name}
+
 logging:
     #日志
     config: classpath:logback-${spring.cloud.config.profile}.xml
