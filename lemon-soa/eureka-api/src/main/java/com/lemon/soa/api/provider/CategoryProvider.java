@@ -16,11 +16,25 @@ import java.util.List;
 public interface CategoryProvider {
 
 	/**
-	 * 获取分类树
+	 * 获取分类树(DB查询)
 	 *
 	 * @return List<CategoryDTO>
 	 */
 	@GetMapping(value = "/category/getTree")
 	List<CategoryDTO> getCategoryTree();
 
+	/**
+	 * 获取分类树(带缓存)
+	 *
+	 * @return List<CategoryDTO>
+	 */
+	@GetMapping(value = "/category/getTreeCache")
+	List<CategoryDTO> getCategoryTreeCache();
+
+	/**
+	 * 刷新分类树缓存
+	 *
+	 */
+	@GetMapping(value = "/category/refreshTreeCache")
+	void refreshCategoryTreeCache();
 }

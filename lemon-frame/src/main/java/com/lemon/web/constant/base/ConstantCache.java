@@ -16,7 +16,10 @@ public interface ConstantCache {
 		INDEX_VIDEO_LIST("INDEX_VIDEO_KEY_", "首页视频列表缓存key", 60 * 60),
 		CATEGORY_VIDEO_LIST("CATEGORY_VIDEO_LIST_KEY_", "已经分类的视频列表", 60 * 60),
 		VIDEO_SELF_LIST_KEY_("VIDEO_SELF_LIST_KEY_", "用户的视频列表", 60 * 60),
-		COLLECT_VIDEO_SELF_LIST_KEY_("COLLECT_VIDEO_SELF_LIST_KEY_", "用户收藏的视频列表", 60 * 60),;
+		COLLECT_VIDEO_SELF_LIST_KEY_("COLLECT_VIDEO_SELF_LIST_KEY_", "用户收藏的视频列表", 60 * 60),
+        
+		CATAGORY_TREE("CATAGORY_TREE", "分类树缓存", 12 * 60 * 60),
+        ;
 
 		public String	key;
 		public String	desc;

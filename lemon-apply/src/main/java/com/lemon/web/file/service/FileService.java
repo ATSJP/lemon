@@ -45,14 +45,14 @@ public class FileService {
 		MultipartFile[] files = request.getFiles();
 		if (files == null) {
 			response.setCode(ConstantApi.CODE.PARAM_NULL.getCode());
-			response.setMsg(ConstantApi.FILE_UPLOAD.FAIL.getDesc());
+			response.setMsg(ConstantBizFile.FILE_UPLOAD.FAIL.getDesc());
 			return;
 		}
 		String uploadedFileName = Arrays.stream(files).map(MultipartFile::getOriginalFilename)
 				.filter(x -> !StringUtils.isEmpty(x)).collect(Collectors.joining(" , "));
 		if (StringUtils.isEmpty(uploadedFileName)) {
 			response.setCode(ConstantApi.CODE.FAIL.getCode());
-			response.setMsg(ConstantApi.FILE_UPLOAD.FAIL.getDesc());
+			response.setMsg(ConstantBizFile.FILE_UPLOAD.FAIL.getDesc());
 			return;
 		}
 		Long linkId = request.getLinkId();
