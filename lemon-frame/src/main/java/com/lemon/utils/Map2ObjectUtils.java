@@ -1,5 +1,7 @@
 package com.lemon.utils;
 
+import org.apache.commons.beanutils.BeanUtils;
+
 import java.util.Map;
 
 /**
@@ -15,7 +17,7 @@ public class Map2ObjectUtils {
 			return null;
 		}
 		Object obj = beanClass.newInstance();
-		org.apache.commons.beanutils.BeanUtils.populate(obj, map);
+		BeanUtils.populate(obj, map);
 		return obj;
 	}
 
