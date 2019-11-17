@@ -126,7 +126,7 @@ public class VideoService {
 		Long videoId = request.getVideoId();
 		String ip = IPUtils.getIpAddress(httpServletRequest);
 		// 未登陆下，检测当前IP地址是否已经播放过视频
-		if (request.getUid() == -1L) {
+		if (uid == -1L) {
 			int count = playDetailRepository.countAllByVideoIdAndIpAndCreateId(videoId, ip, uid);
 			if (count > 0) {
 				return;
