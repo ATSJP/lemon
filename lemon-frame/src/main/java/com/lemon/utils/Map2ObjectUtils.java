@@ -1,5 +1,6 @@
 package com.lemon.utils;
 
+import org.apache.commons.beanutils.BeanMap;
 import org.apache.commons.beanutils.BeanUtils;
 
 import java.util.Map;
@@ -12,6 +13,14 @@ import java.util.Map;
  */
 public class Map2ObjectUtils {
 
+	/**
+	 * 将map转化为Bean
+	 * 
+	 * @param map map
+	 * @param beanClass beanClass
+	 * @return Object Bean
+	 * @throws Exception Exception
+	 */
 	public static Object mapToObject(Map<String, Object> map, Class<?> beanClass) throws Exception {
 		if (map == null) {
 			return null;
@@ -21,10 +30,16 @@ public class Map2ObjectUtils {
 		return obj;
 	}
 
+	/**
+	 * 将Obeject转为Map
+	 * 
+	 * @param obj obj
+	 * @return map
+	 */
 	public static Map<?, ?> objectToMap(Object obj) {
 		if (obj == null) {
 			return null;
 		}
-		return new org.apache.commons.beanutils.BeanMap(obj);
+		return new BeanMap(obj);
 	}
 }

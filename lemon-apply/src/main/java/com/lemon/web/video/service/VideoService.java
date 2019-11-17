@@ -121,8 +121,8 @@ public class VideoService {
 		if (!isVideoCorrectAndExist(request, response)) {
 			return;
 		}
-		Long uid = request.getUid();
-		String sid = request.getSid();
+		Long uid = request.getUid() == null ? -1L : request.getUid();
+		String sid = request.getSid() == null ? "-1" : request.getSid();
 		Long videoId = request.getVideoId();
 		String ip = IPUtils.getIpAddress(httpServletRequest);
 		// 未登陆下，检测当前IP地址是否已经播放过视频
