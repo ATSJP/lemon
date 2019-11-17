@@ -4,6 +4,7 @@ import com.lemon.entity.OrderInfoEntity;
 import com.lemon.repository.OrderInfoRepository;
 import com.lemon.utils.DateUtils;
 import com.lemon.utils.EncryptUtils;
+import com.lemon.utils.SnowFlake;
 import com.lemon.web.constant.ConstantOrder;
 import com.lemon.web.constant.base.ConstantEncryKey;
 import com.lemon.web.order.request.OrderRequest;
@@ -24,14 +25,16 @@ import java.io.IOException;
 public class OrderController {
 
 	@Resource
-	private OrderInfoRepository orderInfoRepository;
+	private OrderInfoRepository	orderInfoRepository;
+	@Resource
+	private SnowFlake			snowFlake;
 
 	@RequestMapping("/toPay")
 	public void toPay(HttpServletResponse httpResponse, OrderRequest request) throws IOException {
 		String msg = "error";
 		Short prodId = request.getProdId();
 		if (ConstantOrder.PROD_INFO.isCorrectProdId(prodId)) {
-			long orderId = System.currentTimeMillis();
+			long orderId = snowFlake.nextId();
 			ConstantOrder.PROD_INFO prodInfo = ConstantOrder.PROD_INFO.getProdInfo(prodId);
 			if (prodInfo != null) {
 				OrderInfoEntity orderInfoEntity = new OrderInfoEntity();
@@ -41,11 +44,11 @@ public class OrderController {
 				orderInfoEntity.setPayAmt(prodInfo.amt);
 				orderInfoEntity.setRealAmt(prodInfo.amt);
 				orderInfoEntity.setDiscount(prodInfo.amt);
-				orderInfoEntity.setCreateId(request.getUid());
-				orderInfoEntity.setCreateTime(DateUtils.getCurrentTime());
-				orderInfoEntity.setUpdateId(request.getUid());
-				orderInfoEntity.setUpdateTime(DateUtils.getCurrentTime());
-				orderInfoRepository.save(orderInfoEntity);
+                orderInfoEntity.setUpdateId(request.getUid());
+                orderInfoEntity.setCreateId(request.getUid());
+                orderInfoEntity.setCreateTime(DateUtils.getCurrentTime());
+                orderInfoEntity.setUpdateTime(DateUtils.getCurrentTime());
+                orderInfoRepository.save(orderInfoEntity);
 				String orderIdEn = EncryptUtils.encode3Des(ConstantEncryKey.ORDER_ENCRY_KEY, orderId + "");
 				msg = "<script>window.location.replace(\"http://lemon.shijianpeng.top/p/pay?orderIdEn=" + orderIdEn
 						+ "\")</script> ";
