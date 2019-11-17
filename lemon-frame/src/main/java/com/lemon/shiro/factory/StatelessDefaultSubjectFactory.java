@@ -5,6 +5,8 @@ import org.apache.shiro.subject.SubjectContext;
 import org.apache.shiro.web.mgt.DefaultWebSubjectFactory;
 
 /**
+ * 重写DefaultWebSubjectFactory.createSubject
+ *
  * @author sjp
  * @date 2019/4/30
  **/

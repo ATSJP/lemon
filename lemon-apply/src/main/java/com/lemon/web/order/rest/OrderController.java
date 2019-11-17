@@ -3,7 +3,7 @@ package com.lemon.web.order.rest;
 import com.lemon.entity.OrderInfoEntity;
 import com.lemon.repository.OrderInfoRepository;
 import com.lemon.utils.DateUtils;
-import com.lemon.utils.EncryUtils;
+import com.lemon.utils.EncryptUtils;
 import com.lemon.web.constant.ConstantOrder;
 import com.lemon.web.constant.base.ConstantEncryKey;
 import com.lemon.web.order.request.OrderRequest;
@@ -46,7 +46,7 @@ public class OrderController {
 				orderInfoEntity.setUpdateId(request.getUid());
 				orderInfoEntity.setUpdateTime(DateUtils.getCurrentTime());
 				orderInfoRepository.save(orderInfoEntity);
-				String orderIdEn = EncryUtils.encode3Des(ConstantEncryKey.ORDER_ENCRY_KEY, orderId + "");
+				String orderIdEn = EncryptUtils.encode3Des(ConstantEncryKey.ORDER_ENCRY_KEY, orderId + "");
 				msg = "<script>window.location.replace(\"http://lemon.shijianpeng.top/p/pay?orderIdEn=" + orderIdEn
 						+ "\")</script> ";
 			}
