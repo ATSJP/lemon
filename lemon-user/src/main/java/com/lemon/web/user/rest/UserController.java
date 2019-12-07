@@ -4,6 +4,7 @@ import com.lemon.entity.LoginInfoEntity;
 import com.lemon.tools.RedissonTools;
 import com.lemon.tools.TokenGenerate;
 import com.lemon.utils.CookieUtils;
+import com.lemon.web.constant.ConstantUser;
 import com.lemon.web.constant.base.ConstantApi;
 import com.lemon.web.constant.base.ConstantCache;
 import com.lemon.web.user.request.LoginRequest;
@@ -15,11 +16,19 @@ import com.lemon.web.user.response.UserInfoResponse;
 import com.lemon.web.user.service.UserService;
 import com.lemon.web.user.vo.LoginInfoVo;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
@@ -117,7 +126,7 @@ public class UserController {
 		LoginInfoEntity loginInfoEntity = userService.getByLoginName(loginName);
 		if (loginInfoEntity != null) {
 			response.setCode(ConstantApi.CODE.FAIL.getCode());
-			response.setMsg(ConstantApi.REGISTER_MESSAGE.FAIL.getDesc());
+			response.setMsg(ConstantUser.REGISTER_MESSAGE.FAIL.getDesc());
 			return response;
 		}
 		loginInfoEntity = userService.register(loginName, password, userName);

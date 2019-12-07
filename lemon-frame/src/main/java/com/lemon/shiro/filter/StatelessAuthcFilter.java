@@ -81,6 +81,9 @@ public class StatelessAuthcFilter extends AccessControlFilter {
 
 	/**
 	 * 登录失败时默认返回401状态码
+	 * 
+	 * @param response response
+	 * @throws IOException IOException
 	 */
 	private void onLoginFail(ServletResponse response) throws IOException {
 		HttpServletResponse httpResponse = (HttpServletResponse) response;

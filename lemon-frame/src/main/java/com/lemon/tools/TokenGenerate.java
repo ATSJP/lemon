@@ -2,6 +2,8 @@ package com.lemon.tools;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
+import java.util.UUID;
+
 /**
  * Token生成器
  * 
@@ -17,12 +19,13 @@ public class TokenGenerate {
 
 	/**
 	 * 生成token
+     *
 	 * @param uid 用户的id
 	 * @param sid 用户所在平台
 	 * @return String token
 	 */
 	public static String getToken(Long uid, String sid) {
-		String sb = uid + sid + System.currentTimeMillis() + KEY;
+		String sb = uid + sid + UUID.randomUUID() + KEY;
 		return DigestUtils.md5Hex(sb).toUpperCase();
 	}
 

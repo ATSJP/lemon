@@ -20,6 +20,10 @@ eureka:
         service-url:
             defaultZone: http://eureka.shijianpeng.top/eureka/
 
+# 日志
+logging:
+    config: classpath:logback-${spring.cloud.config.profile}.xml
+
 # actuator 监控
 management:
     endpoints:
@@ -35,6 +39,10 @@ management:
         health:
             # heath展示全部信息 其他配置 when_authorized、never，
             show-details: always
+    # micrometer监控
+    metrics:
+        tags:
+            application: ${spring.application.name}
 
 info:
     app.name: eureka-provider

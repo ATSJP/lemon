@@ -17,7 +17,8 @@
     <modules>
         <module>eureka-api</module>
         <module>eureka-provider</module>
-        <module>eureka-consumer</module>
+        <!--<module>eureka-consumer</module>-->
+        <module>eureka-server</module>
     </modules>
 
 </project>

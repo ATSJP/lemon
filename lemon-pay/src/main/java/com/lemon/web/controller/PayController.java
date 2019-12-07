@@ -8,7 +8,7 @@ import com.lemon.entity.OrderInfoEntity;
 import com.lemon.entity.UserInfoEntity;
 import com.lemon.repository.OrderInfoRepository;
 import com.lemon.repository.UserInfoRepository;
-import com.lemon.utils.EncryUtils;
+import com.lemon.utils.EncryptUtils;
 import com.lemon.web.constant.ConstantUser;
 import com.lemon.web.constant.base.ConstantEncryKey;
 import com.lemon.web.request.PayCallbackRequest;
@@ -46,7 +46,7 @@ public class PayController {
 	public void toPay(HttpServletResponse httpResponse, @Valid PayRequest request) throws IOException {
 		String msg = "";
 		String orderIdEn = request.getOrderIdEn();
-		String orderIdStr = EncryUtils.decode3Des(ConstantEncryKey.ORDER_ENCRY_KEY, orderIdEn);
+		String orderIdStr = EncryptUtils.decode3Des(ConstantEncryKey.ORDER_ENCRY_KEY, orderIdEn);
 		if (StringUtils.isEmpty(orderIdStr)) {
 			msg = "error";
 			// 直接将完整的表单html输出到页面

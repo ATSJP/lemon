@@ -21,11 +21,16 @@ public class CategoryController {
 	@Resource
 	private CategoryProvider categoryProvider;
 
+	/**
+	 * 获取分类树(带缓存)
+	 *
+	 * @return List<CategoryDTO>
+	 */
 	@GetMapping("/category/tree")
 	public CategoryResponse getTree() {
 		CategoryResponse response = new CategoryResponse();
-		List<CategoryDTO> categoryDTOList = categoryProvider.getCategoryTree();
-		response.setCategoryDTOList(categoryDTOList);
+		List<CategoryDTO> categoryDtoList = categoryProvider.getCategoryTreeCache();
+		response.setCategoryDTOList(categoryDtoList);
 		return response;
 	}
 

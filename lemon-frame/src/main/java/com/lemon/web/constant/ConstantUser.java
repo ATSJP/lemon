@@ -8,6 +8,42 @@ package com.lemon.web.constant;
  */
 public interface ConstantUser {
 
+	enum LOGIN_MESSAGE {
+		/**
+		 * 返回状态及自定义信息
+		 */
+		SUCCESS("登陆成功"),
+		FAIL("登陆失败，请确认您的用户名或者密码");
+
+		private String desc;
+
+		LOGIN_MESSAGE(String desc) {
+			this.desc = desc;
+		}
+
+		public String getDesc() {
+			return desc;
+		}
+	}
+
+	enum REGISTER_MESSAGE {
+		/**
+		 * 返回状态及自定义信息
+		 */
+		SUCCESS("注册成功"),
+		FAIL("注册失败，用户名已存在");
+
+		private String desc;
+
+		REGISTER_MESSAGE(String desc) {
+			this.desc = desc;
+		}
+
+		public String getDesc() {
+			return desc;
+		}
+	}
+
 	enum USER_TYPE {
 		/**
 		 * 用户类型 0 普通会员 1 vip会员

@@ -6,33 +6,34 @@ import org.apache.commons.codec.digest.DigestUtils;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 
 /**
- * EncryUtils
+ * 统一加密工具类
  *
  * @author sjp
  * @date 2019/5/23
  */
-public class EncryUtils {
+public class EncryptUtils {
 
 	/**
-	 * base64
+	 * base64加密
+	 * 
+	 * @param plainText 待加密的字符串
+	 * @return String 加密结果
 	 */
-	public static String encodeStr(String plainText) {
-		byte[] b = plainText.getBytes();
-		Base64 base64 = new Base64();
-		b = base64.encode(b);
-		return new String(b);
+	public static String encodeBase64(String plainText) {
+		return Base64.encodeBase64String(plainText.getBytes(StandardCharsets.UTF_8));
 	}
 
 	/**
-	 * base64
+	 * base64解密
+	 * 
+	 * @param encodeStr 加密的字符串
+	 * @return String 解密结果
 	 */
-	public static String decodeStr(String encodeStr) {
-		byte[] b = encodeStr.getBytes();
-		Base64 base64 = new Base64();
-		b = base64.decode(b);
-		return new String(b);
+	public static String decodeBase64(String encodeStr) {
+		return new String(Base64.decodeBase64(encodeStr.getBytes(StandardCharsets.UTF_8)));
 	}
 
 	/**

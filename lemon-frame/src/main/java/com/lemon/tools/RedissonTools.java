@@ -1,14 +1,12 @@
 package com.lemon.tools;
 
-import org.redisson.api.RBucket;
-import org.redisson.api.RLock;
-import org.redisson.api.RMap;
-import org.redisson.api.RedissonClient;
+import org.redisson.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -70,6 +68,87 @@ public class RedissonTools {
 	public void unlockNoWait(String key) {
 		RLock rLock = redissonClient.getLock(key);
 		rLock.unlock();
+	}
+
+	/**
+	 * 获取ScoredSorted sets的Size
+	 *
+	 * @param key key
+	 */
+	public int rScoredSortedSetSize(String key) {
+		RScoredSortedSet<Object> rScoredSortedSet = redissonClient.getScoredSortedSet(key);
+		return rScoredSortedSet.size();
+	}
+
+	/**
+	 * 同步往ScoredSorted sets放入一个值
+	 * 
+	 * @param key key
+	 * @param score score
+	 * @param object object
+	 */
+	public void rScoredSortedSetAdd(String key, Double score, Object object) {
+		RScoredSortedSet<Object> rScoredSortedSet = redissonClient.getScoredSortedSet(key);
+		rScoredSortedSet.add(score, object);
+	}
+
+	/**
+	 * 异步往ScoredSorted sets放入一个值
+	 *
+	 * @param key key
+	 * @param score score
+	 * @param object object
+	 */
+	public void rScoredSortedSetAddAsync(String key, Double score, Object object) {
+		RScoredSortedSet<Object> rScoredSortedSet = redissonClient.getScoredSortedSet(key);
+		rScoredSortedSet.addAsync(score, object);
+	}
+
+	/**
+	 * 获取当前对象对指定Key下的Object排行
+	 *
+	 * @param key key
+	 * @param object object
+	 */
+	public int rScoredSortedSetRankIndex(String key, Object object) {
+		RScoredSortedSet<Object> rScoredSortedSet = redissonClient.getScoredSortedSet(key);
+		return rScoredSortedSet.rank(object);
+	}
+
+	/**
+	 * 获取指定Key下正序排行榜 (-1 代表最后一个) -2 （代表倒数第二个）
+	 * 
+	 * @param key key
+	 * @param startIndex startIndex
+	 * @param endIndex endIndex
+	 * @return Collection<Object>
+	 */
+	public Collection<Object> rScoredSortedSetRank(String key, int startIndex, int endIndex) {
+		RScoredSortedSet<Object> rScoredSortedSet = redissonClient.getScoredSortedSet(key);
+		return rScoredSortedSet.valueRange(startIndex, endIndex);
+	}
+
+	/**
+	 * 获取指定Key下倒序排行榜 (-1 代表最后一个) -2 （代表倒数第二个）
+	 *
+	 * @param key key
+	 * @param startIndex startIndex
+	 * @param endIndex endIndex
+	 * @return Collection<Object>
+	 */
+	public Collection<Object> rScoredSortedSetRevRank(String key, int startIndex, int endIndex) {
+		RScoredSortedSet<Object> rScoredSortedSet = redissonClient.getScoredSortedSet(key);
+		return rScoredSortedSet.valueRangeReversed(startIndex, endIndex);
+	}
+
+	/**
+	 * 删除ScoredSorted sets
+	 * 
+	 * @param key key
+	 */
+	public void rScoredSortedSetDeleteAll(String key) {
+		RScoredSortedSet<Object> rScoredSortedSet = redissonClient.getScoredSortedSet(key);
+		rScoredSortedSet.clear();
 	}
 
 }

@@ -32,6 +32,8 @@
         <ikanalyzer.version>2012_u6</ikanalyzer.version>
         <lunece.version>8.3.1</lunece.version>
         <alipay-sdk.version>3.7.26.ALL</alipay-sdk.version>
+        <micrometer.version>1.3.0</micrometer.version>
+        <micrometer-jvm-extras.version>x.y.z</micrometer-jvm-extras.version>
 
         <maven.compiler.plugin.version>3.1</maven.compiler.plugin.version>
     </properties>
@@ -40,6 +42,7 @@
         <module>lemon-admin</module>
         <module>lemon-apply</module>
         <module>lemon-biz-all</module>
+        <module>lemon-config</module>
         <module>lemon-pay</module>
         <module>lemon-user</module>
         <module>lemon-frame</module>
@@ -167,6 +170,17 @@
                 <groupId>com.alipay.sdk</groupId>
                 <artifactId>alipay-sdk-java</artifactId>
                 <version>${alipay-sdk.version}</version>
+            </dependency>
+            <!-- micrometer -->
+            <dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-registry-prometheus</artifactId>
+                <version>${micrometer.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.mweirauch</groupId>
+                <artifactId>micrometer-jvm-extras</artifactId>
+                <version>${micrometer-jvm-extras.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

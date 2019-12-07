@@ -42,6 +42,24 @@ eureka:
         service-url:
             defaultZone: ${register.url}
 
+# actuator 监控
+management:
+    endpoints:
+        web:
+            basePath: ${actuator.web.url}
+            # 监控请求
+            exposure:
+                include: ${actuator.web.exposure.include}
+    server:
+        port: ${actuator.server.port}
+    endpoint:
+        health:
+            show-details: ${actuator.health.show-details}
+    # micrometer监控
+    metrics:
+        tags:
+            application: ${spring.application.name}
+
 logging:
     #日志
     config: classpath:logback-${spring.cloud.config.profile}.xml

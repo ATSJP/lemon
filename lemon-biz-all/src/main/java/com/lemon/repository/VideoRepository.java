@@ -16,9 +16,10 @@ public interface VideoRepository extends CrudRepository<VideoEntity, Long> {
 	 * 根据分类id查询视频list
 	 * 
 	 * @param categoryId 分类id
+	 * @param auditStatus 审核状态
 	 * @return List<VideoEntity>
 	 */
-	List<VideoEntity> findAllByCategoryId(long categoryId);
+	List<VideoEntity> findAllByCategoryIdAndAuditStatus(long categoryId, Short auditStatus);
 
 	/**
 	 * 根据用户id获取视频list

@@ -1,8 +1,13 @@
 package com.lemon.api.impl;
 
-import com.lemon.entity.*;
-import com.lemon.repository.*;
+import com.lemon.entity.BizFileEntity;
+import com.lemon.entity.CategoryEntity;
+import com.lemon.entity.RemarkEntity;
+import com.lemon.repository.BizFileRepository;
+import com.lemon.repository.CategoryRepository;
+import com.lemon.repository.RemarkRepository;
 import com.lemon.service.VideoService;
+import com.lemon.soa.api.contant.ConstantVideo;
 import com.lemon.soa.api.dto.*;
 import com.lemon.soa.api.provider.VideoProvider;
 import com.lemon.tools.RedissonTools;
@@ -33,8 +38,6 @@ public class VideoProviderImpl implements VideoProvider {
 	private RedissonTools		redissonTools;
 	@Resource
 	private VideoService		videoService;
-	@Resource
-	private VideoRepository		videoRepository;
 	@Resource
 	private BizFileRepository	bizFileRepository;
 	@Resource
@@ -127,12 +130,11 @@ public class VideoProviderImpl implements VideoProvider {
 				CategoryEntity categoryEntityTop = categoryEntityOptionalTop.get();
 				BeanUtils.copyProperties(categoryEntityTop, categoryDTO);
 			}
-			// TODO 待完成
 		}
 	}
 
 	@Override
-	public List<VideoDTO> getVideoOrderBySortKey(short sortKey, short sortValue) {
+	public List<VideoDTO> getVideoOrderBySortKeyFromCache(short sortKey, short sortValue) {
 		// 从缓存取数据
 		List<VideoDTO> videoDTOList = redissonTools
 				.get(ConstantCache.KEY.INDEX_VIDEO_LIST.key + sortKey + "_" + sortValue);
@@ -140,14 +142,15 @@ public class VideoProviderImpl implements VideoProvider {
 			return videoDTOList;
 		}
 		// 主动加载数据
-		videoDTOList = videoService.getVideoOrderBySortKey(sortKey, sortValue);
+		videoDTOList = videoService.getVideoOrderBySortKeyFromCache(sortKey, sortValue);
 		redissonTools.set(ConstantCache.KEY.INDEX_VIDEO_LIST.key + sortKey + ConstantBaseData.CN + sortValue,
 				videoDTOList);
 		return videoDTOList;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<VideoDTO> getVideoListByCategoryId(Long categoryId, int pageIndex, int pageSize) {
+	public List<VideoDTO> getVideoListByCategoryIdFromCache(Long categoryId, int pageIndex, int pageSize) {
 		// 从缓存取数据
 		List<VideoDTO> videoDTOList = redissonTools.get(ConstantCache.KEY.CATEGORY_VIDEO_LIST.key + categoryId
 				+ ConstantBaseData.CN + pageIndex + ConstantBaseData.CN + pageSize);
@@ -155,7 +158,8 @@ public class VideoProviderImpl implements VideoProvider {
 			return videoDTOList;
 		}
 		// 主动加载数据
-		List<VideoDTO> allVideoDTOList = videoService.getVideoListByCategoryId(categoryId);
+		List<VideoDTO> allVideoDTOList = videoService.getVideoListByCategoryIdFromCache(categoryId,
+				ConstantVideo.AUDIT_STATUS.PASS);
 		videoDTOList = PageUtils.getPageList(allVideoDTOList, pageIndex, pageSize);
 		redissonTools.set(ConstantCache.KEY.CATEGORY_VIDEO_LIST.key + categoryId + ConstantBaseData.CN + pageIndex
 				+ ConstantBaseData.CN + pageSize, videoDTOList);
@@ -164,17 +168,7 @@ public class VideoProviderImpl implements VideoProvider {
 
 	@Override
 	public List<VideoDTO> getVideoListByLoginId(Long loginId, int pageIndex, int size) {
-		// 从缓存取数据
-		List<VideoDTO> videoDTOList = redissonTools.get(ConstantCache.KEY.VIDEO_SELF_LIST_KEY_.key + loginId
-				+ ConstantBaseData.CN + pageIndex + ConstantBaseData.CN + size);
-		if (!CollectionUtils.isEmpty(videoDTOList)) {
-			return videoDTOList;
-		}
-		// 主动加载数据
-		videoDTOList = videoService.getVideoListByLoginId(loginId, pageIndex, size);
-		redissonTools.set(ConstantCache.KEY.VIDEO_SELF_LIST_KEY_.key + loginId + ConstantBaseData.CN + pageIndex
-				+ ConstantBaseData.CN + size, videoDTOList);
-		return videoDTOList;
+		return videoService.getVideoListByLoginId(loginId, pageIndex, size);
 	}
 
 	@Override
