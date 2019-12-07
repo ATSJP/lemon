@@ -9,12 +9,11 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.util.Version;
 import org.springframework.stereotype.Component;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Collection;
 
 /**
@@ -64,9 +63,9 @@ public class LuceneService {
 	 */
 	public void write(Collection<Document> docs, String path) throws IOException {
 		// 索引库的存储目录
-		Directory directory = FSDirectory.open(new File(path));
+		Directory directory = FSDirectory.open(Paths.get(path));
 		// 关联当前lucene版本和分值器
-		IndexWriterConfig config = new IndexWriterConfig(Version.LATEST, ANALYZER);
+		IndexWriterConfig config = new IndexWriterConfig(ANALYZER);
 		// 设置打开方式：OpenMode.APPEND 会在索引库的基础上追加新索引。OpenMode.CREATE会先清空原来数据，再提交新的索引
 		config.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
 		// 传入目录和分词器

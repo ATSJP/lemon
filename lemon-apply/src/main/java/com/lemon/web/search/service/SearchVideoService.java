@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import javax.annotation.Resource;
-import java.io.File;
+import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -54,7 +54,7 @@ public class SearchVideoService {
 		try {
 			IKAnalyzer ikAnalyzer = new IKAnalyzer();
 			// 索引目录对象
-			Directory directory = FSDirectory.open(new File(configProperties.getVideoIndexDir()));
+			Directory directory = FSDirectory.open(Paths.get(configProperties.getVideoIndexDir()));
 			// 索引读取工具
 			IndexReader reader = DirectoryReader.open(directory);
 			// 索引搜索工具
