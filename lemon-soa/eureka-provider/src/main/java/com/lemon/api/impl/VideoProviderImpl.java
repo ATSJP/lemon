@@ -6,7 +6,6 @@ import com.lemon.entity.RemarkEntity;
 import com.lemon.repository.BizFileRepository;
 import com.lemon.repository.CategoryRepository;
 import com.lemon.repository.RemarkRepository;
-import com.lemon.repository.VideoRepository;
 import com.lemon.service.VideoService;
 import com.lemon.soa.api.contant.ConstantVideo;
 import com.lemon.soa.api.dto.*;
@@ -39,8 +38,6 @@ public class VideoProviderImpl implements VideoProvider {
 	private RedissonTools		redissonTools;
 	@Resource
 	private VideoService		videoService;
-	@Resource
-	private VideoRepository		videoRepository;
 	@Resource
 	private BizFileRepository	bizFileRepository;
 	@Resource
