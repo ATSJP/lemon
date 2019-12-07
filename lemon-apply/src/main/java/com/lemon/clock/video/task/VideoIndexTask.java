@@ -21,7 +21,6 @@ public class VideoIndexTask {
 	@Resource
 	private VideoIndexService	videoIndexService;
 
-	// @Scheduled(cron = "0 0/30 9-17 * * ?")
 	@Scheduled(cron = "*/30 * * * * ?")
 	public void createIndex() {
 		logger.info("start to createIndex for video");

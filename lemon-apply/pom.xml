@@ -114,11 +114,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-        <!-- ik.中文分词器依赖-->
-        <dependency>
-            <groupId>com.janeluo</groupId>
-            <artifactId>ikanalyzer</artifactId>
-        </dependency>
         <!-- lucene依赖 -->
         <!-- lucene核心库 -->
         <dependency>

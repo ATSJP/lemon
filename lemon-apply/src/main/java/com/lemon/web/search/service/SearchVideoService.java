@@ -6,6 +6,7 @@ import com.lemon.soa.api.provider.VideoProvider;
 import com.lemon.web.search.request.SearchVideoRequest;
 import com.lemon.web.search.response.SearchVideoResponse;
 import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
@@ -20,7 +21,6 @@ import org.apache.lucene.store.FSDirectory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import javax.annotation.Resource;
 import java.nio.file.Paths;
@@ -52,7 +52,7 @@ public class SearchVideoService {
 		List<VideoDTO> videoDTOList = new LinkedList<>();
 		String key = request.getKeyWord();
 		try {
-			IKAnalyzer ikAnalyzer = new IKAnalyzer();
+            StandardAnalyzer standardAnalyzer = new StandardAnalyzer();
 			// 索引目录对象
 			Directory directory = FSDirectory.open(Paths.get(configProperties.getVideoIndexDir()));
 			// 索引读取工具
@@ -60,7 +60,7 @@ public class SearchVideoService {
 			// 索引搜索工具
 			IndexSearcher searcher = new IndexSearcher(reader);
 			// 创建查询解析器,两个参数：默认要查询的字段的名称，分词器
-			QueryParser parser = new QueryParser("videoName", ikAnalyzer);
+			QueryParser parser = new QueryParser("videoName", standardAnalyzer);
 			// 创建查询对象
 			Query query = parser.parse(key);
 			// 最终被分词后添加的前缀和后缀处理器，默认是粗体<B></B>
@@ -80,7 +80,7 @@ public class SearchVideoService {
 				String text = doc.get("videoName");
 				// 将查询的词和搜索词匹配，匹配到添加前缀和后缀
 				TokenStream tokenStream = TokenSources.getAnyTokenStream(searcher.getIndexReader(), docID, "videoName",
-						ikAnalyzer);
+						standardAnalyzer);
 				// 传入的第二个参数是查询的值
 				TextFragment[] frag = highlighter.getBestTextFragments(tokenStream, text, false, 10);
 				String textValue = "";

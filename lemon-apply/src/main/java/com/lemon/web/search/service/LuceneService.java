@@ -1,6 +1,7 @@
 package com.lemon.web.search.service;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StoredField;
@@ -10,7 +11,6 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.springframework.stereotype.Component;
-import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -26,7 +26,7 @@ public class LuceneService {
 	/**
 	 * 定义分词器
 	 */
-	private static final Analyzer ANALYZER = new IKAnalyzer();
+	private static final Analyzer ANALYZER = new StandardAnalyzer();
 
 	/**
 	 * 根据关键词创建

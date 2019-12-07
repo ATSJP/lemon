@@ -29,7 +29,6 @@
         <common-codec>1.10</common-codec>
         <lombok.version>1.16.10</lombok.version>
         <guava.version>18.0</guava.version>
-        <ikanalyzer.version>2012_u6</ikanalyzer.version>
         <lunece.version>8.3.1</lunece.version>
         <alipay-sdk.version>3.7.26.ALL</alipay-sdk.version>
         <micrometer.version>1.3.0</micrometer.version>
@@ -133,12 +132,6 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
-            </dependency>
-            <!-- ik.中文分词器依赖-->
-            <dependency>
-                <groupId>com.janeluo</groupId>
-                <artifactId>ikanalyzer</artifactId>
-                <version>${ikanalyzer.version}</version>
             </dependency>
             <!-- lucene依赖 -->
             <!-- lucene核心库 -->
