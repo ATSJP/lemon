@@ -34,41 +34,39 @@ public class UpService {
 
 	/**
 	 * 用户点赞视频
+	 * 
 	 * @param request req
 	 * @param response res
 	 */
 	public void upVideo(UpRequest request, UpResponse response) {
-		Long videoId = request.getVideoId();
 		Long uid = request.getUid();
-		if (redissonTools.tryLock(ConstantLock.KEY.UP_LOCK.key + videoId + ConstantBaseData.CN + uid,
-				ConstantLock.KEY.UP_LOCK.timeOut, ConstantLock.KEY.UP_LOCK.expires)) {
-			// 判断该用户是否已经收藏过
-			List<UpDetailEntity> upDetailEntityList = upDetailRepository.findAllByVideoIdAndCreateIdAndIsDel(videoId,
-					uid, ConstantBaseData.IS_DELETE.FALSE.code);
-			if (CollectionUtils.isEmpty(upDetailEntityList)) {
-				// 没有记录，则是第一次点赞操作
-				UpDetailEntity entity = new UpDetailEntity();
-				entity.setVideoId(videoId);
-				entity.setCreateId(uid);
-				entity.setCreateTime(DateUtils.getCurrentTime());
-				entity.setUpdateId(uid);
-				entity.setUpdateTime(DateUtils.getCurrentTime());
-				entity.setIsDel(ConstantBaseData.IS_DELETE.FALSE.code);
-				upDetailRepository.save(entity);
-				response.setCode(ConstantApi.CODE.SUCCESS.getCode());
-				response.setMsg(ConstantApi.CODE.SUCCESS.getDesc());
-				return;
-			}
-			if (upDetailEntityList.size() == 1) {
+		Long videoId = request.getVideoId();
+		boolean isLock = redissonTools.tryLock(ConstantLock.KEY.UP_LOCK.key + videoId + ConstantBaseData.CN + uid,
+				ConstantLock.KEY.UP_LOCK.timeOut, ConstantLock.KEY.UP_LOCK.expires);
+		if (isLock) {
+			try {
+				// 判断该用户是否已经收藏过
+				List<UpDetailEntity> upDetailEntityList = upDetailRepository
+						.findAllByVideoIdAndCreateIdAndIsDel(videoId, uid, ConstantBaseData.IS_DELETE.FALSE.code);
+				if (CollectionUtils.isEmpty(upDetailEntityList)) {
+					// 没有记录，则是第一次点赞操作
+					UpDetailEntity entity = new UpDetailEntity();
+					entity.setVideoId(videoId);
+					entity.setCreateId(uid);
+					entity.setCreateTime(DateUtils.getCurrentTime());
+					entity.setUpdateId(uid);
+					entity.setUpdateTime(DateUtils.getCurrentTime());
+					entity.setIsDel(ConstantBaseData.IS_DELETE.FALSE.code);
+					upDetailRepository.save(entity);
+				}
 				// 存在记录，则提示重复点赞
 				response.setCode(ConstantApi.CODE.FAIL.getCode());
 				response.setMsg(ConstantUp.UP_MESSAGE.UP_REPEAT.getDesc());
-				return;
+			} catch (Exception e) {
+				logger.error("upVideo error", e);
+			} finally {
+				redissonTools.unlockNoWait(ConstantLock.KEY.UP_LOCK.key + videoId + ConstantBaseData.CN + uid);
 			}
-			// 存在2条同样的收藏为异常情况
-			response.setCode(ConstantApi.CODE.SYSTEM_ERROR.getCode());
-			response.setMsg(ConstantApi.CODE.SYSTEM_ERROR.getDesc());
-			logger.info("there are more collects for a video->videoId:{},uid:{}");
 		} else {
 			// 获取锁超时
 			response.setCode(ConstantApi.CODE.SYSTEM_ERROR.getCode());
@@ -79,35 +77,37 @@ public class UpService {
 
 	/**
 	 * 用户取消点赞
+	 * 
 	 * @param request req
 	 * @param response res
 	 */
 	public void cancelUpVideo(UpRequest request, UpResponse response) {
 		Long videoId = request.getVideoId();
 		Long uid = request.getUid();
-		if (redissonTools.tryLock(ConstantLock.KEY.UP_LOCK.key + videoId + ConstantBaseData.CN + uid,
-				ConstantLock.KEY.UP_LOCK.timeOut, ConstantLock.KEY.UP_LOCK.expires)) {
-			// 判断该用户是否已经收藏过
-			List<UpDetailEntity> upDetailEntityList = upDetailRepository.findAllByVideoIdAndCreateIdAndIsDel(videoId,
-					uid, ConstantBaseData.IS_DELETE.FALSE.code);
-			if (CollectionUtils.isEmpty(upDetailEntityList)) {
-				response.setCode(ConstantApi.CODE.FAIL.getCode());
-				response.setMsg(ConstantUp.UP_MESSAGE.CANCEL_REPEAT.getDesc());
-				return;
+		boolean isLock = redissonTools.tryLock(ConstantLock.KEY.UP_LOCK.key + videoId + ConstantBaseData.CN + uid,
+				ConstantLock.KEY.UP_LOCK.timeOut, ConstantLock.KEY.UP_LOCK.expires);
+		if (isLock) {
+			try {
+				// 判断该用户是否已经收藏过
+				List<UpDetailEntity> upDetailEntityList = upDetailRepository
+						.findAllByVideoIdAndCreateIdAndIsDel(videoId, uid, ConstantBaseData.IS_DELETE.FALSE.code);
+				if (CollectionUtils.isEmpty(upDetailEntityList)) {
+					response.setCode(ConstantApi.CODE.FAIL.getCode());
+					response.setMsg(ConstantUp.UP_MESSAGE.CANCEL_REPEAT.getDesc());
+					return;
+				}
+				upDetailEntityList.parallelStream().forEach(entity -> {
+					// 存在记录，则置为失效
+					entity.setIsDel(ConstantBaseData.IS_DELETE.TRUE.code);
+					entity.setUpdateId(uid);
+					entity.setUpdateTime(DateUtils.getCurrentTime());
+					upDetailRepository.save(entity);
+				});
+			} catch (Exception e) {
+				logger.error("cancelUpVideo error", e);
+			} finally {
+				redissonTools.unlockNoWait(ConstantLock.KEY.UP_LOCK.key + videoId + ConstantBaseData.CN + uid);
 			}
-			if (upDetailEntityList.size() == 1) {
-				// 存在记录，则置为失效
-				UpDetailEntity entity = upDetailEntityList.get(0);
-				entity.setIsDel(ConstantBaseData.IS_DELETE.TRUE.code);
-				upDetailRepository.save(entity);
-				response.setCode(ConstantApi.CODE.SUCCESS.getCode());
-				response.setMsg(ConstantApi.CODE.SUCCESS.getDesc());
-				return;
-			}
-			// 存在2条同样的收藏为异常情况
-			response.setCode(ConstantApi.CODE.SYSTEM_ERROR.getCode());
-			response.setMsg(ConstantApi.CODE.SYSTEM_ERROR.getDesc());
-			logger.info("there are more collects for a video->videoId:{},uid:{}");
 		} else {
 			// 获取锁超时
 			response.setCode(ConstantApi.CODE.SYSTEM_ERROR.getCode());

@@ -58,24 +58,25 @@ public class RedissonTest {
 		redissonTools.rScoredSortedSetAdd(key, 0.6, new TestDto(2L, "abc"));
 		redissonTools.rScoredSortedSetAdd(key, 1.2, new TestDto(3L, "abc"));
 		redissonTools.rScoredSortedSetAdd(key, 0.2, new TestDto(4L, "abc"));
+		// 测试addScore方法
+        redissonTools.rScoredSortedSetAddScore(key, 1.2, new TestDto(5L, "abc"));
 
 		int index = redissonTools.rScoredSortedSetRankIndex(key, new TestDto(2L, "abc"));
 		assert index == 1;
-
+		// 正向排序
 		Collection<Object> testDtoCollection = redissonTools.rScoredSortedSetRank(key, 0, -1);
 		assert testDtoCollection != null && !testDtoCollection.isEmpty();
 		testDtoCollection.forEach(System.out::println);
-
+		// 带Score的查询
 		RScoredSortedSet<Object> rScoredSortedSet = redisson.getScoredSortedSet(key);
 		Collection<ScoredEntry<Object>> scoredEntries = rScoredSortedSet.entryRange(0, -1);
 		scoredEntries.forEach(System.out::println);
-
-		testDtoCollection = redissonTools.rScoredSortedSetRevRank(key, 0, -2);
+		// 逆向排序
+		testDtoCollection = redissonTools.rScoredSortedSetRevRank(key, 0, -1);
 		assert testDtoCollection != null && !testDtoCollection.isEmpty();
 		testDtoCollection.forEach(System.out::println);
-
+		// 清空队列
 		redissonTools.rScoredSortedSetDeleteAll(key);
-
 		index = redissonTools.rScoredSortedSetSize(key);
 		assert index == 0;
 	}

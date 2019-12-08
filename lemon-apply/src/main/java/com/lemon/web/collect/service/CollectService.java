@@ -43,8 +43,13 @@ public class CollectService {
 		Long uid = request.getUid();
 		if (redissonTools.tryLock(ConstantLock.KEY.COLLECT_LOCK.key + videoId + ConstantBaseData.CN + uid,
 				ConstantLock.KEY.COLLECT_LOCK.timeOut, ConstantLock.KEY.COLLECT_LOCK.expires)) {
-			this.addNewCollect(response, videoId, uid);
-			redissonTools.unlockNoWait(ConstantLock.KEY.COLLECT_LOCK.key + videoId + ConstantBaseData.CN + uid);
+			try {
+				this.addNewCollect(response, videoId, uid);
+			} catch (Exception e) {
+				logger.error("addNewCollect error", e);
+			} finally {
+				redissonTools.unlockNoWait(ConstantLock.KEY.COLLECT_LOCK.key + videoId + ConstantBaseData.CN + uid);
+			}
 		} else {
 			response.setCode(ConstantApi.CODE.SYSTEM_ERROR.getCode());
 			response.setMsg(ConstantApi.CODE.SYSTEM_ERROR.getDesc());
@@ -63,7 +68,13 @@ public class CollectService {
 		Long uid = request.getUid();
 		if (redissonTools.tryLock(ConstantLock.KEY.COLLECT_LOCK.key + videoId + ConstantBaseData.CN + uid,
 				ConstantLock.KEY.COLLECT_LOCK.timeOut, ConstantLock.KEY.COLLECT_LOCK.expires)) {
-			this.deleteCollect(response, videoId, uid);
+			try {
+				this.deleteCollect(response, videoId, uid);
+			} catch (Exception e) {
+				logger.error("deleteCollect error", e);
+			} finally {
+				redissonTools.unlockNoWait(ConstantLock.KEY.COLLECT_LOCK.key + videoId + ConstantBaseData.CN + uid);
+			}
 		} else {
 			response.setCode(ConstantApi.CODE.SYSTEM_ERROR.getCode());
 			response.setMsg(ConstantApi.CODE.SYSTEM_ERROR.getDesc());

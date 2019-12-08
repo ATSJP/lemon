@@ -105,6 +105,18 @@ public class RedissonTools {
 	}
 
 	/**
+	 * 把Score加到指定Key下面的Object中，如果不存在则创建
+	 * 
+	 * @param key key
+	 * @param score score
+	 * @param object object
+	 */
+	public void rScoredSortedSetAddScore(String key, Double score, Object object) {
+		RScoredSortedSet<Object> rScoredSortedSet = redissonClient.getScoredSortedSet(key);
+		rScoredSortedSet.addScore(object, score);
+	}
+
+	/**
 	 * 获取当前对象对指定Key下的Object排行
 	 *
 	 * @param key key

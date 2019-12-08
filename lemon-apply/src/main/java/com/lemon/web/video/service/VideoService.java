@@ -1,7 +1,7 @@
 package com.lemon.web.video.service;
 
-import com.lemon.entity.PlayDetailEntity;
 import com.lemon.entity.VideoEntity;
+import com.lemon.manager.VideoManager;
 import com.lemon.repository.CollectionDetailRepository;
 import com.lemon.repository.PlayDetailRepository;
 import com.lemon.repository.UpDetailRepository;
@@ -32,6 +32,8 @@ import javax.servlet.http.HttpServletRequest;
 public class VideoService {
 	@Resource
 	private VideoProvider				videoProvider;
+	@Resource
+	private VideoManager				videoManager;
 	@Resource
 	private VideoRepository				videoRepository;
 	@Resource
@@ -125,32 +127,9 @@ public class VideoService {
 		String sid = request.getSid() == null ? "-1" : request.getSid();
 		Long videoId = request.getVideoId();
 		String ip = IPUtils.getIpAddress(httpServletRequest);
-		// 未登陆下，检测当前IP地址是否已经播放过视频
-		if (uid == -1L) {
-			int count = playDetailRepository.countAllByVideoIdAndIpAndCreateId(videoId, ip, uid);
-			if (count > 0) {
-				return;
-			}
-			this.savePlayDetail(uid, sid, videoId, ip);
-			return;
-		}
-		// 已登陆下，检测当前用户是否播放过视频
-		int count = playDetailRepository.countAllByCreateIdAndVideoId(uid, videoId);
-		if (count > 0) {
-			return;
-		}
-		this.savePlayDetail(uid, sid, videoId, ip);
+        videoManager.addVideoPlayRecord(uid, sid, videoId, ip);
 	}
 
-	private void savePlayDetail(Long uid, String sid, Long videoId, String ip) {
-		PlayDetailEntity playDetailEntity = new PlayDetailEntity();
-		playDetailEntity.setVideoId(videoId);
-		playDetailEntity.setIp(ip);
-		playDetailEntity.setSid(sid);
-		playDetailEntity.setCreateId(uid);
-		playDetailEntity.setCreateTime(DateUtils.getCurrentTime());
-		playDetailRepository.save(playDetailEntity);
-	}
 
 	/**
 	 * 检查当前的videoId是否合法
