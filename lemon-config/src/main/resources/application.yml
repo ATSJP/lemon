@@ -1,5 +1,5 @@
 server:
-    port: 9000
+    port: 8000
 spring:
     application:
         name: lemon-config-server
@@ -22,7 +22,7 @@ management:
                 include: "*"
     server:
         # 监控端口
-        port: 10000
+        port: 7000
         servlet:
             context-path: /
     endpoint:

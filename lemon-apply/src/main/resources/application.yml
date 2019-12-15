@@ -1,5 +1,5 @@
 server:
-    port: 8082
+    port: ${server.port}
     tomcat:
         max-threads: ${tomcat-max-threads}
         min-spare-threads: ${tomcat-min-spare-threads}
