@@ -4,6 +4,7 @@ import com.lemon.soa.api.dto.CategoryDTO;
 import com.lemon.soa.api.dto.VideoDTO;
 import com.lemon.soa.api.provider.CategoryProvider;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,9 +21,9 @@ public class ConsumerController {
 	@Resource
 	private RestTemplate restTemplate;
 
-	@GetMapping("/")
-	public VideoDTO index() {
-		return restTemplate.getForObject("http://eureka-provider/video/1", VideoDTO.class);
+	@GetMapping("/{id}")
+	public VideoDTO index(@PathVariable(value = "id") Long id) {
+		return restTemplate.getForObject("http://provider/video/" + id, VideoDTO.class);
 	}
 
 	/**

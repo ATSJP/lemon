@@ -5,7 +5,7 @@ server:
         min-spare-threads: ${tomcat-min-spare-threads}
 
 spring:
-    # 允许重复名称的bean定义
+    # 允许重复名称的bean定义，为了解决Fegin重复命名无法启动的问题
     main:
         allow-bean-definition-overriding: true
 
