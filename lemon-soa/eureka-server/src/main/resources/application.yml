@@ -6,16 +6,19 @@ spring:
         name: eureka-server
 
 eureka:
+    environment: ${spring.cloud.config.profile}
     instance:
-        hostname: eureka-server
+        hostname: ${spring.application.name}
     server:
         # 清理无效节点时间间隔，默认60000ms=60s
-        eviction-interval-timer-in-ms: 60000
+        eviction-interval-timer-in-ms: 30000
+        # 是否开启自我保护
+        enable-self-preservation: true
     client:
-        # 不注册自己
-        register-with-eureka: false
-        # 获取服务
+        # 此实例是否从注册中心获取注册信息
         fetch-registry: false
+        # 是否将此实例注册到注册中心
+        register-with-eureka: false
         # 注册中心地址
         service-url:
             defaultZone: http://eureka.shijianpeng.top/eureka/

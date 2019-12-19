@@ -22,6 +22,7 @@ spring:
 
 eureka:
     instance:
+        hostname: ${spring.application.name}
         # 使用ip进行注册
         prefer-ip-address: ${use-ip-address}
     client:

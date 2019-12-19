@@ -11,7 +11,8 @@ spring:
 
 eureka:
     instance:
-        # 使用IP注册
+        hostname: ${spring.application.name}
+        # 设置微服务调用地址为IP优先（缺省为false）
         prefer-ip-address: true
     #注册地址
     client:
