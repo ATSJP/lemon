@@ -1,8 +1,6 @@
 package com.lemon.web.controller;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -11,15 +9,5 @@ import org.springframework.web.bind.annotation.RestController;
 @Controller
 @RestController
 public class LoginController {
-
-	@Value("${redission_config}")
-	private String	version;
-	@Value("${hibernate.generateDdl}")
-	private String	generateDdl;
-
-	@GetMapping("/test")
-	public String getVersion() {
-		return this.version + " " + this.generateDdl;
-	}
 
 }
