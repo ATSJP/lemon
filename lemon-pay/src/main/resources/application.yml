@@ -51,6 +51,7 @@ management:
     metrics:
         tags:
             application: ${spring.application.name}
+            env: ${spring.cloud.config.profile}
 
 # 日志
 logging:
