@@ -15,6 +15,32 @@ spring:
         url: ${jdbc.url}
         username: ${jdbc.username}
         password: ${jdbc.password}
+        druid:
+            # 初始化连接池的连接数量 大小，最小，最大
+            initial-size: ${jdbc-initial-size}
+            max-active: ${jdbc-max-active}
+            min-idle: ${jdbc-min-idle}
+            # 配置获取连接等待超时的时间
+            max-wait: ${jdbc-max-wait}
+            # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+            time-between-eviction-runs-millis: ${jdbc-time-between-eviction-runs-millis}
+            # 配置一个连接在池中最小生存的时间，单位是毫秒
+            # min-evictable-idle-time-millis:
+            # max-evictable-idle-time-millis:
+            validation-query: ${jdbc-validation-query}
+            # validation-query-timeout:
+            test-on-borrow: ${jdbc-test-on-borrow}
+            test-on-return: ${jdbc-test-on-return}
+            test-while-idle: ${jdbc-test-while-idle}
+            # 是否缓存preparedStatement，也就是PSCache
+            pool-prepared-statements: ${jdbc-pool-prepared-statements}
+            # 配置监控统计拦截的filters
+            filter:
+                stat:
+                    enabled: ${jdbc-filter-stat-enabled}
+                    merge-sql: ${jdbc-filter-stat-merge-sql}
+                    logSlowSql: ${jdbc-filter-stat-logSlowSql}
+                    slow-sql-millis: ${jdbc-filter-stat-slow-sql-millis}
 
     jpa:
         generateDdl: ${hibernate.generateDdl}
