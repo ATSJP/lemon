@@ -29,6 +29,12 @@
             <artifactId>fastjson</artifactId>
             <scope>provided</scope>
         </dependency>
+        <!-- dataSource -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <scope>provided</scope>
+        </dependency>
         <!-- redisson -->
         <dependency>
             <groupId>org.redisson</groupId>
@@ -65,6 +71,12 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- micrometer -->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
             <scope>provided</scope>
         </dependency>
     </dependencies>
