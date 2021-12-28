@@ -21,7 +21,7 @@
         <druid.version>1.1.21</druid.version>
         <fastJson.version>1.2.54</fastJson.version>
         <mysql.version>8.0.16</mysql.version>
-        <shiro.version>1.7.0</shiro.version>
+        <shiro.version>1.8.0</shiro.version>
         <redisson.version>3.10.6</redisson.version>
         <redisson-springboot.version>3.10.6</redisson-springboot.version>
         <urlrewrite.version>4.0.3</urlrewrite.version>
