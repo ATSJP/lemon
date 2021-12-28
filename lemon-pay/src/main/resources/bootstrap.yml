@@ -8,4 +8,4 @@ spring:
             # 对应着文件后面的后缀{profile} 此参数由启动时带入，默认为dev
             profile: dev
             # 分支
-            label: dv_lemon_2019_07
+            label: master
