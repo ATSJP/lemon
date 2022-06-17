@@ -19,7 +19,7 @@
         <spring-boot.version>2.1.1.RELEASE</spring-boot.version>
         <spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
         <druid.version>1.1.21</druid.version>
-        <fastJson.version>1.2.54</fastJson.version>
+        <fastJson.version>1.2.83</fastJson.version>
         <mysql.version>8.0.16</mysql.version>
         <shiro.version>1.8.0</shiro.version>
         <redisson.version>3.10.6</redisson.version>
